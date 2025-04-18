@@ -41,12 +41,12 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 var app = builder.Build();
-app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 // Middleware
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseAuthorization();
 
 app.MapControllerRoute(

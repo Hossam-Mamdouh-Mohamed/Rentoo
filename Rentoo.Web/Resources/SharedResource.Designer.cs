@@ -61,6 +61,15 @@ namespace Rentoo.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to efndmksd.
+        /// </summary>
+        public static string lb {
+            get {
+                return ResourceManager.GetString("lb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to حسام.
         /// </summary>
         public static string lbHello {
