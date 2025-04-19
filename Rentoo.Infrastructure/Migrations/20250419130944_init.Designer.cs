@@ -12,8 +12,8 @@ using Rentoo.Infrastructure.Data;
 namespace Rentoo.Infrastructure.Migrations
 {
     [DbContext(typeof(RentooDbContext))]
-    [Migration("20250419083234_identity")]
-    partial class identity
+    [Migration("20250419130944_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -456,7 +456,8 @@ namespace Rentoo.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
@@ -474,10 +475,13 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -498,23 +502,17 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
-
-                    b.Property<int>("UserDocumentId")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -550,22 +548,26 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.Property<string>("LicenseUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("NationalIDNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("NationalIDUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ReviewNotes")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime?>("ReviewdAt")
                         .HasColumnType("datetime2");
@@ -579,8 +581,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserDocuments");
                 });
@@ -729,7 +730,7 @@ namespace Rentoo.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Rentoo.Domain.Entities.User", null)
-                        .WithMany("requestreview")
+                        .WithMany("RequestReview")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Request");
@@ -738,8 +739,8 @@ namespace Rentoo.Infrastructure.Migrations
             modelBuilder.Entity("Rentoo.Domain.Entities.UserDocument", b =>
                 {
                     b.HasOne("Rentoo.Domain.Entities.User", "User")
-                        .WithOne("UserDocument")
-                        .HasForeignKey("Rentoo.Domain.Entities.UserDocument", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -765,12 +766,9 @@ namespace Rentoo.Infrastructure.Migrations
                 {
                     b.Navigation("Cars");
 
+                    b.Navigation("RequestReview");
+
                     b.Navigation("Requests");
-
-                    b.Navigation("UserDocument")
-                        .IsRequired();
-
-                    b.Navigation("requestreview");
                 });
 #pragma warning restore 612, 618
         }

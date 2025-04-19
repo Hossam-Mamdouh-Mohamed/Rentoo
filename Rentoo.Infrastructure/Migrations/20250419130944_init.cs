@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Rentoo.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class identity : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,13 +30,11 @@ namespace Rentoo.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserDocumentId = table.Column<int>(type: "int", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -182,13 +180,13 @@ namespace Rentoo.Infrastructure.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LicenseUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NationalIDNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NationalIDUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LicenseUrl = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    NationalIDNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    NationalIDUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ReviewdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ReviewNotes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReviewNotes = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -521,8 +519,7 @@ namespace Rentoo.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_UserDocuments_UserId",
                 table: "UserDocuments",
-                column: "UserId",
-                unique: true);
+                column: "UserId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_RequestReviews_Requests_RequestId",
