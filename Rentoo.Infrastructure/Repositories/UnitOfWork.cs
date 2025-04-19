@@ -6,10 +6,10 @@ namespace Rentoo.Infrastructure.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly AppDbContext _context;
+    private readonly RentooDbContext _context;
     private readonly Dictionary<Type, object> _repositories = new();
 
-    public UnitOfWork(AppDbContext context)
+    public UnitOfWork(RentooDbContext context)
     {
         _context = context;
     }

@@ -7,10 +7,10 @@ namespace Rentoo.Infrastructure.Repositories;
 
 public class Repository<T> : IRepository<T> where T : class
 {
-    protected readonly AppDbContext _context; // Fixed type to AppDbContext  
+    protected readonly RentooDbContext _context; // Fixed type to AppDbContext  
     protected readonly DbSet<T> _dbSet;
 
-    public Repository(AppDbContext context)
+    public Repository(RentooDbContext context)
     {
         _context = context;
         _dbSet = context.Set<T>();

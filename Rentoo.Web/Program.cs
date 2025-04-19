@@ -16,7 +16,7 @@ builder.Services.AddControllersWithViews().AddViewLocalization()
     .AddDataAnnotationsLocalization();
 
 // Database
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<RentooDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Dependency Injection
