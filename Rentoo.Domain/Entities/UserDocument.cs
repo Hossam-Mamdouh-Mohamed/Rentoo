@@ -1,4 +1,4 @@
-﻿namespace Rentoo.Domain.Models
+﻿namespace Rentoo.Domain.Entities
 {
     public class UserDocument
     {

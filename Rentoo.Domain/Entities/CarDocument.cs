@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Rentoo.Domain.Models
+namespace Rentoo.Domain.Entities
 {
     [Table("CarDocuments")]
     public class CarDocument
