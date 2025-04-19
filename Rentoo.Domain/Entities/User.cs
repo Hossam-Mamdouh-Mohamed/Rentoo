@@ -1,43 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Rentoo.Domain.Entities;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace Rentoo.Domain.Entities
 {
-    [Table("Users")]
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
-        public int ID { get; set; }
-
-        [Required]
+        public string FirstName { get; set; }
+        public string? LastName { get; set; }
+        public int Age { get; set; }
+        public string? Address { get; set; }
         public int UserDocumentId { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; }
-
-        [Required]
-        [EmailAddress]
-        [StringLength(100)]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        public string Password { get; set; }
-
-        [Required]
-        [StringLength(20)]
         public string Role { get; set; }
-
-        [Required]
-        [Phone]
-        [StringLength(20)]
-        public string PhoneNumber { get; set; }
-
-        [ForeignKey("UserDocumentId")]
+        public string PhoneNumber { get; set; } // Ensure this property matches IdentityUser's type
         public UserDocument UserDocument { get; set; }
-
         public ICollection<Request> Requests { get; set; }
         public ICollection<Car> Cars { get; set; }
         public ICollection<RequestReview> requestreview { get; set; }

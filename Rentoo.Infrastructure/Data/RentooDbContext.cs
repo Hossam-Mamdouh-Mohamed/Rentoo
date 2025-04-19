@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rentoo.Domain.Entities;
 
 namespace Rentoo.Infrastructure.Data
 {
-    public class RentooDbContext : DbContext
+    public class RentooDbContext : IdentityDbContext<User>
     {
+
         public RentooDbContext(DbContextOptions<RentooDbContext> options): base(options) { }
         public DbSet<Car> Cars { get; set; }
         public DbSet<CarImage> CarImages { get; set; }

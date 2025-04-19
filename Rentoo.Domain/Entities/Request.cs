@@ -34,7 +34,7 @@ namespace Rentoo.Domain.Entities
         public bool WithDriver { get; set; }
 
         [Required]
-        public int UserID { get; set; }
+        public string UserID { get; set; }
 
         [ForeignKey("UserID")]
         public User User { get; set; }
