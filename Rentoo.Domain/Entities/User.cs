@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Rentoo.Domain.Entities;
 
-namespace Rentoo.Domain.Models
+namespace Rentoo.Domain.Entities
 {
     [Table("Users")]
     public class User
