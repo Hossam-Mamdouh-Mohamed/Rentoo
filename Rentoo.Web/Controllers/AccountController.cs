@@ -44,13 +44,13 @@ namespace Rentoo.Web.Controllers
                     {
                         return RedirectToAction("ListUsers", "Administration");
                     }
-                    else if (_signInManager.IsSignedIn(User) && User.IsInRole("Teacher"))
+                    else if (_signInManager.IsSignedIn(User) && User.IsInRole("Owner"))
                     {
-                        return RedirectToAction("Index", "Teacher");
+                        return RedirectToAction("Index", "Owner");
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Student");
+                        return RedirectToAction("Index", "Client");
                     }
                 }
                 else
