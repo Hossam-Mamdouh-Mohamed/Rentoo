@@ -97,11 +97,11 @@ namespace Rentoo.Web.Controllers
                         }
                         else if (_signInManager.IsSignedIn(User) && User.IsInRole("Teacher"))
                         {
-                            return RedirectToAction("Index", "Teacher");
+                            return RedirectToAction("Index", "Owner");
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Student");
+                            return RedirectToAction("Index", "Client");
                         }
                     }
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
