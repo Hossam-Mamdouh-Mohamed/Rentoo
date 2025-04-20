@@ -9,7 +9,6 @@ using Rentoo.Domain.Entities;
 using Rentoo.Domain.Interfaces;
 using Rentoo.Infrastructure.Data;
 using Rentoo.Infrastructure.Repositories;
-using Rentoo.Web.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,21 +35,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Register the localization service
-builder.Services.AddScoped<ISharedLocalizationService, SharedLocalizationService>();
 
-// Localization
-builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-
-builder.Services.AddHttpContextAccessor();
-
-builder.Services.Configure<RequestLocalizationOptions>(options =>
-{
-    var supportedCultures = new[] { new CultureInfo("ar"), new CultureInfo("en") };
-    options.DefaultRequestCulture = new RequestCulture("ar");
-    options.SupportedCultures = supportedCultures;
-    options.SupportedUICultures = supportedCultures;
-});
 
 var app = builder.Build();
 
@@ -58,7 +43,6 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseAuthorization();
 
 app.MapControllerRoute(
