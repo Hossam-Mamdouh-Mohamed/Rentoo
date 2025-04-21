@@ -12,15 +12,12 @@ namespace Rentoo.Domain.Entities
         [Required]
         [Range(3,100,ErrorMessage = "Name At Lest 3 characters ")]
         public string LastName { get; set; }
-
-        
         [Required]
-        [Range(18, 100, ErrorMessage = "Age must be Greater Than than 18 year")]
-        public int Age { get; set; }
+        public DateOnly BirthDate { get; set; }
 
         [StringLength(200)]
         public string? Address { get; set; }
-
+        public string? UserImage { get; set; }
         [Phone]
         [Required]
         [StringLength(50)]

@@ -8,8 +8,8 @@ namespace web.ViewModels
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        [Range(10,120)]
-        public int Age { get; set; }
+        [Required]
+        public DateOnly BirthDate { get; set; }
         public string Address { get; set; }
         [Required]
         [EmailAddress]
