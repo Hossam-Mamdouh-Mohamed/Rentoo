@@ -34,7 +34,7 @@ namespace Rentoo.Web.Controllers
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                Age = model.Age,
+                BirthDate = model.BirthDate,
                 Address = model.Address,
                 PhoneNumber = model.PhoneNumber,
                 UserName = model.UserName,

@@ -11,11 +11,8 @@ namespace web.ViewModels
         [Required(ErrorMessage = "Last Name is required")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Last Name can't be less than3 or longer than 50 characters")]
         public string LastName { get; set; }
-
-        [Range(18, 120, ErrorMessage = "Age can't be less than 18")]
-        public int Age { get; set; }
-
-        [StringLength(200, MinimumLength = 3, ErrorMessage = "Address can't be less than 3 or  longer than 200 characters")]
+        [Required]
+        public DateOnly BirthDate { get; set; }
         public string Address { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
