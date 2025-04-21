@@ -24,6 +24,7 @@
         /* Dashboard Container */
         .dashboard-container {
             display: flex;
+            flex-direction: row-reverse; /* Sidebar on the right */
             min-height: 100vh;
             width: 100%;
         }
@@ -33,7 +34,7 @@
             width: 240px;
             background-color: #f7f7f7;
             padding: 20px 0;
-            border-right: 1px solid #e0e0e0;
+            border-left: 1px solid #e0e0e0;
         }
 
         .sidebar-item {
@@ -50,7 +51,7 @@
 
             .sidebar-item.active {
                 background-color: #fce4ec;
-                border-left: 3px solid #e91e63;
+                border-right: 3px solid #e91e63;
             }
 
             .sidebar-item i {
@@ -221,45 +222,6 @@
             padding-right: 40px;
         }
 
-        .location-icon {
-            color: #e91e63;
-        }
-
-        .flag-icon {
-            width: 20px;
-            height: 15px;
-            object-fit: contain;
-        }
-
-        /* Input Groups */
-        .input-group {
-            display: flex;
-            align-items: center;
-        }
-
-        .input-group-text {
-            padding: 8px 12px;
-            background-color: #f7f7f7;
-            border: 1px solid #ddd;
-            border-right: none;
-            border-radius: 4px 0 0 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .input-group .form-control {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-        .input-group-append .input-group-text {
-            border-left: none;
-            border-right: 1px solid #ddd;
-            border-radius: 0 4px 4px 0;
-        }
-
-        /* Buttons */
         .save-changes-btn {
             background-color: #e91e63;
             color: white;
@@ -275,55 +237,24 @@
                 background-color: #d81b60;
             }
 
-        /* Helper classes */
         .text-danger {
             color: #e91e63;
             font-size: 12px;
             margin-top: 5px;
             display: block;
         }
-
-        /* Responsive adjustments */
     </style>
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar -->
-        <div class="dashboard-sidebar">
-            <div class="sidebar-item active">
-                <i class="fas fa-user"></i>
-                <span>Personal Information</span>
-            </div>
-            <div class="sidebar-item">
-                <i class="fas fa-shield-alt"></i>
-                <span>Borrowing Verification</span>
-            </div>
-        </div>
-
         <!-- Main Content -->
         <div class="dashboard-content">
             <!-- Navigation Tabs -->
             <div class="nav-tabs">
-                <a href="#" class="nav-tab active">
-                    <i class="fas fa-user"></i>
-                    MY ACCOUNT
-                </a>
-                <a href="#" class="nav-tab">
-                    <i class="fas fa-car"></i>
-                    MY CARS
-                </a>
-                <a href="#" class="nav-tab">
-                    <i class="fas fa-file-alt"></i>
-                    MY REQUESTS
-                </a>
-                <a href="#" class="nav-tab">
-                    <i class="fas fa-hands-helping"></i>
-                    MY BORROWINGS
-                </a>
-                <a href="#" class="nav-tab">
-                    <i class="fas fa-credit-card"></i>
-                    MY PAYMENTS
-                </a>
+                <a href="#" class="nav-tab active"><i class="fas fa-user"></i> MY ACCOUNT</a>
+                <a href="#" class="nav-tab"><i class="fas fa-car"></i> MY CARS</a>
+                <a href="#" class="nav-tab"><i class="fas fa-file-alt"></i> MY REQUESTS</a>
+                <a href="#" class="nav-tab"><i class="fas fa-hands-helping"></i> MY BORROWINGS</a>
             </div>
 
             <!-- Account Profile Content -->
@@ -344,7 +275,7 @@
                 <div class="profile-section">
                     <h2>Your Information:</h2>
 
-                    <!-- Name and Nationality -->
+                    <!-- Name and Last Name -->
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name:</label>
@@ -354,40 +285,28 @@
                             <label for="lastName">Last Name:</label>
                             <input type="text" id="lastName" class="form-control" value="@Model.LastName">
                         </div>
+                    </div>
 
-                    <!-- Email, Gender, Birthdate -->
+                    <!-- Email and Birthdate -->
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Email:</label>
-                            <input type="email" id="email" class="form-control" value="">
+                            <input type="email" id="email" class="form-control" value="@Model.Email">
                         </div>
                         <div class="form-group">
                             <label for="birthdate">Birthdate:</label>
-                            <input type="date" id="birthdate" class="form-control" value="">
+                            <input type="date" id="birthdate" class="form-control">
                         </div>
                     </div>
 
-                    <!-- Phone Numbers -->
+                    <!-- Phone Number -->
                     <div class="form-row">
                         <div class="form-group phone-group">
                             <label for="primaryNumber">Phone number:</label>
                             <div class="input-group">
-                                <div class="input-group-text">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/800px-Flag_of_Egypt.svg.png" alt="Egypt" class="flag-icon">
-                                </div>
-                                <input type="text" id="primaryNumber" class="form-control" value="">
+                                <input type="text" id="primaryNumber" class="form-control" value="@Model.PhoneNumber">
                             </div>
                             <a href="#" class="change-link">Change</a>
-                        </div>
-
-                        <div class="form-group phone-group">
-                            <label for="secondaryNumber">Secondary number:</label>
-                            <div class="input-group">
-                                <div class="input-group-text">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/800px-Flag_of_Egypt.svg.png" alt="Egypt" class="flag-icon">
-                                </div>
-                                <input type="text" id="secondaryNumber" class="form-control" value="">
-                            </div>
                         </div>
                     </div>
 
@@ -397,59 +316,65 @@
                             <label for="address">Address:</label>
                             <div class="input-group">
                                 <input type="text" id="address" class="form-control" value="@Model.Address">
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <i class="fas fa-map-marker-alt location-icon"></i>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Submit Button -->
-                    <div class="form-actions">
-                        <button type="submit" class="save-changes-btn">Save Changes</button>
+                    <!-- Submit Button (new line) -->
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1 1 100%;">
+                            <button type="submit" class="save-changes-btn">Save Changes</button>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
+
+        <!-- Sidebar -->
+        <div class="dashboard-sidebar">
+            <div class="sidebar-item active">
+                <i class="fas fa-user"></i>
+                <span>Personal Information</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Borrowing Verification</span>
+            </div>
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle profile picture upload
+        document.addEventListener('DOMContentLoaded', function () {
             const profilePicture = document.querySelector('.profile-picture');
             const profileImageInput = document.getElementById('profile-image-input');
             const profileImgPreview = document.getElementById('profile-img-preview');
 
-            profilePicture.addEventListener('click', function() {
+            profilePicture.addEventListener('click', function () {
                 profileImageInput.click();
             });
 
-            profileImageInput.addEventListener('change', function() {
+            profileImageInput.addEventListener('change', function () {
                 if (this.files && this.files[0]) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         profileImgPreview.src = e.target.result;
                     };
                     reader.readAsDataURL(this.files[0]);
                 }
             });
 
-            // Handle tab navigation
             const tabs = document.querySelectorAll('.nav-tab');
             tabs.forEach(tab => {
-                tab.addEventListener('click', function(e) {
+                tab.addEventListener('click', function (e) {
                     e.preventDefault();
                     tabs.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                 });
             });
 
-            // Handle sidebar navigation
             const sidebarItems = document.querySelectorAll('.sidebar-item');
             sidebarItems.forEach(item => {
-                item.addEventListener('click', function() {
+                item.addEventListener('click', function () {
                     sidebarItems.forEach(i => i.classList.remove('active'));
                     this.classList.add('active');
                 });

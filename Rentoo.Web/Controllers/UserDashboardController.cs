@@ -20,7 +20,7 @@ namespace Rentoo.Web.Controllers
         public async Task<IActionResult> UserProfile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
-            var currentUser = await _userService.GetByIdAsync(int.Parse(userId));
+            var currentUser = await _userService.GetByIdAsync(userId);
             return View(currentUser);
         }
     }
