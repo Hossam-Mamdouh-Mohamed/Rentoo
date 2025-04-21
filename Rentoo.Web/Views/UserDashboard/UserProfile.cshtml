@@ -28,7 +28,7 @@
                     <h2>Your Account Picture:</h2>
                     <div class="profile-picture-container">
                         <div class="profile-picture">
-                            <img src="@(string.IsNullOrEmpty(Model.Userimage) ? "https://via.placeholder.com/100" : Url.Content($"~/{Model.Userimage}"))" alt="Profile Picture" id="profile-img-preview">
+                            <img src="@(string.IsNullOrEmpty(Model.userimage) ? "https://via.placeholder.com/100" : Url.Content($"~/{Model.userimage}"))" alt="Profile Picture" id="profile-img-preview">
                             <span class="edit-icon">+</span>
                         </div>
                         <input type="file" id="profile-image-input" name="ProfileImageFile" style="display: none;" accept="image/*">

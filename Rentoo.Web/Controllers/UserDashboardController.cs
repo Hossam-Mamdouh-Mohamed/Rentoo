@@ -42,7 +42,7 @@ namespace Rentoo.Web.Controllers
                 {
                     await ProfileImageFile.CopyToAsync(stream);
                 }
-                user.Userimage = $"uploads/{fileName}";
+                user.userimage = $"uploads/{fileName}";
             }
 
             if (ModelState.IsValid)
