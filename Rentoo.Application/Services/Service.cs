@@ -15,6 +15,7 @@ public class Service<T> : IService<T> where T : class
     }
 
     public async Task<T> GetByIdAsync(int id) => await _repository.GetByIdAsync(id);
+    public async Task<T> GetByIdAsync(string id) => await _repository.GetByIdAsync(id);
 
     public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync();
 

@@ -89,9 +89,9 @@ namespace Rentoo.Web.Controllers
                         {
                             return RedirectToAction("Index", "Admin");
                         }
-                        else if (_signInManager.IsSignedIn(User) && User.IsInRole("Teacher"))
+                        else if (_signInManager.IsSignedIn(User) && User.IsInRole("Owner"))
                         {
-                            return RedirectToAction("Index", "Owner");
+                            return RedirectToAction("UserProfile", "UserDashboard");
                         }
                         else
                         {
