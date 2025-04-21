@@ -42,7 +42,7 @@ namespace Rentoo.Web.Controllers
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
-                        return RedirectToAction("ListUsers", "Administration");
+                        return RedirectToAction("Index", "Admin");
                     }
                     else if (_signInManager.IsSignedIn(User) && User.IsInRole("Owner"))
                     {
@@ -93,7 +93,7 @@ namespace Rentoo.Web.Controllers
                     {
                         if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
-                            return RedirectToAction("ListUsers", "Administration");
+                            return RedirectToAction("Index", "Admin");
                         }
                         else if (_signInManager.IsSignedIn(User) && User.IsInRole("Teacher"))
                         {
