@@ -1,0 +1,423 @@
+/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+/* Core styles */
+:root {
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 80px;
+    --primary-color: #2c3e50;
+    --secondary-color: #f8f9fc;
+    --accent-color: #e74c3c;
+    --dark-color: #1a252f;
+    --text-color: #5a5c69;
+    --light-color: #f8f9fa;
+    --shadow-sm: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    background-color: var(--secondary-color);
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    height: 100vh;
+    width: var(--sidebar-width);
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: linear-gradient(180deg, var(--primary-color), var(--dark-color));
+    padding-top: 20px;
+    overflow-y: auto;
+    box-shadow: var(--shadow-sm);
+    z-index: 1000;
+    transition: var(--transition);
+}
+
+.sidebar-collapsed .sidebar {
+    width: var(--sidebar-collapsed-width);
+}
+
+.sidebar-brand {
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sidebar-brand-text {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.sidebar-collapsed .sidebar-brand-text span {
+    display: none;
+}
+
+.sidebar-brand-text i {
+    margin-right: 10px;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.sidebar-collapsed .sidebar-brand-text i {
+    margin-right: 0;
+}
+
+.profile-section {
+    text-align: center;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+}
+
+.sidebar-collapsed .profile-section {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-color);
+    margin-bottom: 0.5rem;
+    transition: var(--transition);
+}
+
+.sidebar-collapsed .profile-img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0;
+}
+
+.profile-name {
+    color: #fff;
+    font-weight: 600;
+    margin: 0.5rem 0 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-collapsed .profile-name,
+.sidebar-collapsed .profile-role {
+    display: none;
+}
+
+.profile-role {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Navigation */
+.nav-item {
+    margin-bottom: 0.2rem;
+    position: relative;
+}
+
+.nav-link {
+    padding: 0.75rem 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 0 30px 30px 0;
+    margin-right: 1rem;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #fff;
+}
+
+.nav-link.active {
+    border-left: 3px solid var(--accent-color);
+}
+
+.nav-link i {
+    width: 20px;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 1.1rem;
+    transition: var(--transition);
+}
+
+.sidebar-collapsed .nav-link i {
+    margin-right: 0;
+}
+
+.nav-link-text {
+    transition: var(--transition);
+}
+
+.sidebar-collapsed .nav-link-text {
+    display: none;
+}
+
+.nav-link .badge {
+    margin-left: auto;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 10px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    transition: var(--transition);
+}
+
+.sidebar-collapsed .nav-link .badge {
+    display: none;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: var(--sidebar-width);
+    padding: 20px;
+    min-height: 100vh;
+    transition: var(--transition);
+}
+
+.sidebar-collapsed .main-content {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Top Navigation */
+.top-navbar {
+    background-color: #fff;
+    box-shadow: var(--shadow-sm);
+    padding: 0.75rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toggle-sidebar-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.toggle-sidebar-btn:hover {
+    color: var(--accent-color);
+}
+
+.user-dropdown .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+.user-dropdown .dropdown-toggle:hover {
+    color: var(--accent-color);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    border: 2px solid var(--accent-color);
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: var(--shadow-sm);
+    border-radius: 0.5rem;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+    transition: var(--transition);
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+    transition: var(--transition);
+    background-color: #fff;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem 0.25rem rgba(58, 59, 69, 0.2);
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.btn-primary:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
+/* Dashboard Statistics Cards */
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.bg-primary {
+    background-color: var(--primary-color);
+}
+
+.bg-success {
+    background-color: #2ecc71;
+}
+
+.bg-warning {
+    background-color: #f39c12;
+}
+
+.bg-danger {
+    background-color: var(--accent-color);
+}
+
+/* Table Styles */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    font-weight: 600;
+    color: var(--primary-color);
+    border-top: none;
+    padding: 1rem;
+}
+
+.table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.badge {
+    font-weight: 600;
+    padding: 0.35em 0.65em;
+}
+
+/* Chart Styles */
+canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: var(--sidebar-collapsed-width);
+    }
+    
+    .main-content {
+        margin-left: var(--sidebar-collapsed-width);
+    }
+    
+    .sidebar-brand-text,
+    .profile-name,
+    .profile-role,
+    .nav-link-text,
+    .nav-link .badge {
+        display: none;
+    }
+    
+    .profile-img {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 0;
+    }
+    
+    .nav-link {
+        padding: 0.75rem;
+        justify-content: center;
+    }
+    
+    .nav-link i {
+        margin-right: 0;
+    }
+}
+/* Add to _AdminLayout.css */
+.sidebar {
+    transition: width 0.3s ease;
+    width: 250px;
+}
+
+.sidebar-collapsed .sidebar {
+    width: 80px;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+    background-color: #007bff;
+    color: white !important;
+}
+
+.sidebar .nav-link i {
+    width: 30px;
+}
+
+.sidebar-collapsed .nav-link span.nav-link-text,
+.sidebar-collapsed .profile-name,
+.sidebar-collapsed .profile-role {
+    display: none;
+}
