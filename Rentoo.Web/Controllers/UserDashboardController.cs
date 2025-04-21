@@ -17,11 +17,42 @@ namespace Rentoo.Web.Controllers
 
 
         }
+        [HttpGet]
         public async Task<IActionResult> UserProfile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             var currentUser = await _userService.GetByIdAsync(userId);
             return View(currentUser);
         }
+        [HttpPost]
+        [HttpPost]
+        public async Task<IActionResult> UserProfile(User user, IFormFile? ProfileImageFile)
+        {
+            if (ProfileImageFile != null && ProfileImageFile.Length > 0)
+            {
+                var fileName = $"{Guid.NewGuid()}_{Path.GetFileName(ProfileImageFile.FileName)}";
+
+                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+                Directory.CreateDirectory(uploadPath); 
+
+                var filePath = Path.Combine(uploadPath, fileName);
+
+                // Save image
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await ProfileImageFile.CopyToAsync(stream);
+                }
+                user.Userimage = $"uploads/{fileName}";
+            }
+
+            if (ModelState.IsValid)
+            {
+                await _userService.UpdateAsync(user);
+                return RedirectToAction("UserProfile");
+            }
+
+            return View(user);
+        }
+
     }
 }

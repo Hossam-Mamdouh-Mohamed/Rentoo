@@ -24,6 +24,7 @@ namespace Rentoo.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(model);
