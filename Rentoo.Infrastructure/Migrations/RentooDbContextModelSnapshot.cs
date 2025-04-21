@@ -231,7 +231,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
                 });
 
             modelBuilder.Entity("Rentoo.Domain.Entities.CarDocument", b =>
@@ -278,7 +278,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasIndex("status");
 
-                    b.ToTable("CarDocuments");
+                    b.ToTable("CarDocuments", (string)null);
                 });
 
             modelBuilder.Entity("Rentoo.Domain.Entities.CarImage", b =>
@@ -303,7 +303,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasIndex("ID", "CarId");
 
-                    b.ToTable("CarImages");
+                    b.ToTable("CarImages", (string)null);
                 });
 
             modelBuilder.Entity("Rentoo.Domain.Entities.RateCode", b =>
@@ -326,7 +326,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasIndex("ID");
 
-                    b.ToTable("RateCodes");
+                    b.ToTable("RateCodes", (string)null);
                 });
 
             modelBuilder.Entity("Rentoo.Domain.Entities.RateCodeDay", b =>
@@ -349,7 +349,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasIndex("RateCodeId", "Day");
 
-                    b.ToTable("RateCodeDays");
+                    b.ToTable("RateCodeDays", (string)null);
                 });
 
             modelBuilder.Entity("Rentoo.Domain.Entities.Request", b =>
@@ -407,7 +407,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasIndex("UserID", "CarId");
 
-                    b.ToTable("Requests");
+                    b.ToTable("Requests", (string)null);
                 });
 
             modelBuilder.Entity("Rentoo.Domain.Entities.RequestReview", b =>
@@ -441,7 +441,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RequestReviews");
+                    b.ToTable("RequestReviews", (string)null);
                 });
 
             modelBuilder.Entity("Rentoo.Domain.Entities.User", b =>
@@ -580,7 +580,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDocuments");
+                    b.ToTable("UserDocuments", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

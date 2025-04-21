@@ -1,0 +1,460 @@
+﻿@model Rentoo.Domain.Entities.User
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* Sidebar Styles */
+        .dashboard-sidebar {
+            width: 240px;
+            background-color: #f7f7f7;
+            padding: 20px 0;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .sidebar-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .sidebar-item:hover {
+                background-color: #f0f0f0;
+            }
+
+            .sidebar-item.active {
+                background-color: #fce4ec;
+                border-left: 3px solid #e91e63;
+            }
+
+            .sidebar-item i {
+                margin-right: 10px;
+                color: #888;
+            }
+
+            .sidebar-item.active i {
+                color: #e91e63;
+            }
+
+        /* Main Content Area */
+        .dashboard-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #777;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+            .nav-tab:hover {
+                color: #e91e63;
+            }
+
+            .nav-tab.active {
+                color: #e91e63;
+                border-bottom: 2px solid #e91e63;
+            }
+
+            .nav-tab i {
+                margin-right: 8px;
+            }
+
+        /* Profile Sections */
+        .profile-section {
+            margin-bottom: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+            .profile-section h2 {
+                font-size: 18px;
+                margin-bottom: 20px;
+                color: #333;
+                font-weight: 500;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #eee;
+            }
+
+        /* Profile Picture */
+        .profile-picture-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+            .profile-picture img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .edit-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #e91e63;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* Form Styles */
+        .form-row {
+            display: flex;
+            margin: 0 -10px 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 250px;
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: 500;
+                color: #555;
+            }
+
+        .phone-group {
+            position: relative;
+        }
+
+        .change-link {
+            position: absolute;
+            right: 20px;
+            top: 0;
+            font-size: 12px;
+            color: #e91e63;
+            text-decoration: none;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+            .form-control:focus {
+                border-color: #e91e63;
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.1);
+            }
+
+            .form-control:disabled {
+                background-color: #f9f9f9;
+            }
+
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6' viewBox='0 0 12 6'%3E%3Cpath fill='%23777' d='M0 0l6 6 6-6z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .address-group .form-control {
+            padding-right: 40px;
+        }
+
+        .location-icon {
+            color: #e91e63;
+        }
+
+        .flag-icon {
+            width: 20px;
+            height: 15px;
+            object-fit: contain;
+        }
+
+        /* Input Groups */
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group-text {
+            padding: 8px 12px;
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-group .form-control {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .input-group-append .input-group-text {
+            border-left: none;
+            border-right: 1px solid #ddd;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Buttons */
+        .save-changes-btn {
+            background-color: #e91e63;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .save-changes-btn:hover {
+                background-color: #d81b60;
+            }
+
+        /* Helper classes */
+        .text-danger {
+            color: #e91e63;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* Responsive adjustments */
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="dashboard-sidebar">
+            <div class="sidebar-item active">
+                <i class="fas fa-user"></i>
+                <span>Personal Information</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Borrowing Verification</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <a href="#" class="nav-tab active">
+                    <i class="fas fa-user"></i>
+                    MY ACCOUNT
+                </a>
+                <a href="#" class="nav-tab">
+                    <i class="fas fa-car"></i>
+                    MY CARS
+                </a>
+                <a href="#" class="nav-tab">
+                    <i class="fas fa-file-alt"></i>
+                    MY REQUESTS
+                </a>
+                <a href="#" class="nav-tab">
+                    <i class="fas fa-hands-helping"></i>
+                    MY BORROWINGS
+                </a>
+                <a href="#" class="nav-tab">
+                    <i class="fas fa-credit-card"></i>
+                    MY PAYMENTS
+                </a>
+            </div>
+
+            <!-- Account Profile Content -->
+            <form>
+                <!-- Profile Picture Section -->
+                <div class="profile-section">
+                    <h2>Your Account Picture:</h2>
+                    <div class="profile-picture-container">
+                        <div class="profile-picture">
+                            <img src="https://via.placeholder.com/100" alt="Profile Picture" id="profile-img-preview">
+                            <span class="edit-icon">+</span>
+                        </div>
+                        <input type="file" id="profile-image-input" style="display: none;" accept="image/*">
+                    </div>
+                </div>
+
+                <!-- User Information Section -->
+                <div class="profile-section">
+                    <h2>Your Information:</h2>
+
+                    <!-- Name and Nationality -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name:</label>
+                            <input type="text" id="firstName" class="form-control" value="@Model.FirstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name:</label>
+                            <input type="text" id="lastName" class="form-control" value="@Model.LastName">
+                        </div>
+
+                    <!-- Email, Gender, Birthdate -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" class="form-control" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdate">Birthdate:</label>
+                            <input type="date" id="birthdate" class="form-control" value="">
+                        </div>
+                    </div>
+
+                    <!-- Phone Numbers -->
+                    <div class="form-row">
+                        <div class="form-group phone-group">
+                            <label for="primaryNumber">Phone number:</label>
+                            <div class="input-group">
+                                <div class="input-group-text">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/800px-Flag_of_Egypt.svg.png" alt="Egypt" class="flag-icon">
+                                </div>
+                                <input type="text" id="primaryNumber" class="form-control" value="">
+                            </div>
+                            <a href="#" class="change-link">Change</a>
+                        </div>
+
+                        <div class="form-group phone-group">
+                            <label for="secondaryNumber">Secondary number:</label>
+                            <div class="input-group">
+                                <div class="input-group-text">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/800px-Flag_of_Egypt.svg.png" alt="Egypt" class="flag-icon">
+                                </div>
+                                <input type="text" id="secondaryNumber" class="form-control" value="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="form-row">
+                        <div class="form-group address-group">
+                            <label for="address">Address:</label>
+                            <div class="input-group">
+                                <input type="text" id="address" class="form-control" value="@Model.Address">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-map-marker-alt location-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-actions">
+                        <button type="submit" class="save-changes-btn">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle profile picture upload
+            const profilePicture = document.querySelector('.profile-picture');
+            const profileImageInput = document.getElementById('profile-image-input');
+            const profileImgPreview = document.getElementById('profile-img-preview');
+
+            profilePicture.addEventListener('click', function() {
+                profileImageInput.click();
+            });
+
+            profileImageInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profileImgPreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Handle tab navigation
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Handle sidebar navigation
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
