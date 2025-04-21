@@ -510,7 +510,8 @@ namespace Rentoo.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserImage")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)

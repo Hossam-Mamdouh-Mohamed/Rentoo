@@ -5,20 +5,16 @@
 namespace Rentoo.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class inial : Migration
+    public partial class UserImage : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "UserImage",
-                table: "AspNetUsers",
-                newName: "userimage");
-
             migrationBuilder.AddColumn<string>(
                 name: "UserImage",
                 table: "AspNetUsers",
-                type: "nvarchar(max)",
+                type: "nvarchar(200)",
+                maxLength: 200,
                 nullable: true);
         }
 
@@ -28,11 +24,6 @@ namespace Rentoo.Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "UserImage",
                 table: "AspNetUsers");
-
-            migrationBuilder.RenameColumn(
-                name: "userimage",
-                table: "AspNetUsers",
-                newName: "UserImage");
         }
     }
 }

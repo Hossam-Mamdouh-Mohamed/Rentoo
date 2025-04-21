@@ -12,8 +12,8 @@ using Rentoo.Infrastructure.Data;
 namespace Rentoo.Infrastructure.Migrations
 {
     [DbContext(typeof(RentooDbContext))]
-    [Migration("20250421184204_init")]
-    partial class init
+    [Migration("20250421194943_UserImage")]
+    partial class UserImage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -513,7 +513,8 @@ namespace Rentoo.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserImage")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)

@@ -17,6 +17,7 @@ namespace Rentoo.Domain.Entities
 
         [StringLength(200)]
         public string? Address { get; set; }
+        [StringLength(200)]
         public string? UserImage { get; set; }
         [Phone]
         [Required]
@@ -24,7 +25,6 @@ namespace Rentoo.Domain.Entities
         [RegularExpression("^[0-9]*$", ErrorMessage = "Only numeric characters are allowed.")]
         [MinLength(11)]
         public string PhoneNumber { get; set; }
-        public string? userimage { get; set; }
         public ICollection<Request> Requests { get; set; } = new List<Request>();
         public ICollection<Car> Cars { get; set; } = new List<Car>();
 
