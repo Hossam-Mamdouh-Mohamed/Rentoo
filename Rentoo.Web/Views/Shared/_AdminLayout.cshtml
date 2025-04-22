@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/_Layout.css" />
+    <link href="~/css/admin.css" rel="stylesheet" />
 </head>
 <body>
     <div class="wrapper @(ViewData["SidebarCollapsed"] as bool? == true ? "sidebar-collapsed" : "")">
@@ -35,7 +36,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Dashboard" && ViewContext.RouteData.Values["Controller"].ToString() == "Admin" ? "active" : "")" asp-controller="Admin" asp-action="Dashboard">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Profile" && ViewContext.RouteData.Values["Controller"].ToString() == "Admin" ? "active" : "")" asp-controller="Admin" asp-action="Profile">
                         <i class="fas fa-chart-line"></i>
                         <span class="nav-link-text">Statistics</span>
                     </a>
@@ -125,16 +126,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             const sidebarToggle = document.getElementById('sidebarToggle');
             const wrapper = document.querySelector('.wrapper');
-
+            const badges = document.querySelectorAll(".badge");
+            const body = document.body;
+            hidenoity()
             // Function to toggle sidebar
             function toggleSidebar() {
                 wrapper.classList.toggle('sidebar-collapsed');
 
                 // Save state in localStorage
-                if (wrapper.classList.contains('sidebar-collapsed')) {
+                hidenoity()
+            }
+            function hidenoity(){
+                  if (wrapper.classList.contains('sidebar-collapsed')) {
                     localStorage.setItem('sidebarCollapsed', 'true');
+                    $(".badge").hide();
                 } else {
                     localStorage.removeItem('sidebarCollapsed');
+                    $(".badge").show();
                 }
             }
 
@@ -149,14 +157,29 @@
             // Mobile detection for sidebar
             function checkMobileView() {
                 if (window.innerWidth < 992) {
-                    wrapper.classList.add('sidebar-collapsed');
+                    // On mobile, sidebar is hidden by default
+                    if (localStorage.getItem('sidebarCollapsed') !== 'true') {
+                        wrapper.classList.add('sidebar-collapsed');
+                    }
                 } else {
-                    // Only remove the class if it was added by mobile detection
+                    // On desktop, show sidebar unless explicitly collapsed
                     if (localStorage.getItem('sidebarCollapsed') !== 'true') {
                         wrapper.classList.remove('sidebar-collapsed');
                     }
                 }
             }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(event) {
+                const isMobile = window.innerWidth < 992;
+                const isSidebarOpen = wrapper.classList.contains('sidebar-collapsed');
+                const isClickInsideSidebar = event.target.closest('.sidebar');
+                const isClickOnToggle = event.target.closest('.toggle-sidebar-btn');
+
+                if (isMobile && isSidebarOpen && !isClickInsideSidebar && !isClickOnToggle) {
+                    wrapper.classList.remove('sidebar-collapsed');
+                }
+            });
 
             // Initial check
             checkMobileView();

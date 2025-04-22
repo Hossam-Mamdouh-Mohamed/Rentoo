@@ -22,6 +22,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Update="**\*.cshtml.css" CssScope="true" />
+  </ItemGroup>
 
 </Project>

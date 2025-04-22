@@ -22,12 +22,12 @@ builder.Services.AddDbContext<RentooDbContext>(options =>
 //identity
 builder.Services.AddIdentity<User, IdentityRole>(Options =>
 {
-    Options.Password.RequireDigit = true;
-    Options.Password.RequireLowercase = true;
-    Options.Password.RequireUppercase = true;
-    Options.Password.RequireNonAlphanumeric = true;
-    Options.Password.RequiredLength = 8;
-    Options.Lockout.MaxFailedAccessAttempts = 3;
+    Options.Password.RequireDigit =false;
+    Options.Password.RequireLowercase = false;
+    Options.Password.RequireUppercase = false ;
+    Options.Password.RequireNonAlphanumeric = false;
+    Options.Password.RequiredLength = 1;
+    Options.Lockout.MaxFailedAccessAttempts = 10;
     Options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
 }).AddEntityFrameworkStores<RentooDbContext>();
 // Dependency Injection

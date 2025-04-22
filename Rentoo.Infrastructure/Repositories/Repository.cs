@@ -8,7 +8,7 @@ namespace Rentoo.Infrastructure.Repositories;
 
 public class Repository<T> : IRepository<T> where T : class
 {
-    protected readonly RentooDbContext _context; // Fixed type to AppDbContext  
+    protected readonly RentooDbContext _context; 
     protected readonly DbSet<T> _dbSet;
 
     public Repository(RentooDbContext context)
@@ -19,7 +19,6 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task<T> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
     public async Task<T> GetByIdAsync(string id) => await _dbSet.FindAsync(id);
-
 
     public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
 
