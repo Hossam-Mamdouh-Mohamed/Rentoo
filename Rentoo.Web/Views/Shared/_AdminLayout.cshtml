@@ -37,40 +37,40 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Profile" && ViewContext.RouteData.Values["Controller"].ToString() == "Admin" ? "active" : "")" asp-controller="Admin" asp-action="Profile">
-                        <i class="fas fa-chart-line"></i>
-                        <span class="nav-link-text">Statistics</span>
+                        <i class="fas fa-user-tie"></i>
+                        <span class="nav-link-text">Profile</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Clients" ? "active" : "")" asp-controller="Clients" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Clients" ? "active" : "")" asp-controller="Admin" asp-action="Clients">
                         <i class="fas fa-users"></i>
                         <span class="nav-link-text">Clients</span>
                         <span class="badge">5</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Owners" ? "active" : "")" asp-controller="Owners" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Owners" ? "active" : "")" asp-controller="Admin" asp-action="Owners">
                         <i class="fas fa-user-tie"></i>
                         <span class="nav-link-text">Owners</span>
                         <span class="badge">12</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Cars" ? "active" : "")" asp-controller="Cars" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Cars" ? "active" : "")" asp-controller="Admin" asp-action="Cars">
                         <i class="fas fa-car"></i>
                         <span class="nav-link-text">Cars</span>
                         <span class="badge">42</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Rentals" ? "active" : "")" asp-controller="Rentals" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Rentals" ? "active" : "")" asp-controller="Admin" asp-action="Index">
                         <i class="fas fa-key"></i>
                         <span class="nav-link-text">Rentals</span>
                         <span class="badge">8</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "PendingRequests" ? "active" : "")" asp-controller="PendingRequests" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "PendingRequests" ? "active" : "")" asp-controller="Admin" asp-action="PendingRequests">
                         <i class="fas fa-clock"></i>
                         <span class="nav-link-text">Pending Requests</span>
                         <span class="badge">3</span>

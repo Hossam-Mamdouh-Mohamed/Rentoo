@@ -38,13 +38,16 @@ namespace Rentoo.Web.Controllers
             var userData = await service.GetByIdAsync(userId);
             return View(userData);
         }
-        public async Task<IActionResult> GetUsersByRole(string Role)
+        public async Task<IActionResult> Clients()
         {
-            var Users = await userManager.GetUsersInRoleAsync(Role);
-            if (Role == "Client") 
+            var Users = await userManager.GetUsersInRoleAsync("Client");
                 return View("Clients",Users);
-            else
-                return View("Owners",Users);
+        }
+        public async Task<IActionResult> Owners()
+        {
+            var Users = await userManager.GetUsersInRoleAsync("Owner");
+            return View("Owners", Users);
+          
         }
         public async Task<IActionResult> UserProfile(User user, IFormFile? ProfileImageFile)
         {
