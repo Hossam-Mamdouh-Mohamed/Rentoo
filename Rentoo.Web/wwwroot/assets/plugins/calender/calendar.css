@@ -1,0 +1,145 @@
+
+.calendarinput{
+    background:#fff !important;
+}
+.calendars-popup {
+    z-index: 1000;
+}
+.calendars {
+  font-size: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  width: auto !important;
+  border: 0;
+  box-shadow: 0px 8px 16px #ddd;
+}
+.calendars td {
+  background-color: transparent !important;
+  border: 0;
+  padding: 4px;
+}
+.calendars td a {
+  background-color: transparent !important;
+  border: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #161616;
+}
+.calendars td a:hover {
+  background-color: #E5E7EB !important;
+}
+.calendars td a:active {
+  background-color: #D2D6DB !important;
+}
+.calendars td a.calendars-today {
+  border: 2px solid #1b8354;
+  color: #1b8354;
+  font-weight: 600;
+}
+.calendars td a.calendars-today:hover {
+  background-color: #dff6e7 !important;
+}
+.calendars td a.calendars-today:hover {
+  background-color: #b8facb !important;
+}
+.calendars td a.calendars-selected {
+  background-color: #1b8354 !important;
+  color: #ffffff;
+}
+.calendars td a.calendars-selected:hover {
+  background-color: #166a45 !important;
+}
+.calendars td a.calendars-selected:active {
+  background-color: #104631 !important;
+}
+.calendars td .calendars-other-month {
+  color: #6C737F;
+}
+.calendars .calendars-month {
+  border: 0;
+  float: none;
+  width: auto;
+}
+.calendars .calendars-month tr {
+  border: 0 !important;
+}
+.calendars .calendars-month tr th {
+  border: 0 !important;
+}
+.calendars .calendars-month .calendar-controls {
+  display: flex;
+  align-items: center;
+}
+.calendars .calendars-month .calendar-controls .calendars-nav {
+  float: none;
+  display: flex;
+  align-items: center;
+  margin-inline-start: auto;
+  width: auto;
+}
+.calendars .calendars-month .calendar-controls .calendars-nav button {
+  background: none;
+  color: #161616;
+  font-size: 1.5rem;
+  border: 0;
+}
+.calendars .calendars-month .calendar-controls .calendars-nav button i {
+  font-weight: normal;
+}
+.calendars .calendars-month-header {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 0;
+  height: auto;
+}
+.calendars .calendars-month-header .lendars-month-year option[selected] div {
+  display: block;
+}
+.calendars .calendars-month-header select {
+  height: auto;
+  background-color: #ffffff;
+  border: 0;
+}
+.calendars .calendars-month th {
+  background-color: transparent;
+  color: #6c737f;
+  font-weight: 500;
+}
+.calendars .calendars-month th span {
+  padding-inline: 8px;
+}
+@media (max-width: 575px) {
+  .calendars {
+    padding: 8px;
+  }
+  .calendars-popup {
+    inset-inline-end: 30px !important;
+  }
+  .calendars-popup .calendars td a {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+
+.calendarinput input{
+  width: 50%;
+  border: 0px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.calendarinput input:first-child{
+  border-inline-end: 1px solid #d2d6db;
+}
+
+.calendarinput input:focus{
+  outline: none;
+}

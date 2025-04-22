@@ -15,7 +15,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Rentoo.Application\Rentoo.Application.csproj" />
+    <ProjectReference Include="..\Rentoo.Domain.Shared\Rentoo.Domain.Shared.csproj" />
     <ProjectReference Include="..\Rentoo.Infrastructure\Rentoo.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\ServicesData\" />
   </ItemGroup>
 
   <PropertyGroup>
