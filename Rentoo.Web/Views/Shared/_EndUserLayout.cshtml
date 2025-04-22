@@ -3,7 +3,7 @@
 @{
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value + Context.Request.QueryString.Value}";
     string classEn = CultureConfiguration.IsArabic ? "" : "header-en";
-    string menuLeft = CultureConfiguration.IsArabic ? " direction: rtl" : " direction: ltr";
+    string menuLeft = CultureConfiguration.IsArabic ? " direction: rtl" :  " direction:ltr ";
 }
 <html lang="en">
 <head>

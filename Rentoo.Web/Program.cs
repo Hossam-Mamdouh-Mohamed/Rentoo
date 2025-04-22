@@ -21,18 +21,6 @@ builder.Services.AddControllersWithViews().AddViewLocalization()
 // Database
 builder.Services.AddDbContext<RentooDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-//identity
-builder.Services.AddIdentity<User, IdentityRole>(Options =>
-{
-    Options.Password.RequireDigit = true;
-    Options.Password.RequireLowercase = true;
-    Options.Password.RequireUppercase = true;
-    Options.Password.RequireNonAlphanumeric = true;
-    Options.Password.RequiredLength = 8;
-    Options.Lockout.MaxFailedAccessAttempts = 3;
-    Options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-}).AddEntityFrameworkStores<RentooDbContext>();
-#region culture
 var cultureConfiguration = builder.Configuration.GetSection(nameof(CultureConfiguration)).Get<CultureConfiguration>();
 builder.Services.Configure<RequestLocalizationOptions>(
     opts =>
@@ -62,6 +50,19 @@ builder.Services.Configure<RequestLocalizationOptions>(
                         new CookieRequestCultureProvider()
         };
     });
+//identity
+builder.Services.AddIdentity<User, IdentityRole>(Options =>
+{
+    Options.Password.RequireDigit = true;
+    Options.Password.RequireLowercase = true;
+    Options.Password.RequireUppercase = true;
+    Options.Password.RequireNonAlphanumeric = true;
+    Options.Password.RequiredLength = 8;
+    Options.Lockout.MaxFailedAccessAttempts = 3;
+    Options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+}).AddEntityFrameworkStores<RentooDbContext>();
+#region culture
+
 #endregion
 // Dependency Injection
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -77,6 +78,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 app.MapControllerRoute(
     name: "default",
