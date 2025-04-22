@@ -1,0 +1,140 @@
+﻿@model Rentoo.Domain.Entities.User
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <a href="#" class="nav-tab active"><i class="fas fa-user"></i> MY ACCOUNT</a>
+                <a href="#" class="nav-tab"><i class="fas fa-car"></i> MY CARS</a>
+                <a href="#" class="nav-tab"><i class="fas fa-file-alt"></i> MY REQUESTS</a>
+                <a href="#" class="nav-tab"><i class="fas fa-hands-helping"></i> MY BORROWINGS</a>
+            </div>
+
+            <!-- Account Profile Content -->
+            @using (Html.BeginForm("UserProfile", "UserDashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <!-- Profile Picture Section -->
+                <div class="profile-section">
+                    <h2>Your Account Picture:</h2>
+                    <div class="profile-picture-container">
+                        <div class="profile-picture">
+                            @* <img src="@(string.IsNullOrEmpty(Model.UserImage) ? "https://via.placeholder.com/100" : Url.Content($"~/{Model.UserImage}"))" alt="Profile Picture" id="profile-img-preview"> *@
+                            @* <span class="edit-icon">+</span> *@
+                        </div>
+                        <input type="file" id="profile-image-input" name="ProfileImageFile" style="display: none;" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h2>Your Information:</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FirstName)
+                            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LastName)
+                            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email)
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "email" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BirthDate)
+                            @Html.TextBoxFor(model => model.BirthDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                            @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group phone-group">
+                            @Html.LabelFor(model => model.PhoneNumber)
+                            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                            <a href="#" class="change-link">Change</a>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group address-group">
+                            @Html.LabelFor(model => model.Address)
+                            @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1 1 100%;">
+                            <button type="submit" class="save-changes-btn">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Sidebar -->
+        <div class="dashboard-sidebar">
+            <div class="sidebar-item active">
+                <i class="fas fa-user"></i>
+                <span>Personal Information</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Borrowing Verification</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const profilePicture = document.querySelector('.profile-picture');
+            const profileImageInput = document.getElementById('profile-image-input');
+            const profileImgPreview = document.getElementById('profile-img-preview');
+
+            profilePicture.addEventListener('click', function () {
+                profileImageInput.click();
+            });
+
+            profileImageInput.addEventListener('change', function () {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        profileImgPreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
