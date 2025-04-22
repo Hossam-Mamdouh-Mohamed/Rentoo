@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Rentoo.Domain.Interfaces;
 using Rentoo.Infrastructure.Data;
@@ -27,5 +28,10 @@ public class Repository<T> : IRepository<T> where T : class
     public void Update(T entity) => _dbSet.Update(entity);
 
     public void Remove(T entity) => _dbSet.Remove(entity);
+
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await _dbSet.Where(predicate).ToListAsync();
+    }
 }
 
