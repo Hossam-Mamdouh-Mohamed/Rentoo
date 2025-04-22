@@ -1,0 +1,251 @@
+
+
+/*.service-wizard {
+    background-color: #f9fafb
+}*/
+
+    .service-wizard .steps-slider {
+        background-color: #ffffff !important
+    }
+
+        .service-wizard .steps-slider .steps-bullets {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            position: relative;
+            padding-block: 50px 24px
+        }
+
+            .service-wizard .steps-slider .steps-bullets .step {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                position: relative;
+                flex-grow: 1
+            }
+
+                .service-wizard .steps-slider .steps-bullets .step .step-num {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background-color: #ffffff;
+                    color: #d2d6db;
+                    font-size: 16px;
+                    font-weight: 500;
+                    border: 2px solid #d2d6db;
+                    z-index: 2;
+                    line-height: 30px;
+                    margin: 0;
+                    text-align: center;
+                    transition: all 300ms ease 0s
+                }
+
+                .service-wizard .steps-slider .steps-bullets .step .step-title {
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: var(--Stepper-stepper-text-tertiary, #6c737f);
+                    margin-top: 10px;
+                    transition: all 300ms ease 0s;
+                    opacity: 1
+                }
+
+                .service-wizard .steps-slider .steps-bullets .step::after {
+                    content: "";
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    transform: translateX(0) translateY(100%);
+                    border-left: 18px solid transparent;
+                    border-right: 18px solid transparent;
+                    border-bottom: 12px solid #1f2a37;
+                    left: unset;
+                    width: 36px;
+                    height: 12px;
+                    display: none;
+                }
+
+                .service-wizard .steps-slider .steps-bullets .step::before {
+                    content: "";
+                    position: absolute;
+                    top: 13px;
+                    right: 30px;
+                    transform: translateX(0) translateY(100%);
+                    left: unset;
+                    width: 82%;
+                    height: 2px;
+                    background: #d2d6db;
+                    border-radius: 6px
+                }
+
+                .service-wizard .steps-slider .steps-bullets .step.current .step-num {
+                    background-color: #ffffff;
+                    border: 2px solid #1b8354;
+                    position: relative;
+                    color: #1b8354
+                }
+
+                    .service-wizard .steps-slider .steps-bullets .step.current .step-num::after {
+                        content: " ";
+                        position: absolute;
+                        z-index: -1;
+                        top: 1px;
+                        left: 1px;
+                        right: 1px;
+                        bottom: 1px;
+                        border: 1.5px solid transparent;
+                        border-radius: 50%
+                    }
+
+                .service-wizard .steps-slider .steps-bullets .step.current .step-title {
+                    color: #1b8354;
+                    opacity: 1;
+                    font-weight: 600
+                }
+
+                .service-wizard .steps-slider .steps-bullets .step.current::after {
+                    border-left: 18px solid transparent;
+                    border-right: 18px solid transparent;
+                    border-bottom: 12px solid #f8f9fa;
+                    display: none;
+                }
+
+                .service-wizard .steps-slider .steps-bullets .step.completed .step-num {
+                    background-color: var(--bs-primary);
+                    border: 2px solid var(--bs-primary);
+                    color: #fff
+                }
+
+                .service-wizard .steps-slider .steps-bullets .step.completed .step-title {
+                    color: #fff;
+                    opacity: 1
+                }
+
+                .service-wizard .steps-slider .steps-bullets .step.completed::before {
+                    background: var(--bs-primary)
+                }
+
+                .service-wizard .steps-slider .steps-bullets .step:last-child::before {
+                    display: none
+                }
+
+            .service-wizard .steps-slider .steps-bullets .progress-bar-holder {
+                position: absolute;
+                margin-top: 16px;
+                height: 4px;
+                width: -webkit-fill-available;
+                background: rgba(255, 255, 255, .2);
+                z-index: 0
+            }
+
+                .service-wizard .steps-slider .steps-bullets .progress-bar-holder .indicator {
+                    position: absolute;
+                    height: 100%;
+                    background: var(--bs-primary);
+                    transition: all 300ms ease 0s
+                }
+
+    .service-wizard .steps-content {
+        padding-block: 20px
+    }
+
+        .service-wizard .steps-content .step-content {
+            display: none
+        }
+
+            .service-wizard .steps-content .step-content .step-content-holder .step-title {
+                font-size: 1.25rem;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 1.875rem;
+                color: var(--bs-primary);
+                margin-bottom: 10px
+            }
+
+            .service-wizard .steps-content .step-content .step-content-holder .step-desc {
+                color: var(--Text-text-secondary-paragraph, #6c737f);
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 20px;
+                margin-bottom: 40px
+            }
+
+            .service-wizard .steps-content .step-content .step-content-holder .terms-conditions-card {
+                border-radius: .3125rem;
+                border: 1px solid var(--Border-border-neutral-primary, #d2d6db);
+                background: var(--Background-background-tertiary-25, #fefcff)
+            }
+
+                .service-wizard .steps-content .step-content .step-content-holder .terms-conditions-card .card-footer {
+                    background-color: #f7fdf9;
+                    border-top-color: #c4ccd4 !important;
+                    padding: 30px 40px
+                }
+
+            .service-wizard .steps-content .step-content .step-content-holder .info-review-card {
+                padding: 18px 16px;
+                border-color: #cfcfcf;
+                background-color: #f9fafb;
+                border-radius: 3px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+                margin-block: 0 18px
+            }
+
+                .service-wizard .steps-content .step-content .step-content-holder .info-review-card h5 {
+                    font-size: 18px;
+                    font-weight: 500;
+                    color: #193661
+                }
+
+                .service-wizard .steps-content .step-content .step-content-holder .info-review-card h6 {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #7586a0
+                }
+
+            .service-wizard .steps-content .step-content.active {
+                display: block
+            }
+
+            .service-wizard .steps-content .step-content.hide {
+                display: none
+            }
+
+    .service-wizard hr {
+        height: 3px;
+        background-color: #fff;
+        opacity: 20%
+    }
+
+    .service-wizard .wizard-controls {
+        padding-block: 48px 100px;
+        border-top: 1px solid #d9d9d9
+    }
+
+        .service-wizard .wizard-controls .steps-counter {
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal
+        }
+
+        .service-wizard .wizard-controls .btn {
+            padding: 8px 16px;
+            display: inline-flex;
+            align-items: center;
+            column-gap: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 22px
+        }
+
+            .service-wizard .wizard-controls .btn i {
+                font-size: 1.5rem;
+                font-weight: 500
+            }
+

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Rentoo.Domain.Shared\Rentoo.Domain.Shared.csproj" />
     <ProjectReference Include="..\Rentoo.Domain\Rentoo.Domain.csproj" />
   </ItemGroup>
 

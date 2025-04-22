@@ -14,25 +14,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Rentoo.Application\Rentoo.Application.csproj" />
+    <ProjectReference Include="..\Rentoo.Domain.Shared\Rentoo.Domain.Shared.csproj" />
     <ProjectReference Include="..\Rentoo.Infrastructure\Rentoo.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\SharedResource.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SharedResource.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\SharedResource.ar.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\SharedResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SharedResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Folder Include="wwwroot\assets\ServicesData\" />
   </ItemGroup>
 
   <PropertyGroup>
