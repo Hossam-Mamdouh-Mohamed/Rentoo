@@ -1,4 +1,5 @@
-﻿using Rentoo.Application.Interfaces;
+﻿using System.Linq.Expressions;
+using Rentoo.Application.Interfaces;
 using Rentoo.Domain.Interfaces;
 
 namespace Rentoo.Application.Services;
@@ -18,6 +19,10 @@ public class Service<T> : IService<T> where T : class
     public async Task<T> GetByIdAsync(string id) => await _repository.GetByIdAsync(id);
 
     public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync();
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await _repository.GetAllAsync(predicate);
+    }
 
     public async Task AddAsync(T entity)
     {

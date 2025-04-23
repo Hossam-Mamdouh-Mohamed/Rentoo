@@ -1,6 +1,9 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Rentoo.Web.Models;
+using Rentoo.Domain.Shared;
+
 
 namespace Rentoo.Web.Controllers;
 
@@ -22,10 +25,19 @@ public class HomeController : Controller
     {
         return View();
     }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    [AllowAnonymous]
+    public async Task<IActionResult> ToggleLanguage(string returnUrl)
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        string culture = "ar-SA";
+        if (CultureConfiguration.IsArabic)
+            culture = "en-US";
+        Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+        );
+        return Redirect(returnUrl);
     }
+
+
 }

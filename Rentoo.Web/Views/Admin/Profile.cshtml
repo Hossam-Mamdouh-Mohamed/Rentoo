@@ -1,0 +1,123 @@
+﻿@model Rentoo.Domain.Entities.User
+@{
+    ViewData["Title"] = "Admin Profile";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Admin Profile</h4>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("UserProfile", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="row">
+                            <!-- Profile Picture Section -->
+                            <div class="col-md-3 text-center mb-4">
+                                <div class="profile-image-container">
+                                    <img src="@(string.IsNullOrEmpty(Model.UserImage) ? "/images/default-profile.png" : Url.Content($"~/{Model.UserImage}"))" 
+                                         alt="Profile Picture" 
+                                         class="img-fluid rounded-circle profile-image mb-3"
+                                         style="width: 150px; height: 150px; object-fit: cover;">
+                                    <div class="mt-2">
+                                        <label class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-camera"></i> Change Photo
+                                            <input type="file" name="ProfileImageFile" style="display: none;" accept="image/*">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Profile Information -->
+                            <div class="col-md-9">
+                                <div class="row">
+                                    @Html.HiddenFor(model => model.Id)  <!-- Completely hidden -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">First Name</label>
+                                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Last Name</label>
+                                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "email" })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Birth Date</label>
+                                        @Html.TextBoxFor(model => model.BirthDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                                        @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
+                                            <button class="btn btn-outline-secondary" type="button" id="verifyPhone">
+                                                <i class="fas fa-check"></i> Verify
+                                            </button>
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Address</label>
+                                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save Changes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Profile image preview
+            const profileImageInput = document.querySelector('input[type="file"]');
+            const profileImage = document.querySelector('.profile-image');
+
+            profileImageInput.addEventListener('change', function () {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        profileImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Phone verification
+            const verifyPhoneBtn = document.getElementById('verifyPhone');
+            verifyPhoneBtn.addEventListener('click', function() {
+                // Add phone verification logic here
+                alert('Phone verification feature coming soon!');
+            });
+        });
+    </script>
+}
+

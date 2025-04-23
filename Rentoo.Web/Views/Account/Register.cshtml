@@ -56,13 +56,17 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
         </div>
-
         <div class="row">
             <div class="form-group col-md-6">
                 <label asp-for="Role" class="control-label"></label>
-                <input asp-for="Role" class="form-control" />
+                <select asp-for="Role" class="form-control">
+                    @* <option value="Admin">Admin</option> *@
+                    <option value="Client">Client</option>
+                    <option value="Owner">Owner</option>
+                </select>
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>
+
             <div class="form-group col-md-6">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />

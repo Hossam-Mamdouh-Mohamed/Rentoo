@@ -1,4 +1,6 @@
-﻿namespace Rentoo.Application.Interfaces;
+﻿using System.Linq.Expressions;
+
+namespace Rentoo.Application.Interfaces;
 
 public interface IService<T> where T : class
 {
@@ -8,5 +10,6 @@ public interface IService<T> where T : class
     Task AddAsync(T entity);
     Task UpdateAsync(T entity);
     Task DeleteAsync(int id);
+    Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
 }
 

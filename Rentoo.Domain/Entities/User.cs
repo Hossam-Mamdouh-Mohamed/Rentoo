@@ -6,11 +6,11 @@ namespace Rentoo.Domain.Entities
     public class User : IdentityUser
     {
         [Required]
-        [Range(3, 100, ErrorMessage = "Name At Lest 3 characters ")]
+       // [Range(3, 100, ErrorMessage = "Name At Lest 3 characters ")]
         public string FirstName { get; set; }
 
         [Required]
-        [Range(3,100,ErrorMessage = "Name At Lest 3 characters ")]
+       // [Range(3,100,ErrorMessage = "Name At Lest 3 characters ")]
         public string LastName { get; set; }
         [Required]
         public DateOnly BirthDate { get; set; }

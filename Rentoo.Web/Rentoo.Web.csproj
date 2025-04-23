@@ -11,17 +11,29 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+    <PackageReference Include="X.PagedList" Version="10.5.7" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="10.5.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Rentoo.Application\Rentoo.Application.csproj" />
+    <ProjectReference Include="..\Rentoo.Domain.Shared\Rentoo.Domain.Shared.csproj" />
     <ProjectReference Include="..\Rentoo.Infrastructure\Rentoo.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\ServicesData\" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Update="**\*.cshtml.css" CssScope="true" />
+  </ItemGroup>
 
 </Project>
