@@ -37,6 +37,7 @@
 
                 <div class="profile-section">
                     <h2>Your Information:</h2>
+                    @Html.HiddenFor(model => model.Id)  <!-- Completely hidden -->
                     <div class="form-row">
                         <div class="form-group">
                             @Html.LabelFor(model => model.FirstName)

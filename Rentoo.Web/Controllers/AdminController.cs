@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Rentoo.Application.Interfaces;
 using Rentoo.Domain.Entities;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
+using X.PagedList;
+using X.PagedList.Extensions;
 namespace Rentoo.Web.Controllers
 {
     public class AdminController : Controller
@@ -27,27 +29,54 @@ namespace Rentoo.Web.Controllers
            var users = service.GetAllAsync().Result;
             return View();
         }
-        public async Task<IActionResult> Cars()
+        public async Task<IActionResult> Cars(int page = 1)
         {
-            var cars = carService.GetAllAsync().Result;
-            return View();
+            // Fix for the problematic code
+            var allCars = await carService.GetAllAsync();
+           // var carsWithOwners = allCars.AsQueryable().Include(c => c.User); // Convert to IQueryable before using Include
+            var pagedCars = allCars.ToPagedList(page, 10); // 10 cars per page
+
+            return View(pagedCars);
         }
+
         public async Task<IActionResult> Profile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userData = await service.GetByIdAsync(userId);
             return View(userData);
         }
-        public async Task<IActionResult> Clients()
+        public async Task<IActionResult> Clients(int page = 1)
         {
-            var Users = await userManager.GetUsersInRoleAsync("Client");
-                return View("Clients",Users);
+            var users = await userManager.GetUsersInRoleAsync("Client");
+            var pagedUsers = users.ToPagedList(page, 10);
+            return View("Clients", pagedUsers);
         }
-        public async Task<IActionResult> Owners()
+        public async Task<IActionResult> Owners(int page = 1)
         {
-            var Users = await userManager.GetUsersInRoleAsync("Owner");
-            return View("Owners", Users);
-          
+            var users = await userManager.GetUsersInRoleAsync("Owner");
+            var pagedUsers = users.ToPagedList(page, 10);
+            return View("Owners", pagedUsers);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "User deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Error deleting user.";
+            }
+
+            return RedirectToAction("Clients");
         }
         public async Task<IActionResult> UserProfile(User user, IFormFile? ProfileImageFile)
         {
