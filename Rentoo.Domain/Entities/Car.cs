@@ -51,9 +51,7 @@ namespace Rentoo.Domain.Entities
 
         [Required]
         public bool IsAvailable { get; set; }
-
-        [Required]
-        public int RateCodeId { get; set; }
+        public int? RateCodeId { get; set; }
 
         [ForeignKey("RateCodeId")]
         public RateCode rateCode { get; set; }

@@ -1,0 +1,322 @@
+@model IEnumerable<Rentoo.Domain.Entities.RequestReview>
+
+@{
+    Layout = "~/Views/Shared/_EndUserLayout.cshtml";
+    ViewData["Title"] = "Car Reviews";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f2f3f5;
+            color: #333;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .dashboard-sidebar {
+            width: 280px;
+            background: #1a1a2e;
+            color: #fff;
+            padding-top: 40px;
+        }
+
+        .sidebar-brand {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .sidebar-brand img {
+            max-width: 120px;
+        }
+
+        .sidebar-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+            color: #c9c9c9;
+            font-weight: 500;
+            margin: 5px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .sidebar-item i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background: #e91e63;
+            color: #fff;
+        }
+
+        .dashboard-content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-tab {
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #777;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-tab:hover {
+            color: #e91e63;
+        }
+
+        .nav-tab.active {
+            background-color: #e91e63;
+            color: #fff;
+        }
+
+        .nav-tab i {
+            margin-right: 8px;
+        }
+
+        .review-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .review-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .review-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .star {
+            color: #ffc107;
+        }
+
+        .review-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-item i {
+            color: #e91e63;
+        }
+
+        .review-content {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            font-style: italic;
+        }
+
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .review-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #e91e63;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #d81b60;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .no-reviews {
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .no-reviews i {
+            font-size: 48px;
+            color: #e91e63;
+            margin-bottom: 20px;
+        }
+
+        .no-reviews h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .no-reviews p {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-content">
+            <div class="page-header">
+                <h1>Car Reviews</h1>
+            </div>
+
+            <div class="nav-tabs">
+                <a href="@Url.Action("UserProfile", "UserDashboard")" class="nav-tab"><i class="fas fa-user"></i> MY ACCOUNT</a>
+                <a href="@Url.Action("MyCar", "UserDashboard")" class="nav-tab"><i class="fas fa-car"></i> MY CARS</a>
+                <a href="@Url.Action("MyRequests", "UserDashboard")" class="nav-tab"><i class="fas fa-file-alt"></i> MY REQUESTS</a>
+                <a href="@Url.Action("Reviews", "UserDashboard")" class="nav-tab active"><i class="fas fa-star"></i> REVIEWS</a>
+            </div>
+
+            @if (!Model.Any())
+            {
+                <div class="no-reviews">
+                    <i class="fas fa-star"></i>
+                    <h3>No Reviews Yet</h3>
+                    <p>You haven't received any reviews for your cars yet.</p>
+                </div>
+            }
+            else
+            {
+                foreach (var review in Model)
+                {
+                    <div class="review-card">
+                        <div class="review-header">
+                            <h3 class="review-title">@review.Request.Car.Model</h3>
+                            <div class="review-rating">
+                                @for (int i = 0; i < review.Rating; i++)
+                                {
+                                    <i class="fas fa-star star"></i>
+                                }
+                                @for (int i = review.Rating; i < 5; i++)
+                                {
+                                    <i class="far fa-star star"></i>
+                                }
+                            </div>
+                        </div>
+                        <div class="review-details">
+                            <div class="detail-item">
+                                <i class="fas fa-user"></i>
+                                <span>@review.Request.User.FirstName @review.Request.User.LastName</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>@review.Request.StartDate - @review.Request.EndDate</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>@review.Request.pickupAddress</span>
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            @review.Comment
+                        </div>
+                        <div class="review-footer">
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</body>
+</html> 

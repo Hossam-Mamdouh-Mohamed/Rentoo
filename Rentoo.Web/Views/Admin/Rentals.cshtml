@@ -1,0 +1,73 @@
+﻿@model IPagedList<Rentoo.Domain.Entities.Request>
+@using X.PagedList.Mvc.Core
+
+@{
+    ViewData["Title"] = "Completed Requests";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mt-4">Completed Requests</h2>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>User</th>
+            <th>Car</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total Price</th>
+            <th>With Driver</th>
+            <th>Delivery Address</th>
+            <th>Pickup Address</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int rowIndex = (Model.PageNumber - 1) * Model.PageSize;
+        }
+
+        @foreach (var request in Model)
+        {
+            rowIndex++;
+            <tr>
+                <td>@rowIndex</td>
+                <td>@request.User?.FirstName @request.User?.LastName</td>
+                <td>@request.Car?.ID</td> 
+                <td>@request.StartDate</td>
+                <td>@request.EndDate</td>
+                <td>@request.TotalPrice.ToString("C")</td>
+                <td>@(request.WithDriver ? "Yes" : "No")</td>
+                <td>@request.DeliveryAddress</td>
+                <td>@request.pickupAddress</td>
+                <td><span class="badge bg-success">@request.Status</span></td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@request.ID" class="btn btn-sm btn-info">Details</a>
+                    @* Optional Delete Button *@
+                    @* <form asp-action="Delete" asp-route-id="@request.ID" method="post" class="d-inline" onsubmit="return confirm('Delete this request?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-center mt-4">
+    @Html.PagedListPager(Model, page => Url.Action("Rentals", new { page }), new PagedListRenderOptions
+{
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    UlElementClasses = new[] { "pagination" },
+    DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+    DisplayLinkToLastPage = PagedListDisplayMode.Never,
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+    LinkToPreviousPageFormat = "« Prev",
+    LinkToNextPageFormat = "Next »",
+    MaximumPageNumbersToDisplay = 5,
+    DisplayEllipsesWhenNotShowingAllPageNumbers = true
+})
+</div>

@@ -96,9 +96,16 @@ namespace Rentoo.Infrastructure.Data
             modelBuilder.Entity<RateCode>()
                 .HasIndex(rc => rc.ID);
 
+            // Configure RateCode to RateCodeDay relationship
+            modelBuilder.Entity<RateCode>()
+                .HasMany(rc => rc.RateCodeDays)
+                .WithOne(rcd => rcd.RateCode)
+                .HasForeignKey(rcd => rcd.RateCodeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Configure indexes for RateCodeDay
             modelBuilder.Entity<RateCodeDay>()
-                .HasIndex(rcd => new { rcd.RateCodeId, rcd.Day });
+                .HasIndex(rcd => new { rcd.RateCodeId, rcd.DayId });
 
             // Configure indexes for RequestReview
             modelBuilder.Entity<RequestReview>()

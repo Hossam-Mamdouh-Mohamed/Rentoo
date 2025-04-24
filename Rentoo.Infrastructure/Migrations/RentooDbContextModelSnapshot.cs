@@ -203,7 +203,7 @@ namespace Rentoo.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("RateCodeId")
+                    b.Property<int?>("RateCodeId")
                         .HasColumnType("int");
 
                     b.Property<int>("Seats")
@@ -319,12 +319,14 @@ namespace Rentoo.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("ID");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("RateCodes");
                 });
@@ -337,17 +339,19 @@ namespace Rentoo.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Day")
-                        .IsRequired()
+                    b.Property<int>("DayId")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("int");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<int>("RateCodeId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("RateCodeId", "Day");
+                    b.HasIndex("RateCodeId", "DayId");
 
                     b.ToTable("RateCodeDays");
                 });
@@ -640,9 +644,7 @@ namespace Rentoo.Infrastructure.Migrations
                 {
                     b.HasOne("Rentoo.Domain.Entities.RateCode", "rateCode")
                         .WithMany()
-                        .HasForeignKey("RateCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RateCodeId");
 
                     b.HasOne("Rentoo.Domain.Entities.User", "User")
                         .WithMany("Cars")
@@ -682,6 +684,13 @@ namespace Rentoo.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Car");
+                });
+
+            modelBuilder.Entity("Rentoo.Domain.Entities.RateCode", b =>
+                {
+                    b.HasOne("Rentoo.Domain.Entities.User", null)
+                        .WithMany("RateCode")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Rentoo.Domain.Entities.RateCodeDay", b =>
@@ -764,6 +773,8 @@ namespace Rentoo.Infrastructure.Migrations
             modelBuilder.Entity("Rentoo.Domain.Entities.User", b =>
                 {
                     b.Navigation("Cars");
+
+                    b.Navigation("RateCode");
 
                     b.Navigation("RequestReview");
 
