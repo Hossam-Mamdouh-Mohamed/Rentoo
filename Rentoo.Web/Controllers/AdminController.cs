@@ -14,31 +14,33 @@ namespace Rentoo.Web.Controllers
         private readonly IService<User> service;
         private readonly IService<Car> carService;
         private readonly UserManager<User> userManager;
-        public AdminController(IService<User> _service, IService<Car> carService,UserManager<User> _userManager)
+        private readonly IService<Request> RentalService;
+        public AdminController(IService<User> _service, IService<Car> carService, UserManager<User> _userManager)
         {
             service = _service;
             this.carService = carService;
-            userManager=_userManager;
+            userManager = _userManager;
         }
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult Users()
-        {
-           var users = service.GetAllAsync().Result;
-            return View();
-        }
         public async Task<IActionResult> Cars(int page = 1)
         {
-            // Fix for the problematic code
-            var allCars = await carService.GetAllAsync();
-           // var carsWithOwners = allCars.AsQueryable().Include(c => c.User); // Convert to IQueryable before using Include
-            var pagedCars = allCars.ToPagedList(page, 10); // 10 cars per page
+            try
+            {
+                var allCars = await carService.GetAllAsync();
+                var pagedCars = allCars.ToPagedList(page, 10);
 
-            return View(pagedCars);
+                return View(pagedCars);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching cars.";
+                return RedirectToAction("Index");
+            }
+
         }
-
         public async Task<IActionResult> Profile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -47,15 +49,31 @@ namespace Rentoo.Web.Controllers
         }
         public async Task<IActionResult> Clients(int page = 1)
         {
-            var users = await userManager.GetUsersInRoleAsync("Client");
-            var pagedUsers = users.ToPagedList(page, 10);
-            return View("Clients", pagedUsers);
+            try
+            {
+                var users = await userManager.GetUsersInRoleAsync("Client");
+                var pagedUsers = users.ToPagedList(page, 10);
+                return View("Clients", pagedUsers);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching clients.";
+                return RedirectToAction("Index");
+            }
         }
         public async Task<IActionResult> Owners(int page = 1)
         {
-            var users = await userManager.GetUsersInRoleAsync("Owner");
-            var pagedUsers = users.ToPagedList(page, 10);
-            return View("Owners", pagedUsers);
+            try
+            {
+                var users = await userManager.GetUsersInRoleAsync("Owner");
+                var pagedUsers = users.ToPagedList(page, 10);
+                return View("Owners", pagedUsers);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching owners.";
+                return RedirectToAction("Index");
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
@@ -66,7 +84,12 @@ namespace Rentoo.Web.Controllers
                 return NotFound();
             }
 
+            var roles = await userManager.GetRolesAsync(user);
+            var isClient = roles.Contains("Client");
+            var isOwner = roles.Contains("Owner");
+
             var result = await userManager.DeleteAsync(user);
+
             if (result.Succeeded)
             {
                 TempData["SuccessMessage"] = "User deleted successfully.";
@@ -76,13 +99,23 @@ namespace Rentoo.Web.Controllers
                 TempData["ErrorMessage"] = "Error deleting user.";
             }
 
-            return RedirectToAction("Clients");
+            // Redirect based on role
+            if (isClient)
+            {
+                return RedirectToAction("Clients");
+            }
+            else if (isOwner)
+            {
+                return RedirectToAction("Owners");
+            }
+
+            return RedirectToAction("Index"); // fallback
         }
         public async Task<IActionResult> UserProfile(User user, IFormFile? ProfileImageFile)
         {
             try
             {
-                var id=user.Id;
+                var id = user.Id;
                 // Get the existing user from the database
                 var existingUser = await service.GetByIdAsync(id);
                 if (existingUser == null)
@@ -104,7 +137,7 @@ namespace Rentoo.Web.Controllers
                     {
                         await ProfileImageFile.CopyToAsync(stream);
                     }
-                    
+
                     // Update the user image path
                     existingUser.UserImage = $"uploads/{fileName}";
                 }
@@ -119,7 +152,7 @@ namespace Rentoo.Web.Controllers
 
                 // Update the user in the database
                 await service.UpdateAsync(existingUser);
-                
+
                 TempData["SuccessMessage"] = "Profile updated successfully!";
                 return RedirectToAction("Profile");
             }
@@ -127,6 +160,42 @@ namespace Rentoo.Web.Controllers
             {
                 ModelState.AddModelError("", "An error occurred while updating your profile. Please try again.");
                 return View("Profile", user);
+            }
+        }
+        public async Task<IActionResult> Rentals(int page = 1)
+        {
+            const int PageSize = 10;
+            try
+            {
+                var acceptedRequests = await RentalService.GetAllAsync(x => x.Status == RequestStatus.Accepted);
+                var paginatedRequests = acceptedRequests
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize)
+                    .ToList();
+                return View(paginatedRequests);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching accepted rental requests.";
+                return RedirectToAction("Index");
+            }
+        }
+        public async Task<IActionResult> PendingApprovements(int page = 1)
+        {
+            const int PageSize = 10;
+            try
+            {
+                var acceptedRequests = await RentalService.GetAllAsync(x => x.Status == RequestStatus.Accepted);
+                var paginatedRequests = acceptedRequests
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize)
+                    .ToList();
+                return View(paginatedRequests);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching accepted rental requests.";
+                return RedirectToAction("Index");
             }
         }
     }

@@ -12,8 +12,8 @@ using Rentoo.Infrastructure.Data;
 namespace Rentoo.Infrastructure.Migrations
 {
     [DbContext(typeof(RentooDbContext))]
-    [Migration("20250421194943_UserImage")]
-    partial class UserImage
+    [Migration("20250424090859_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

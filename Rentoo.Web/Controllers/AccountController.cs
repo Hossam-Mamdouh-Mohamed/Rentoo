@@ -47,14 +47,18 @@ namespace Rentoo.Web.Controllers
             {
                 await _userManager.AddToRoleAsync(user, model.Role);
                 await _signInManager.SignInAsync(user, isPersistent: false);
+
+                TempData["SuccessMessage"] = "User Registered Successfully,Please Sign in to continue";
+
                 return RedirectToAction("Login", "Account");
             }
 
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error.Description);
-            }
 
+            }
+            TempData["ErrorMessage"] = "Plese Try Again Later";
             return View(model);
         }
 
@@ -88,17 +92,21 @@ namespace Rentoo.Web.Controllers
                     {
                         if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
+                            TempData["SuccessMessage"] = "Sign in Successfully";
                             return RedirectToAction("Index", "Admin");
                         }
                         else if (_signInManager.IsSignedIn(User) && User.IsInRole("Owner"))
                         {
+                            TempData["SuccessMessage"] = "Sign in Successfully";
                             return RedirectToAction("UserProfile", "UserDashboard");
                         }
                         else
                         {
+                            TempData["SuccessMessage"] = "Sign in Successfully";
                             return RedirectToAction("Index", "Client");
                         }
                     }
+                    TempData["ErrorMessage"] = "Error Singning in User.";
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
                 }
             }
