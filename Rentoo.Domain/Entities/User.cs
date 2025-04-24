@@ -30,6 +30,7 @@ namespace Rentoo.Domain.Entities
 
         [Display(Name = "Request Reviews")]
         public ICollection<RequestReview> RequestReview { get; set; } = new List<RequestReview>();
+        public ICollection<RateCode> RateCode { get; set; } = new List<RateCode>();
 
     }
 }

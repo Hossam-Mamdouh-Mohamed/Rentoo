@@ -1,6 +1,8 @@
 ﻿@model Rentoo.Domain.Entities.User
 
 @{
+    //layput
+    Layout = "~/Views/Shared/_EndUserLayout.cshtml";
     ViewData["Title"] = "User Dashboard";
 }
 
@@ -343,10 +345,10 @@
             </div>
 
             <div class="nav-tabs">
-                <a href="#" class="nav-tab active"><i class="fas fa-user"></i> MY ACCOUNT</a>
-                <a href="#" class="nav-tab"><i class="fas fa-car"></i> MY CARS</a>
-                <a href="#" class="nav-tab"><i class="fas fa-file-alt"></i> MY REQUESTS</a>
-                <a href="#" class="nav-tab"><i class="fas fa-hands-helping"></i> MY BORROWINGS</a>
+                <a href="@Url.Action("UserProfile", "UserDashboard")" class="nav-tab active"><i class="fas fa-user"></i> MY ACCOUNT</a>
+                <a href="@Url.Action("MyCar", "UserDashboard")" class="nav-tab"><i class="fas fa-car"></i> MY CARS</a>
+                <a href="@Url.Action("MyRequests", "UserDashboard")" class="nav-tab"><i class="fas fa-file-alt"></i> MY REQUESTS</a>
+                <a href="@Url.Action("Reviews", "UserDashboard")" class="nav-tab active"><i class="fas fa-star"></i> REVIEWS</a>
             </div>
             @if (TempData["SuccessMessage"] != null)
             {
@@ -362,17 +364,22 @@
                     <h2>Your Profile Picture</h2>
                     <div class="profile-picture-container">
                         <div class="profile-picture">
-                            <img src="@(Model.UserImage ?? "https://via.placeholder.com/150")" alt="Profile Picture" id="profile-img-preview" />
+                            @if (string.IsNullOrEmpty(Model.UserImage))
+                            {
+                                <img src="https://via.placeholder.com/150" alt="Profile Picture" id="profile-img-preview" />
+                            }
+                            else
+                            {
+                                <img src="/@Model.UserImage" alt="Profile Picture" id="profile-img-preview" />
+                            }
                             <span class="edit-icon"><i class="fas fa-camera"></i></span>
                         </div>
-                        @* write with razor syntax متنساش تعدل دي واكتبها  *@
-						<input type="file" id="profile-image-input" name="ProfileImage" accept="image/*" style="display: none;" />
-
+                        <input type="file" id="profile-image-input" name="ProfileImage" accept="image/*" style="display: none;" />
                     </div>
                 </div>
                 <div class="profile-section">
                     <h2>Your Information:</h2>
-                    @Html.HiddenFor(model => model.Id)  <!-- Completely hidden -->
+                    @Html.HiddenFor(model => model.Id)  
                     <div class="form-row">
                         <div class="form-group">
                             @Html.LabelFor(m => m.FirstName)
