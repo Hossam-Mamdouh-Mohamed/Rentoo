@@ -45,4 +45,9 @@ public class Service<T> : IService<T> where T : class
             await _unitOfWork.CompleteAsync();
         }
     }
+    public async Task DeleteAsync(T entity)
+    {
+        _repository.Remove(entity);
+        await _unitOfWork.CompleteAsync();
+    }
 }

@@ -103,7 +103,7 @@ namespace Rentoo.Web.Controllers
                         else
                         {
                             TempData["SuccessMessage"] = "Sign in Successfully";
-                            return RedirectToAction("Index", "Client");
+                            return RedirectToAction("ClientProfile", "ClientDashboard");
                         }
                     }
                     TempData["ErrorMessage"] = "Error Singning in User.";

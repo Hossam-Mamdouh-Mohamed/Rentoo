@@ -40,8 +40,8 @@ namespace Rentoo.Web.Controllers
                 int TotalPrice = 0;
                     
                 Car car = await _CarServes.GetByIdAsync(3);
-                RateCode rateCode = await _RateCodeServes.GetByIdAsync(car.RateCodeId);
-                List<RateCodeDay> rateCodeDay = (List<RateCodeDay>)await _RateCodeDayServes.GetAllAsync(rcd => rcd.RateCodeId == rateCode.ID);
+                //RateCode rateCode = await _RateCodeServes.GetByIdAsync(car.RateCodeId);
+               // List<RateCodeDay> rateCodeDay = (List<RateCodeDay>)await _RateCodeDayServes.GetAllAsync(rcd => rcd.RateCodeId == rateCode.ID);
 
 
                 for (int i = 0; i < days; i++)
