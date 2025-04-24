@@ -25,7 +25,7 @@ namespace Rentoo.Web.Controllers
             return View(currentUser);
         }
         [HttpPost]
-        public async Task<IActionResult> UserProfile(ProfileViewModel profileViewModel, IFormFile? ProfileImage)
+        public async Task<IActionResult> UserProfile(User user, IFormFile? ProfileImageFile)
         {
             try
             {
@@ -52,7 +52,6 @@ namespace Rentoo.Web.Controllers
                         await ProfileImageFile.CopyToAsync(stream);
                     }
 
-                    // Update the user image path
                     existingUser.UserImage = $"uploads/{fileName}";
                 }
 

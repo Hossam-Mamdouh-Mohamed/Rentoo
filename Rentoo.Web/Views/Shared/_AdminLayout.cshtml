@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/_Layout.css" />
     <link href="~/css/admin.css" rel="stylesheet" />
 </head>
@@ -30,7 +31,7 @@
 
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Index" && ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")" asp-controller="Home" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Index" && ViewContext.RouteData.Values["Controller"].ToString() == "Admin" ? "active" : "")" asp-controller="Admin" asp-action="Index">
                         <i class="fas fa-home"></i>
                         <span class="nav-link-text">Dashboard</span>
                     </a>
@@ -63,14 +64,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Rentals" ? "active" : "")" asp-controller="Admin" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Rentals" ? "active" : "")" asp-controller="Admin" asp-action="Rentals">
                         <i class="fas fa-key"></i>
                         <span class="nav-link-text">Rentals</span>
                         <span class="badge">8</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "PendingRequests" ? "active" : "")" asp-controller="Admin" asp-action="PendingRequests">
+                    <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "PendingJoins" ? "active" : "")" asp-controller="Admin" asp-action="PendingApprovements">
                         <i class="fas fa-clock"></i>
                         <span class="nav-link-text">Pending Requests</span>
                         <span class="badge">3</span>
@@ -188,6 +189,40 @@
             window.addEventListener('resize', checkMobileView);
         });
     </script>
+    <script>
+        $(document).ready(function () {
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>toastr.success('@TempData["SuccessMessage"]');</text>
+        }
+        else if (TempData["ErrorMessage"] != null)
+        {
+            <text>toastr.error('@TempData["ErrorMessage"]');</text>
+        }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right", // change position here
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000", // toast disappears after 5 seconds
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
