@@ -42,6 +42,38 @@
     @RenderSection("Styles", required: false)
 
     <script src="~/assets/js/plugins/jquery.min.js"></script>
+    <style>
+        <style >
+        /* Custom style for toastr notifications */
+        #toast-container > .toast {
+            background-color: #333 !important; /* dark background */
+            color: #fff !important; /* white text */
+            box-shadow: 0 0 10px rgba(0,0,0,0.3); /* optional */
+        }
+
+        /* Optional: Customize success/info/warning/error specifically */
+        #toast-container > .toast-success {
+            background-color: #28a745 !important;
+            color: #fff !important;
+        }
+
+        #toast-container > .toast-info {
+            background-color: #17a2b8 !important;
+            color: #fff !important;
+        }
+
+        #toast-container > .toast-warning {
+            background-color: #ffc107 !important;
+            color: #212529 !important;
+        }
+
+        #toast-container > .toast-error {
+            background-color: #dc3545 !important;
+            color: #fff !important;
+        }
+    </style>
+
+    </style>
 </head>
 <body id="page-top" style="@menuLeft">
 

@@ -1,44 +1,139 @@
-﻿@{
+﻿@model Rentoo.Web.ViewModels.AdminDashboardViewModel
+@{
 	ViewData["Title"] = "Admin Index";
-	Layout = "_EndUserLayout";
     Layout = "_AdminLayout";
 }
 
 <div class="container-fluid">
     <div class="row">
         <!-- Main content -->
-        <main role="main" class="col-md-12 px-4">
-            <div class="d-flex justify-content-between align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Dashboard</h1>
-                <a href="#" class="btn btn-primary">Add Listing</a>
+        <main role="main" class="container-fluid px-4">
+            <div class="d-flex justify-content-between align-items-center pt-4 pb-3 mb-4 border-bottom">
+                <h1 class="h2 text-primary fw-bold">Admin Dashboard</h1>
             </div>
 
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="card shadow-sm">
+            <div class="row g-4">
+                <!-- Owners -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 bg-light">
                         <div class="card-body">
-                            <h6 class="card-title text-muted">Total Users</h6>
-                            <h3>2,340</h3>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Total Owners</h6>
+                                    <h3 class="fw-bold">@Model.OwnersCount</h3>
+                                </div>
+                                <i class="bi bi-person-badge fs-2 text-primary"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card shadow-sm">
+
+                <!-- Clients -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 bg-light">
                         <div class="card-body">
-                            <h6 class="card-title text-muted">Total Listings</h6>
-                            <h3>128</h3>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Total Clients (Rented)</h6>
+                                    <h3 class="fw-bold">@Model.RentersCount</h3>
+                                </div>
+                                <i class="bi bi-people fs-2 text-success"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card shadow-sm">
+
+                <!-- Cars -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 bg-light">
                         <div class="card-body">
-                            <h6 class="card-title text-muted">Active Bookings</h6>
-                            <h3>87</h3>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Total Cars</h6>
+                                    <h3 class="fw-bold">@Model.CarsCount</h3>
+                                </div>
+                                <i class="bi bi-truck-front fs-2 text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rentals -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 bg-light">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Total Rentals</h6>
+                                    <h3 class="fw-bold">@Model.RentalsCount</h3>
+                                </div>
+                                <i class="bi bi-card-checklist fs-2 text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rentals In Progress -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 bg-light">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Rentals In Progress</h6>
+                                    <h3 class="fw-bold">@Model.RentalsInProgressCount</h3>
+                                </div>
+                                <i class="bi bi-clock-history fs-2 text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rentals Completed -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 bg-light">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Rentals Completed</h6>
+                                    <h3 class="fw-bold">@Model.RentalsCompletedCount</h3>
+                                </div>
+                                <i class="bi bi-check-circle fs-2 text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rentals Cancelled -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 bg-light">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Rentals Cancelled</h6>
+                                    <h3 class="fw-bold">@Model.RentalsCancelledCount</h3>
+                                </div>
+                                <i class="bi bi-x-circle fs-2 text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rentals Pending -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 bg-light">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="card-title text-muted">Rentals Pending</h6>
+                                    <h3 class="fw-bold">@Model.RentalsPendingCount</h3>
+                                </div>
+                                <i class="bi bi-hourglass-split fs-2 text-warning"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+
     </div>
 </div>

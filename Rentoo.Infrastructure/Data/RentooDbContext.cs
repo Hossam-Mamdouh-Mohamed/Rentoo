@@ -104,8 +104,8 @@ namespace Rentoo.Infrastructure.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configure indexes for RateCodeDay
-            modelBuilder.Entity<RateCodeDay>()
-                .HasIndex(rcd => new { rcd.RateCodeId, rcd.DayId });
+            //modelBuilder.Entity<RateCodeDay>()
+            //    .HasIndex(rcd => new { rcd.RateCodeId, rcd.DayId });
 
             // Configure indexes for RequestReview
             modelBuilder.Entity<RequestReview>()
