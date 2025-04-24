@@ -46,6 +46,7 @@ namespace Rentoo.Domain.Entities
         public Car Car { get; set; }
 
         public int? reviewId { get; set; }
+        
         [ForeignKey("reviewId")]
         public RequestReview? Review { get; set; }
     }

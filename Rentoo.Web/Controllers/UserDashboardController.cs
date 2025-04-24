@@ -25,7 +25,7 @@ namespace Rentoo.Web.Controllers
             return View(currentUser);
         }
         [HttpPost]
-        public async Task<IActionResult> UserProfile(ProfileViewModel profileViewModel, IFormFile? ProfileImage)
+        public async Task<IActionResult> UserProfile(User user, IFormFile? ProfileImage)
         {
             try
             {
@@ -39,9 +39,9 @@ namespace Rentoo.Web.Controllers
                 }
 
                 // Handle profile image upload
-                if (ProfileImageFile != null && ProfileImageFile.Length > 0)
+                if (ProfileImage != null && ProfileImage.Length > 0)
                 {
-                    var fileName = $"{Guid.NewGuid()}_{Path.GetFileName(ProfileImageFile.FileName)}";
+                    var fileName = $"{Guid.NewGuid()}_{Path.GetFileName(ProfileImage.FileName)}";
                     var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
                     Directory.CreateDirectory(uploadPath);
                     var filePath = Path.Combine(uploadPath, fileName);
@@ -49,7 +49,7 @@ namespace Rentoo.Web.Controllers
                     // Save image
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await ProfileImageFile.CopyToAsync(stream);
+                        await ProfileImage.CopyToAsync(stream);
                     }
 
                     // Update the user image path
