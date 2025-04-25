@@ -11,6 +11,9 @@ namespace Rentoo.Domain.Entities
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-        public ICollection<RateCodeDay> RateCodeDays { get; set; }
+        public ICollection<RateCodeDay>? RateCodeDays { get; set; }
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public User User { get; set; }
     }
 }
