@@ -329,6 +329,202 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("MyCar");
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> PricePlans()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var rateCodes = await _rateCodeService.GetAllAsync(c => c.UserId == userId, "RateCodeDays");
+            
+            var viewModels = rateCodes.Select(rc => new PricePlanViewModel
+            {
+                ID = rc.ID,
+                Name = rc.Name,
+                Days = rc.RateCodeDays?.Select(rcd => new PricePlanDayViewModel
+                {
+                    ID = rcd.ID,
+                    DayId = rcd.DayId,
+                    Price = rcd.Price
+                }).ToList() ?? new List<PricePlanDayViewModel>()
+            }).ToList();
+
+            return View(viewModels);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreatePricePlan([FromBody] PricePlanViewModel model)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var rateCode = new RateCode
+                {
+                    Name = model.Name,
+                    UserId = userId
+                };
+
+                await _rateCodeService.AddAsync(rateCode);
+                
+                if (model.Days != null && model.Days.Any())
+                {
+                    foreach (var day in model.Days)
+                    {
+                        var rateCodeDay = new RateCodeDay
+                        {
+                            RateCodeId = rateCode.ID,
+                            DayId = day.DayId,
+                            Price = day.Price
+                        };
+                        await _rateCodeDayService.AddAsync(rateCodeDay);
+                    }
+                }
+                
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeletePricePlan(int id)
+        {
+            try
+            {
+                var rateCode = await _rateCodeService.GetByIdAsync(id);
+                if (rateCode == null)
+                {
+                    return Json(new { success = false, message = "Price plan not found" });
+                }
+
+                // Delete all associated rate code days
+                var rateCodeDays = await _rateCodeDayService.GetAllAsync(rcd => rcd.RateCodeId == id);
+                foreach (var day in rateCodeDays)
+                {
+                    await _rateCodeDayService.DeleteAsync(day.ID);
+                }
+
+                // Delete the rate code
+                await _rateCodeService.DeleteAsync(id);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPricePlan(int id)
+        {
+            try
+            {
+                var rateCodes = await _rateCodeService.GetAllAsync(rc => rc.ID == id, "RateCodeDays");
+                var rateCode = rateCodes.FirstOrDefault();
+                
+                if (rateCode == null)
+                {
+                    return Json(new { success = false, message = "Price plan not found" });
+                }
+
+                var viewModel = new PricePlanViewModel
+                {
+                    ID = rateCode.ID,
+                    Name = rateCode.Name,
+                    Days = rateCode.RateCodeDays?.Select(rcd => new PricePlanDayViewModel
+                    {
+                        ID = rcd.ID,
+                        DayId = rcd.DayId,
+                        Price = rcd.Price
+                    }).ToList() ?? new List<PricePlanDayViewModel>()
+                };
+
+                return Json(new { success = true, data = viewModel });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdatePricePlan([FromBody] PricePlanViewModel model)
+        {
+            try
+            {
+                var rateCode = await _rateCodeService.GetByIdAsync(model.ID);
+                if (rateCode == null)
+                {
+                    return Json(new { success = false, message = "Price plan not found" });
+                }
+
+                rateCode.Name = model.Name;
+                await _rateCodeService.UpdateAsync(rateCode);
+
+                // Delete existing days
+                var existingDays = await _rateCodeDayService.GetAllAsync(rcd => rcd.RateCodeId == model.ID);
+                foreach (var day in existingDays)
+                {
+                    await _rateCodeDayService.DeleteAsync(day.ID);
+                }
+
+                // Add new days
+                if (model.Days != null && model.Days.Any())
+                {
+                    foreach (var day in model.Days)
+                    {
+                        var rateCodeDay = new RateCodeDay
+                        {
+                            RateCodeId = rateCode.ID,
+                            DayId = day.DayId,
+                            Price = day.Price
+                        };
+                        await _rateCodeDayService.AddAsync(rateCodeDay);
+                    }
+                }
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserCars()
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var cars = await _carService.GetAllAsync(c => c.UserId == userId);
+                return Json(cars.Select(c => new { id = c.ID, model = c.Model, color = c.Color, rateCodeId = c.RateCodeId }));
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignRateCodeToCar([FromBody] AssignRateCodeToCarViewModel model)
+        {
+            try
+            {
+                var car = await _carService.GetByIdAsync(model.CarId);
+                if (car == null)
+                {
+                    return Json(new { success = false, message = "Car not found" });
+                }
+
+                car.RateCodeId = model.RateCodeId;
+                await _carService.UpdateAsync(car);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 
 }
