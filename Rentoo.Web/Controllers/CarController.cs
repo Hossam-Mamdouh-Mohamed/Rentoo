@@ -19,8 +19,8 @@ namespace Rentoo.Web.Controllers
         {
             var car = await _context.Cars
         .Include(c => c.Images)
-        .Include(c => c.rateCode)
-        .Include(c => c.User) // for owner info
+        //.Include(c => c.rateCode)
+        .Include(c => c.User) 
         .FirstOrDefaultAsync(c => c.ID == id);
 
             if (car == null)
