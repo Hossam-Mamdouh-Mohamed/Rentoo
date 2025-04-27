@@ -38,7 +38,7 @@ namespace Rentoo.Web.Controllers
                 int days = (int)(requestViewModel.EndDate - requestViewModel.StartDate).TotalDays;
                 int TotalPrice = 0;
 
-                Car car = await _CarServes.GetByIdAsync(7);
+                Car car = await _CarServes.GetByIdAsync(1);
 
 
                 RateCode rateCode = await _RateCodeServes.GetByIdAsync(car.RateCodeId.Value); // Use .Value to access the int value
@@ -68,5 +68,55 @@ namespace Rentoo.Web.Controllers
             }
             return View(requestViewModel);
         }
+
+        private async Task<float> CalculateTotalPrice(DateTime startDate, DateTime endDate, int carId)
+        {
+            float totalPrice = 0;
+            var car = await _CarServes.GetByIdAsync(1);
+            if (car == null || !car.RateCodeId.HasValue)
+            {
+                throw new Exception("Car not found or no rate code assigned");
+            }
+            var rateCode = await _RateCodeServes.GetByIdAsync(car.RateCodeId.Value);
+            var rateCodeDays = await _RateCodeDayServes.GetAllAsync(rcd => rcd.RateCodeId == rateCode.ID);
+            int totalDays = (int)(endDate - startDate).TotalDays;
+            for (int i = 0; i < totalDays; i++)
+            {
+                DateTime currentDate = startDate.AddDays(i);
+                int dayOfWeek = (int)currentDate.DayOfWeek; // هنا هيجبلي الايام في الفتره دي 
+
+                // Find the rate for this day
+                var rateForDay = rateCodeDays.FirstOrDefault(rcd => rcd.DayId == dayOfWeek);
+                if (rateForDay != null)
+                {
+                    totalPrice += rateForDay.Price;
+                }
+                else
+                {
+                    var defaultRate = rateCodeDays.FirstOrDefault();
+                    if (defaultRate == null)
+                    {
+                        throw new Exception("No rate defined for this car");
+                    }
+                    totalPrice += defaultRate.Price;
+                }
+            }
+
+            return totalPrice;
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetTotalPrice(DateTime startDate, DateTime endDate, int carId)
+        {
+            try
+            {
+                var totalPrice = await CalculateTotalPrice(startDate, endDate, carId);
+                return Json(new { success = true, totalPrice });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
     }
 }

@@ -19,7 +19,6 @@ namespace Rentoo.Web.Controllers
         {
             var car = await _context.Cars
         .Include(c => c.Images)
-        //.Include(c => c.rateCode)
         .Include(c => c.User) 
         .FirstOrDefaultAsync(c => c.ID == id);
 
@@ -29,8 +28,7 @@ namespace Rentoo.Web.Controllers
             var viewModel = new CarDetailsViewModel
             {
                 Car = car,
-                CarImages = car.Images.ToList(),
-                RateCode = car.rateCode
+                CarImages = car.Images.ToList()
             };
 
             return View(viewModel);
