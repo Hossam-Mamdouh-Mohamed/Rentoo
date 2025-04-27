@@ -40,22 +40,17 @@ namespace Rentoo.Web.Controllers
 
                 Car car = await _CarServes.GetByIdAsync(7);
 
-                if (car.RateCodeId.HasValue) // Check if RateCodeId is not null
-                {
-                    RateCode rateCode = await _RateCodeServes.GetByIdAsync(car.RateCodeId.Value); // Use .Value to access the int value
-                    List<RateCodeDay> rateCodeDay = (List<RateCodeDay>)await _RateCodeDayServes.GetAllAsync(rcd => rcd.RateCodeId == rateCode.ID);
 
-                    for (int i = 0; i < days; i++)
-                    {
-                        // Logic for calculating TotalPrice
-                    }
+                RateCode rateCode = await _RateCodeServes.GetByIdAsync(car.RateCodeId.Value); // Use .Value to access the int value
+                var rateCodeDays = await _RateCodeDayServes.GetAllAsync(rcd => rcd.RateCodeId == rateCode.ID);
 
-                    requestViewModel.TotalPrice = TotalPrice;
-                }
-                else
+                for (int i = 0; i < days; i++)
                 {
-                    ModelState.AddModelError("", "RateCodeId is null for the selected car.");
+                    
                 }
+
+                requestViewModel.TotalPrice = TotalPrice;
+                
             }
             return View("AddRequest", requestViewModel);
         }
