@@ -320,6 +320,7 @@ namespace Rentoo.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
@@ -351,7 +352,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("RateCodeId", "DayId");
+                    b.HasIndex("RateCodeId");
 
                     b.ToTable("RateCodeDays");
                 });
@@ -688,9 +689,13 @@ namespace Rentoo.Infrastructure.Migrations
 
             modelBuilder.Entity("Rentoo.Domain.Entities.RateCode", b =>
                 {
-                    b.HasOne("Rentoo.Domain.Entities.User", null)
+                    b.HasOne("Rentoo.Domain.Entities.User", "User")
                         .WithMany("RateCode")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Rentoo.Domain.Entities.RateCodeDay", b =>

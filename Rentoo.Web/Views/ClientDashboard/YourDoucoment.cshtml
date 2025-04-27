@@ -1,0 +1,358 @@
+﻿@using Rentoo.Domain.Entities
+@using System.IO
+@model Rentoo.Domain.Entities.UserDocument
+@{
+    ViewData["Title"] = "Your Documents";
+    Layout = "~/Views/Shared/_EndUserLayout.cshtml";
+}
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background-color: #f2f3f5;
+        color: #333;
+    }
+
+    .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .dashboard-content {
+        flex: 1;
+        padding: 40px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .nav-tabs {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        background: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-tab {
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #777;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    .nav-tab:hover {
+        color: #e91e63;
+    }
+
+    .nav-tab.active {
+        background-color: #e91e63;
+        color: #fff;
+    }
+
+    .nav-tab i {
+        margin-right: 8px;
+    }
+
+    .profile-section {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-section h2 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 25px;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: block;
+        color: #555;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 14px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: 0.2s;
+        background-color: #f9f9f9;
+    }
+
+    .form-control:focus {
+        border-color: #e91e63;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        background-color: #fff;
+    }
+
+    .form-control:disabled {
+        background-color: #f0f0f0;
+    }
+
+    .text-danger {
+        font-size: 13px;
+        color: #e91e63;
+        margin-top: 5px;
+    }
+
+    .btn {
+        padding: 14px 30px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-primary {
+        background-color: #e91e63;
+        color: white;
+        border: none;
+        box-shadow: 0 4px 10px rgba(233, 30, 99, 0.2);
+    }
+
+    .btn-primary:hover {
+        background-color: #d81b60;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(233, 30, 99, 0.3);
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .document-preview {
+        margin-bottom: 15px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .document-preview img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .alert {
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+
+    .alert-info {
+        background-color: #cce5ff;
+        color: #004085;
+        border: 1px solid #b8daff;
+    }
+
+    .badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .bg-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .bg-warning {
+        background-color: #ffc107;
+        color: #000;
+    }
+
+    .bg-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="dashboard-content">
+        <div class="page-header">
+            <h1>Your Documents</h1>
+        </div>
+
+        <div class="nav-tabs">
+            <a href="@Url.Action("ClientProfile", "ClientDashboard")" class="nav-tab"><i class="fas fa-user"></i> MY ACCOUNT</a>
+            <a href="@Url.Action("MyRequests", "ClientDashboard")" class="nav-tab"><i class="fas fa-file-alt"></i> MY REQUESTS</a>
+            <a href="@Url.Action("YourDoucoment", "ClientDashboard")" class="nav-tab active"><i class="fas fa-file-upload"></i> YOUR DOCUMENTS</a>
+        </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        @if (Model == null)
+        {
+            <div class="alert alert-info">
+                You haven't uploaded any documents yet. Please upload your documents below.
+            </div>
+        }
+        else
+        {
+            <div class="profile-section">
+                <h2>Document Status</h2>
+                <div style="margin-bottom: 20px;">
+                    <h5>Status: <span class="badge @(Model.Status == UserDocumentStatus.Accepted ? "bg-success" : Model.Status == UserDocumentStatus.Rejected ? "bg-danger" : "bg-warning")">@Model.Status</span></h5>
+                    @if (Model.ReviewdAt.HasValue)
+                    {
+                        <p style="margin-top: 10px;">Reviewed on: @Model.ReviewdAt.Value.ToString("dd/MM/yyyy")</p>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.ReviewNotes))
+                    {
+                        <p style="margin-top: 10px;">Review Notes: @Model.ReviewNotes</p>
+                    }
+                    @if (Model.Status == UserDocumentStatus.Pending)
+                    {
+                        <div class="alert alert-warning" style="margin-top: 15px;">
+                            Your documents are currently under review. You cannot update them until they are accepted.
+                        </div>
+                    }
+                    else if (Model.Status == UserDocumentStatus.Rejected)
+                    {
+                        <div class="alert alert-danger" style="margin-top: 15px;">
+                            Your documents have been rejected. Please update them with the correct information.
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="profile-section">
+            <h2>Document Information</h2>
+            <form asp-action="YourDoucoment" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ID" />
+                <input type="hidden" asp-for="UserId" />
+
+                <div class="form-group">
+                    <label asp-for="NationalIDNumber" class="control-label">National ID Number</label>
+                    <input asp-for="NationalIDNumber" class="form-control" />
+                    <span asp-validation-for="NationalIDNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NationalIDUrl" class="control-label">National ID Document</label>
+                    @if (!string.IsNullOrEmpty(Model?.NationalIDUrl))
+                    {
+                        <div class="document-preview">
+                            <img src="~/@Model.NationalIDUrl" class="img-fluid" alt="National ID" />
+                        </div>
+                    }
+                    <input type="file" name="nationalIdFile" class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                    <small class="text-muted">Maximum file size: 5MB. Accepted formats: PDF, JPG, JPEG, PNG</small>
+                    <span asp-validation-for="NationalIDUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LicenseUrl" class="control-label">License Document</label>
+                    @if (!string.IsNullOrEmpty(Model?.LicenseUrl))
+                    {
+                        <div class="document-preview">
+                            <img src="~/@Model.LicenseUrl" class="img-fluid" alt="License" />
+                        </div>
+                    }
+                    <input type="file" name="licenseFile" class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                    <small class="text-muted">Maximum file size: 5MB. Accepted formats: PDF, JPG, JPEG, PNG</small>
+                    <span asp-validation-for="LicenseUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Notes" class="control-label">Additional Notes</label>
+                    <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary" @(Model != null && Model.Status != UserDocumentStatus.Accepted ? "disabled" : "")>
+                        @(Model == null ? "Upload Documents" : "Update Documents")
+                    </button>
+                    @if (Model?.ID > 0)
+                    {
+                        <a asp-action="DeleteDocument" asp-route-id="@Model.ID" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete your documents?')">Delete Documents</a>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

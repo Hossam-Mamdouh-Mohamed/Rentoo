@@ -18,8 +18,8 @@
                             <!-- Profile Picture Section -->
                             <div class="col-md-3 text-center mb-4">
                                 <div class="profile-image-container">
-                                    <img src="@(string.IsNullOrEmpty(Model.UserImage) ? "/images/default-profile.png" : Url.Content($"~/{Model.UserImage}"))" 
-                                         alt="Profile Picture" 
+                                    <img src="@(string.IsNullOrEmpty(Model.UserImage) ? "/images/default-profile.png" : Url.Content($"~/{Model.UserImage}"))"
+                                         alt="Profile Picture"
                                          class="img-fluid rounded-circle profile-image mb-3"
                                          style="width: 150px; height: 150px; object-fit: cover;">
                                     <div class="mt-2">
@@ -34,7 +34,7 @@
                             <!-- Profile Information -->
                             <div class="col-md-9">
                                 <div class="row">
-                                    @Html.HiddenFor(model => model.Id)  <!-- Completely hidden -->
+                                    @Html.HiddenFor(model => model.Id)
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">First Name</label>
                                         @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
@@ -78,6 +78,31 @@
                                     </div>
                                 </div>
 
+                                <!-- Change Password Section -->
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <button type="button" class="btn btn-warning btn-sm" id="togglePasswordFields">
+                                            <i class="fas fa-key"></i> Change Password?
+                                        </button>
+                                        <small class="form-text text-muted d-block mt-1">
+                                            Leave blank if you don't want to change your password.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="passwordFields" style="display: none;">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">New Password</label>
+                                        <input type="password" name="NewPassword" class="form-control" />
+                                        <span class="text-danger">@Html.ValidationMessage("NewPassword")</span>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Confirm New Password</label>
+                                        <input type="password" name="ConfirmPassword" class="form-control" />
+                                        <span class="text-danger">@Html.ValidationMessage("ConfirmPassword")</span>
+                                    </div>
+                                </div>
+
                                 <div class="row mt-4">
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary">
@@ -113,11 +138,16 @@
 
             // Phone verification
             const verifyPhoneBtn = document.getElementById('verifyPhone');
-            verifyPhoneBtn.addEventListener('click', function() {
-                // Add phone verification logic here
+            verifyPhoneBtn.addEventListener('click', function () {
                 alert('Phone verification feature coming soon!');
+            });
+
+            // Toggle password fields
+            const toggleBtn = document.getElementById('togglePasswordFields');
+            const passwordFields = document.getElementById('passwordFields');
+            toggleBtn.addEventListener('click', function () {
+                passwordFields.style.display = passwordFields.style.display === 'none' ? 'flex' : 'none';
             });
         });
     </script>
 }
-
