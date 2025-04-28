@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Rentoo.Application.Interfaces;
 using Rentoo.Domain.Entities;
@@ -164,7 +165,7 @@ namespace Rentoo.Web.Controllers
         {
             try
             {
-                var existingCar = await _carService.GetByIdAsync(car.ID);
+                var existingCar = await _carService.GetByIdAsync(car.ID, "CarDocument");
                 if (existingCar == null)
                 {
                     return Json(new { success = false, message = "Car not found" });
@@ -199,7 +200,11 @@ namespace Rentoo.Web.Controllers
                     if (existingDocument != null)
                     {
                         existingDocument.LicenseUrl = $"uploads/documents/{documentFileName}";
-                        existingDocument.LicenseNumber = car.CarDocument.LicenseNumber;
+                        // Only update license number if it's provided in the form
+                        if (car.CarDocument != null)
+                        {
+                            existingDocument.LicenseNumber = car.CarDocument.LicenseNumber;
+                        }
                         await _carDocumentService.UpdateAsync(existingDocument);
                     }
                 }
@@ -283,28 +288,61 @@ namespace Rentoo.Web.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var cars = await _carService.GetAllAsync(c => c.UserId == userId);
             var carIds = cars.Select(c => c.ID).ToList();
-            var requests = await _requestService.GetAllAsync(r => carIds.Contains(r.CarId), "User", "Car");
+            var requests = await _requestService.GetAllAsync(r => carIds.Contains(r.CarId.Value), "User", "Car");
             return View(requests);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateRequestStatus(int requestId, RequestStatus status)
+        public async Task<IActionResult> UpdateRequestStatus(int requestId, string status)
         {
             try
             {
+                // First, get all requests for the current user's cars
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userCars = await _carService.GetAllAsync(c => c.UserId == userId);
+                var carIds = userCars.Select(c => c.ID).ToList();
+
+                // Get the request with the specified ID and ensure it belongs to one of the user's cars
                 var request = await _requestService.GetByIdAsync(requestId);
+
                 if (request == null)
                 {
-                    return Json(new { success = false, message = "Request not found" });
+                    TempData["ErrorMessage"] = "Request not found";
+                    return RedirectToAction("MyRequests");
                 }
 
-                request.Status = status;
+                // Verify that the request belongs to one of the user's cars
+                if (request.CarId == null || !carIds.Contains(request.CarId.Value))
+                {
+                    TempData["ErrorMessage"] = "You don't have permission to update this request";
+                    return RedirectToAction("MyRequests");
+                }
+
+                // Convert the status string to the correct enum value
+                RequestStatus newStatus;
+                switch (status.ToLower())
+                {
+                    case "accepted":
+                        newStatus = RequestStatus.Accepted;
+                        break;
+                    case "rejected":
+                        newStatus = RequestStatus.Rejected;
+                        break;
+                    default:
+                        TempData["ErrorMessage"] = "Invalid status value";
+                        return RedirectToAction("MyRequests");
+                }
+
+                request.Status = newStatus;
                 await _requestService.UpdateAsync(request);
-                return Json(new { success = true });
+
+                TempData["SuccessMessage"] = $"Request has been {status} successfully";
+                return RedirectToAction("MyRequests");
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+                TempData["ErrorMessage"] = $"An error occurred: {ex.Message}";
+                return RedirectToAction("MyRequests");
             }
         }
 
@@ -314,14 +352,21 @@ namespace Rentoo.Web.Controllers
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                
+
                 // Get all cars owned by the user
                 var userCars = await _carService.GetAllAsync(c => c.UserId == userId);
 
+                // احفظ الـ IDs في قائمة فعلية
+                var carIds = userCars.Select(c => c.ID).ToList();
+
                 // Get all reviews for the user's cars
-                var reviews = await _reviewService.GetAllAsync(r => userCars.Select(c => c.ID).Contains(r.Request.CarId), "Request", "Request.Car", "Request.User");
+                var reviews = await _reviewService.GetAllAsync(
+                    r => carIds.Contains(r.Request.CarId.Value),
+                    "Request", "Request.Car", "Request.User"
+                );
 
                 return View(reviews);
+
             }
             catch (Exception ex)
             {
@@ -390,21 +435,30 @@ namespace Rentoo.Web.Controllers
         {
             try
             {
-                var rateCode = await _rateCodeService.GetByIdAsync(id);
-                if (rateCode == null)
+                // First, get all rate code days associated with this rate code
+                var rateCodeDays = await _rateCodeDayService.GetAllAsync(rcd => rcd.RateCodeId == id);
+                
+                // Check if the rate code is assigned to any car
+                var cars = await _carService.GetAllAsync(c => c.RateCodeId == id);
+                if (cars.Any())
                 {
-                    return Json(new { success = false, message = "Price plan not found" });
+                    var carModels = cars.Select(c => c.Model).ToList();
+                    var message = carModels.Count == 1 
+                        ? $"This price plan is assigned to car: {carModels[0]}. Please unassign it before deleting."
+                        : $"This price plan is assigned to {carModels.Count} cars: {string.Join(", ", carModels)}. Please unassign them before deleting.";
+                    
+                    return Json(new { success = false, message });
                 }
 
-                // Delete all associated rate code days
-                var rateCodeDays = await _rateCodeDayService.GetAllAsync(rcd => rcd.RateCodeId == id);
+                // Delete all rate code days
                 foreach (var day in rateCodeDays)
                 {
                     await _rateCodeDayService.DeleteAsync(day.ID);
                 }
 
-                // Delete the rate code
+                // Then delete the rate code itself
                 await _rateCodeService.DeleteAsync(id);
+
                 return Json(new { success = true });
             }
             catch (Exception ex)
@@ -519,6 +573,86 @@ namespace Rentoo.Web.Controllers
                 car.RateCodeId = model.RateCodeId;
                 await _carService.UpdateAsync(car);
                 return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCar(int id)
+        {
+            try
+            {
+                var car = await _carService.GetByIdAsync(id, "CarDocument");
+                if (car == null)
+                {
+                    return Json(new { success = false, message = "Car not found" });
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    id = car.ID,
+                    model = car.Model,
+                    transmission = car.Transmission,
+                    seats = car.Seats,
+                    color = car.Color,
+                    factoryYear = car.FactoryYear,
+                    fuel = car.Fuel,
+                    mileage = car.Mileage,
+                    address = car.Address,
+                    description = car.Description,
+                    airCondition = car.AirCondition,
+                    withDriver = car.WithDriver.ToString(),
+                    isAvailable = car.IsAvailable,
+                    carDocument = new
+                    {
+                        licenseNumber = car.CarDocument?.LicenseNumber
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetRequest(int id)
+        {
+            try
+            {
+                var request = await _requestService.GetByIdAsync(id, "User", "Car");
+                if (request == null)
+                {
+                    return Json(new { success = false, message = "Request not found" });
+                }
+
+                return Json(new
+                {
+                    success = true,
+                    data = new
+                    {
+                        id = request.ID,
+                        car = new
+                        {
+                            model = request.Car?.Model
+                        },
+                        user = new
+                        {
+                            firstName = request.User?.FirstName,
+                            lastName = request.User?.LastName
+                        },
+                        startDate = DateTime.Parse(request.StartDate).ToString("yyyy-MM-dd"),
+                        endDate = DateTime.Parse(request.EndDate).ToString("yyyy-MM-dd"),
+                        pickupAddress = request.pickupAddress,
+                        totalPrice = request.TotalPrice,
+                        withDriver = request.WithDriver,
+                        status = request.Status.ToString()
+                    }
+                });
             }
             catch (Exception ex)
             {

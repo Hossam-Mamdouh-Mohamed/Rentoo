@@ -34,16 +34,16 @@ namespace Rentoo.Domain.Entities
         public bool WithDriver { get; set; }
 
         [Required]
-        public string UserID { get; set; }
+        public string? UserID { get; set; }
 
         [ForeignKey("UserID")]
-        public User User { get; set; }
+        public User ?User { get; set; }
 
-        [Required]
-        public int CarId { get; set; }
+
+        public int? CarId { get; set; }
 
         [ForeignKey("CarId")]
-        public Car Car { get; set; }
+        public Car ?Car { get; set; }
 
         public int? reviewId { get; set; }
         

@@ -15,8 +15,19 @@ public class Service<T> : IService<T> where T : class
         _repository = unitOfWork.Repository<T>();
     }
 
-    public async Task<T> GetByIdAsync(int id) => await _repository.GetByIdAsync(id);
+    public async Task<T> GetByIdAsync(int  id) => await _repository.GetByIdAsync(id);
+    public async Task<T> GetByIdAsync(int? id)
+    {
+        if (!id.HasValue)
+            throw new ArgumentNullException(nameof(id));
+        return await _repository.GetByIdAsync(id.Value);
+    }
     public async Task<T> GetByIdAsync(string id) => await _repository.GetByIdAsync(id);
+    public async Task<T> GetByIdAsync(int? id, params string[] includeProperties)
+    {
+        return await _repository.GetByIdAsync(id.Value, includeProperties);
+    }
+
 
     public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync();
     public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate, params string[] includeProperties)
@@ -45,9 +56,25 @@ public class Service<T> : IService<T> where T : class
             await _unitOfWork.CompleteAsync();
         }
     }
+
+    // Implementation for nullable int (required by interface)
+    public async Task DeleteAsync(int? id)
+    {
+        if (!id.HasValue)
+            throw new ArgumentNullException(nameof(id));
+
+        var entity = await _repository.GetByIdAsync(id.Value);
+        if (entity != null)
+        {
+            _repository.Remove(entity);
+            await _unitOfWork.CompleteAsync();
+        }
+    }
+
     public async Task DeleteAsync(T entity)
     {
         _repository.Remove(entity);
         await _unitOfWork.CompleteAsync();
     }
+
 }
