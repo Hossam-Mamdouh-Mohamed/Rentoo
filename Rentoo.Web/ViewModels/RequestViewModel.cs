@@ -24,7 +24,7 @@ namespace Rentoo.Web.ViewModels
         [DisplayFormat(DataFormatString = "{0:C}")]
         [Display(Name = "Total Price")]
         [Column(TypeName = "decimal(18,2)")]
-        public float TotalPrice { get; set; }
+        public float? TotalPrice { get; set; }
 
         [Required]
         [MinLength(5, ErrorMessage = "Address must be at least 5 characters long.")]
