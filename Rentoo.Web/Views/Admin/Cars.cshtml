@@ -6,71 +6,80 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Cars</h2>
+<div class="container mt-4">
+    <h2 class="text-primary">Cars</h2>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Model</th>
-            <th>Transmission</th>
-            <th>Seats</th>
-            <th>Color</th>
-            <th>Air Condition</th>
-            <th>Factory Year</th>
-            <th>Fuel</th>
-            <th>Mileage</th>
-            <th>Address</th>
-            <th>Owner Name</th >
-            <th>Rate Code</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int rowIndex = (Model.PageNumber - 1) * Model.PageSize;
-        }
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover table-striped mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Model</th>
+                        <th>Transmission</th>
+                        <th>Seats</th>
+                        <th>Color</th>
+                        <th>Air Condition</th>
+                        <th>Factory Year</th>
+                        <th>Fuel</th>
+                        <th>Mileage</th>
+                        <th>Address</th>
+                        <th>Owner Name</th>
+                        <th>Rate Code</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int rowIndex = (Model.PageNumber - 1) * Model.PageSize;
+                    }
 
-        @foreach (var car in Model)
-        {
-            rowIndex++;
-            <tr>
-                <td>@rowIndex</td>
-                <td>@car.Model</td>
-                <td>@car.Transmission</td>
-                <td>@car.Seats</td>
-                <td>@car.Color</td>
-                <td>@(car.AirCondition ? "Yes" : "No")</td>
-                <td>@car.FactoryYear</td>
-                <td>@car.Fuel</td>
-                <td>@car.Mileage</td>
-                <td>@car.Address</td>
-				@* <td>@car.User?.FirstName @car.User?.LastName</td> *@
-                <td>@car.rateCode?.Name</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@car.ID" class="btn btn-sm btn-primary">Edit</a>
-                    <form asp-action="Delete" asp-route-id="@car.ID" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this car?');">
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    @foreach (var car in Model)
+                    {
+                        rowIndex++;
+                        <tr>
+                            <td>@rowIndex</td>
+                            <td>@car.Model</td>
+                            <td>@car.Transmission</td>
+                            <td>@car.Seats</td>
+                            <td>@car.Color</td>
+                            <td>@(car.AirCondition ? "Yes" : "No")</td>
+                            <td>@car.FactoryYear</td>
+                            <td>@car.Fuel</td>
+                            <td>@car.Mileage</td>
+                            <td>@car.Address</td>
+                            <td>@car.User?.FirstName @car.User?.LastName</td> <!-- Assuming User is the owner -->
+                            <td>@car.rateCode?.Name</td>
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@car.ID" method="post" class="delete-form" style="display:inline;">
+                                    <button type="button" class="btn btn-sm btn-danger delete-btn" onclick="confirmDelete(@car.ID)">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<div class="d-flex justify-content-center mt-4">
-    @Html.PagedListPager(Model, page => Url.Action("Cars", new { page }), new PagedListRenderOptions
-{
-    LiElementClasses = new[] { "page-item" },
-    PageClasses = new[] { "page-link" },
-    UlElementClasses = new[] { "pagination" },
-    DisplayLinkToFirstPage = PagedListDisplayMode.Never,
-    DisplayLinkToLastPage = PagedListDisplayMode.Never,
-    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-    DisplayLinkToNextPage = PagedListDisplayMode.Always,
-    LinkToPreviousPageFormat = "« Prev",
-    LinkToNextPageFormat = "Next »",
-    MaximumPageNumbersToDisplay = 5,
-    DisplayEllipsesWhenNotShowingAllPageNumbers = true
-})
+    <!-- Pagination Controls -->
+    <div class="d-flex justify-content-center mt-4">
+        @Html.PagedListPager(Model, page => Url.Action("Cars", new { page }), new PagedListRenderOptions
+   {
+       LiElementClasses = new[] { "page-item" },
+       PageClasses = new[] { "page-link" },
+       UlElementClasses = new[] { "pagination" },
+       DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+       DisplayLinkToLastPage = PagedListDisplayMode.Never,
+       DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+       DisplayLinkToNextPage = PagedListDisplayMode.Always,
+       LinkToPreviousPageFormat = "« Prev",
+       LinkToNextPageFormat = "Next »",
+       MaximumPageNumbersToDisplay = 5,
+       DisplayEllipsesWhenNotShowingAllPageNumbers = true
+   })
+    </div>
 </div>
+
+@* Delete Confirmation Script *@
+@await Html.PartialAsync("_DeleteConfirmationScript")
