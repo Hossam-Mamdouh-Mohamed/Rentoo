@@ -108,11 +108,7 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         /// <summary>
         ///   Looks up a localized string similar to Model Year.
         /// </summary>
-        public static string FactoryYear {
-            get {
-                return ResourceManager.GetString("FactoryYear", resourceCulture);
-            }
-        }
+
         
         /// <summary>
         ///   Looks up a localized string similar to From.
