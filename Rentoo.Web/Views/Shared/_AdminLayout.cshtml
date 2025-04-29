@@ -1,4 +1,5 @@
 ﻿@using Rentoo.Domain.Shared;
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 @{
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value + Context.Request.QueryString.Value}";
     string classEn = CultureConfiguration.IsArabic ? "" : "header-en";
