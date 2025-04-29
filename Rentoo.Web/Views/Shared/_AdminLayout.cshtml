@@ -1,9 +1,10 @@
 ﻿@using Rentoo.Domain.Shared;
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 @{
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value + Context.Request.QueryString.Value}";
     string classEn = CultureConfiguration.IsArabic ? "" : "header-en";
 }
-@using RM = Rentoo.Domain.Shared.Localization.Global;
+
 <!DOCTYPE html>
 <html lang="@(CultureConfiguration.IsArabic ? "ar" : "en")" dir="@(CultureConfiguration.IsArabic ? "rtl" : "ltr")">
 <head>
@@ -322,7 +323,6 @@
     </div>
     <!-- Content End -->
     <!-- Scripts Start -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Other Scripts... -->

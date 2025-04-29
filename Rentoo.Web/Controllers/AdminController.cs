@@ -104,7 +104,7 @@ namespace Rentoo.Web.Controllers
             var roles = await userManager.GetRolesAsync(user);
             var isClient = roles.Contains("Client");
             var isOwner = roles.Contains("Owner");
-            var isAdmin = roles.Contains("Admin");
+            var isSubAdmin = roles.Contains("SubAdmin");
             var result = await userManager.DeleteAsync(user);
 
             if (result.Succeeded)
@@ -125,7 +125,7 @@ namespace Rentoo.Web.Controllers
             {
                 return RedirectToAction("Owners");
             }
-            else if (isAdmin)
+            else if (isSubAdmin)
             {
                 return RedirectToAction("SystemAdmins");
             }
@@ -260,7 +260,7 @@ namespace Rentoo.Web.Controllers
             {
                 var users = await userManager.GetUsersInRoleAsync("SubAdmin");
                 var pagedUsers = users.ToPagedList(page, 8);
-                return View("Admins", pagedUsers);
+                return View("SubAdmins", pagedUsers);
             }
             catch (Exception ex)
             {

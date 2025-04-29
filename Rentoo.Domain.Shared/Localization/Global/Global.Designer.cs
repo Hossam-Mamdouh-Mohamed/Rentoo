@@ -70,6 +70,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application Request.
+        /// </summary>
+        public static string ApplicationRequest {
+            get {
+                return ResourceManager.GetString("ApplicationRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Car.
         /// </summary>
         public static string Car {
@@ -84,6 +93,33 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string Contact {
             get {
                 return ResourceManager.GetString("Contact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delivery Address.
+        /// </summary>
+        public static string DeliveryAddress {
+            get {
+                return ResourceManager.GetString("DeliveryAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model Year.
+        /// </summary>
+        public static string FactoryYear {
+            get {
+                return ResourceManager.GetString("FactoryYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string From {
+            get {
+                return ResourceManager.GetString("From", resourceCulture);
             }
         }
         
@@ -106,11 +142,65 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string Location {
+            get {
+                return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LogIn.
         /// </summary>
         public static string LogIn {
             get {
                 return ResourceManager.GetString("LogIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pickup Address.
+        /// </summary>
+        public static string pickupAddress {
+            get {
+                return ResourceManager.GetString("pickupAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search About Car.
+        /// </summary>
+        public static string SearchAboutCar {
+            get {
+                return ResourceManager.GetString("SearchAboutCar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seats.
+        /// </summary>
+        public static string Seats {
+            get {
+                return ResourceManager.GetString("Seats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Your Car type.
+        /// </summary>
+        public static string SelectYourCartype {
+            get {
+                return ResourceManager.GetString("SelectYourCartype", resourceCulture);
             }
         }
         
@@ -133,11 +223,29 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your Information.
+        ///   Looks up a localized string similar to To.
         /// </summary>
-        public static string YourInformation {
+        public static string To {
             get {
-                return ResourceManager.GetString("YourInformation", resourceCulture);
+                return ResourceManager.GetString("To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transmission.
+        /// </summary>
+        public static string Transmission {
+            get {
+                return ResourceManager.GetString("Transmission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to With Driver.
+        /// </summary>
+        public static string WithDriver {
+            get {
+                return ResourceManager.GetString("WithDriver", resourceCulture);
             }
         }
     }

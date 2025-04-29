@@ -2,79 +2,65 @@
 @using X.PagedList.Mvc.Core
 
 @{
-    ViewData["Title"] = "Owners";
+    ViewData["Title"] = "Clients";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th> <!-- Row number column -->
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Birth Date</th>
+            <th>Address</th>
+            <th>Number Of Cars</th>
+            <th>Phone Number</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int rowIndex = (Model.PageNumber - 1) * Model.PageSize;
+        }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="text-primary mb-0">Owners List</h2>
-        @* <a asp-action="Create" class="btn btn-success">Add New Owner</a> *@
-    </div>
-
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
-            <table class="table table-hover table-striped mb-0">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Birth Date</th>
-                        <th>Address</th>
-                        <th>Number Of Cars</th>
-                        <th>Phone Number</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int rowIndex = (Model.PageNumber - 1) * Model.PageSize;
+        @foreach (var user in Model)
+        {
+            rowIndex++;
+            <tr>
+                <td>@rowIndex</td> <!-- Row number -->
+                <td>@user.FirstName</td>
+                <td>@user.LastName</td>
+                <td>@user.BirthDate.ToString("yyyy-MM-dd")</td>
+                <td>@user.Address</td>
+                <td>@user.Cars.Count</td>
+                <td>@user.PhoneNumber</td>
+                <td>
+                    @if (@user.Cars.Count>0){
+                        <a asp-action="OwnerCars" asp-route-id="@user.Id" class="btn btn-sm btn-primary">Show Details</a>
                     }
+                    <form asp-action="Delete" asp-route-id="@user.Id" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
 
-                    @foreach (var owner in Model)
-                    {
-                        rowIndex++;
-                        <tr>
-                            <td>@rowIndex</td>
-                            <td>@owner.FirstName</td>
-                            <td>@owner.LastName</td>
-                            <td>@owner.BirthDate.ToString("yyyy-MM-dd")</td>
-                            <td>@owner.Address</td>
-                            <td>@owner.Cars.Count</td>
-                            <td>@owner.PhoneNumber</td>
-                            <td>
-                                @if (owner.Cars.Count > 0)
-                                {
-                                    <a asp-action="OwnerCars" asp-route-id="@owner.Id" class="btn btn-sm btn-primary mb-1">Show Cars</a>
-                                }
-                                <form asp-action="Delete" asp-route-id="@owner.Id" method="post" class="delete-form d-inline">
-                                    <button type="button" class="btn btn-sm btn-danger delete-btn">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+</table>
 
-    <div class="d-flex justify-content-center mt-4">
-        @Html.PagedListPager(Model, page => Url.Action("Owners", new { page }), new PagedListRenderOptions
-   {
-       LiElementClasses = new[] { "page-item" },
-       PageClasses = new[] { "page-link" },
-       UlElementClasses = new[] { "pagination" },
-       DisplayLinkToFirstPage = PagedListDisplayMode.Never,
-       DisplayLinkToLastPage = PagedListDisplayMode.Never,
-       DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-       DisplayLinkToNextPage = PagedListDisplayMode.Always,
-       LinkToPreviousPageFormat = "« Prev",
-       LinkToNextPageFormat = "Next »",
-       MaximumPageNumbersToDisplay = 5,
-       DisplayEllipsesWhenNotShowingAllPageNumbers = true
-   })
-    </div>
+<div class="d-flex justify-content-center mt-4">
+    @Html.PagedListPager(Model, page => Url.Action("Clients", new { page }), new PagedListRenderOptions
+{
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    UlElementClasses = new[] { "pagination" },
+    DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+    DisplayLinkToLastPage = PagedListDisplayMode.Never,
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+    LinkToPreviousPageFormat = "« Prev",
+    LinkToNextPageFormat = "Next »",
+    MaximumPageNumbersToDisplay = 5,
+    DisplayEllipsesWhenNotShowingAllPageNumbers = true
+})
 </div>
-
-@await Html.PartialAsync("_DeleteConfirmationScript")
