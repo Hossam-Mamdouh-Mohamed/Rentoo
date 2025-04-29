@@ -120,23 +120,11 @@
   <data name="About" xml:space="preserve">
     <value>نبذة</value>
   </data>
-  <data name="ApplicationRequest" xml:space="preserve">
-    <value>طلب تأجير</value>
-  </data>
   <data name="Car" xml:space="preserve">
     <value>سيارة</value>
   </data>
   <data name="Contact" xml:space="preserve">
     <value>تواصل معنا</value>
-  </data>
-  <data name="DeliveryAddress" xml:space="preserve">
-    <value>عنوان التسليم</value>
-  </data>
-  <data name="FactoryYear" xml:space="preserve">
-    <value>سنة التصنيع</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>من</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>الرئيسية</value>
@@ -144,40 +132,13 @@
   <data name="LanguageToggle" xml:space="preserve">
     <value>ع</value>
   </data>
-  <data name="Location" xml:space="preserve">
-    <value>الموقع</value>
-  </data>
   <data name="LogIn" xml:space="preserve">
     <value>تسجيل دخزل</value>
-  </data>
-  <data name="pickupAddress" xml:space="preserve">
-    <value>عنوان الاستلام</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>بحث</value>
-  </data>
-  <data name="SearchAboutCar" xml:space="preserve">
-    <value>ابحث عن سيارة</value>
-  </data>
-  <data name="Seats" xml:space="preserve">
-    <value>مقعد</value>
-  </data>
-  <data name="SelectYourCartype" xml:space="preserve">
-    <value>اختر نوع عربيتك</value>
   </data>
   <data name="Service" xml:space="preserve">
     <value>خدمات</value>
   </data>
   <data name="SignUp" xml:space="preserve">
     <value>انضم الان</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>إلى</value>
-  </data>
-  <data name="Transmission" xml:space="preserve">
-    <value>ناقل الحركة</value>
-  </data>
-  <data name="WithDriver" xml:space="preserve">
-    <value>بالسائق</value>
   </data>
 </root>
