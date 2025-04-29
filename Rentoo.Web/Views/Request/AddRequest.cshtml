@@ -2,9 +2,11 @@
 @{
     ViewData["Title"] = "Add Request";
 }
+@using RM = Rentoo.Domain.Shared.Localization.Global;
+
 
 <div class="container mt-5 mb-5">
-    <h2 class="text-center mb-4">Request Rental</h2>
+    <h2 class="text-center mb-4">@RM.Global.ApplicationRequest</h2>
 
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
@@ -18,28 +20,28 @@
 
                         <!-- Start Date -->
                         <div class="form-group mb-3">
-                            <label asp-for="StartDate" class="form-label fw-bold"></label>
+                            <label class="form-label fw-bold">@RM.Global.From</label>
                             <input asp-for="StartDate" type="date" class="form-control form-control-lg" id="StartDate" />
                             <span asp-validation-for="StartDate" class="text-danger"></span>
                         </div>
 
                         <!-- End Date -->
                         <div class="form-group mb-3">
-                            <label asp-for="EndDate" class="form-label fw-bold"></label>
+                            <label class="form-label fw-bold">@RM.Global.To</label>
                             <input asp-for="EndDate" type="date" class="form-control form-control-lg" id="EndDate" />
                             <span asp-validation-for="EndDate" class="text-danger"></span>
                         </div>
 
                         <!-- Delivery Address -->
                         <div class="form-group mb-3">
-                            <label asp-for="DeliveryAddress" class="form-label fw-bold"></label>
+                            <label class="form-label fw-bold">@RM.Global.DeliveryAddress</label>
                             <input asp-for="DeliveryAddress" class="form-control form-control-lg" placeholder="Enter delivery address" />
                             <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
                         </div>
 
                         <!-- Pickup Address -->
                         <div class="form-group mb-3">
-                            <label asp-for="pickupAddress" class="form-label fw-bold"></label>
+                            <label class="form-label fw-bold">@RM.Global.pickupAddress</label>
                             <input asp-for="pickupAddress" class="form-control form-control-lg" placeholder="Enter pickup address" />
                             <span asp-validation-for="pickupAddress" class="text-danger"></span>
                         </div>
@@ -47,7 +49,7 @@
                         <!-- With Driver -->
                         <div class="form-group form-check mb-3">
                             <input class="form-check-input" asp-for="WithDriver" id="WithDriver" />
-                            <label class="form-check-label" asp-for="WithDriver"></label>
+                            <label class="form-label fw-bold">@RM.Global.WithDriver</label>
                         </div>
 
                         <hr class="my-4" />
