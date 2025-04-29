@@ -126,14 +126,32 @@
   <data name="Contact" xml:space="preserve">
     <value>Contact</value>
   </data>
+  <data name="FactoryYear" xml:space="preserve">
+    <value>Model Year</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
   <data name="LanguageToggle" xml:space="preserve">
     <value>En</value>
   </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
   <data name="LogIn" xml:space="preserve">
     <value>LogIn</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchAboutCar" xml:space="preserve">
+    <value>Search About Car</value>
+  </data>
+  <data name="Seats" xml:space="preserve">
+    <value>Seats</value>
+  </data>
+  <data name="SelectYourCartype" xml:space="preserve">
+    <value>Select Your Car type</value>
   </data>
   <data name="Service" xml:space="preserve">
     <value>Service</value>
@@ -141,7 +159,7 @@
   <data name="SignUp" xml:space="preserve">
     <value>SignUp</value>
   </data>
-  <data name="YourInformation" xml:space="preserve">
-    <value>Your Information</value>
+  <data name="Transmission" xml:space="preserve">
+    <value>Transmission</value>
   </data>
 </root>
