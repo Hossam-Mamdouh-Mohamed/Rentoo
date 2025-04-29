@@ -141,4 +141,7 @@
   <data name="SignUp" xml:space="preserve">
     <value>انضم الان</value>
   </data>
+  <data name="YourInformation" xml:space="preserve">
+    <value>بياناتك</value>
+  </data>
 </root>

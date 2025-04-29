@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RM {
+namespace Rentoo.Domain.Shared.Localization.Global {
     using System;
     
     
@@ -70,6 +70,15 @@ namespace RM {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Car.
+        /// </summary>
+        public static string Car {
+            get {
+                return ResourceManager.GetString("Car", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact.
         /// </summary>
         public static string Contact {
@@ -120,6 +129,15 @@ namespace RM {
         public static string SignUp {
             get {
                 return ResourceManager.GetString("SignUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Information.
+        /// </summary>
+        public static string YourInformation {
+            get {
+                return ResourceManager.GetString("YourInformation", resourceCulture);
             }
         }
     }
