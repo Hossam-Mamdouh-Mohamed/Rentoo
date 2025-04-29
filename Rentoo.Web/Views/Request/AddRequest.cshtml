@@ -13,6 +13,9 @@
                     <form asp-action="CompleteRequest">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+                        <!-- Hidden Car ID -->
+                        <input type="hidden" id="CarId" name="CarId" value="@ViewBag.CarId" />
+
                         <!-- Start Date -->
                         <div class="form-group mb-3">
                             <label asp-for="StartDate" class="form-label fw-bold"></label>
@@ -52,16 +55,17 @@
                         <!-- Total Price Display -->
                         <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded mb-4">
                             <span class="fw-bold fs-5">Total Price:</span>
-                            <span id="totalPrice" class="text-success fw-bold fs-5">$0.00</span>
+                            <span id="totalPrice" class="text-success fw-bold fs-5">Loading...</span>
+                            <input asp-for="TotalPrice" id="inpTotPri"  hidden/>
                         </div>
 
                         <!-- Submit -->
                         <div class="form-group">
-                            <input type="submit" value="Continue" class="btn btn-success btn-lg w-100" />
+                            <input type="submit" value="Continue to Payment" class="btn btn-primary btn-lg w-100" />
                         </div>
 
                         <div class="text-center mt-3">
-                            <a asp-action="Home" asp-controller="" class="text-decoration-none">Back to Home page</a>
+                            <a asp-action="Index" class="text-decoration-none">Back to Listings</a>
                         </div>
                     </form>
                 </div>
@@ -70,15 +74,26 @@
     </div>
 </div>
 
+<!--
+What is Ajax ?
+    Set of Technologies
+    1- XMLHTTPRequest
+    2- DOM
+    3- CSS
+    With using AJAX I Can Make Partial Request in the page
+-->
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-			const today = new Date().toISOString().split('T')[0];
+            const today = new Date().toISOString().split('T')[0];
             const startDateInput = document.getElementById("StartDate");
             const endDateInput = document.getElementById("EndDate");
+            const carIdInput = document.getElementById("CarId");
+			const withDriverInput = document.getElementById("WithDriver");
 
             // Set min for start date and end date
             startDateInput.setAttribute("min", today);
@@ -94,44 +109,60 @@
                     endDateInput.value = "";
                 }
 
-                calculatePrice();
+                calculateTotalPrice();
             });
 
             // Calculate price when end date changes
             endDateInput.addEventListener("change", function() {
-                calculatePrice();
+                calculateTotalPrice();
             });
 
-            // With Driver checkbox changes
-            document.getElementById("WithDriver").addEventListener("change", function() {
-                calculatePrice();
-            });
+			// Calculate price when WithDriver checkbox changes
+			withDriverInput.addEventListener("change", function() {
+				calculateTotalPrice();
+		    });
 
-            // Simple price calculation example
+            // Calculate total price using server-side API
+            function calculateTotalPrice() {
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+                const carId = carIdInput.value;
+				const withDriver = document.getElementById("WithDriver").checked;
 
-            function calculatePrice() {
-                const startDate = new Date(startDateInput.value);
-                const endDate = new Date(endDateInput.value);
+                if (startDate && endDate && carId) {
+                    // Display loading state
+                    document.getElementById("totalPrice").textContent = "Calculating...";
 
+                    // Call the server API to get the price
+                    fetch(`/Request/GetTotalPrice?startDate=${startDate}&endDate=${endDate}&carId=${carId}&WithDriver=${withDriver}`)
+                                .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Format price with currency symbol
+                                const formattedPrice = new Intl.NumberFormat('en-US', {
+                                    style: 'currency',
+                                    currency: 'USD'
+                                }).format(data.totalPrice);
 
-                if (startDateInput.value && endDateInput.value) {
-                    // Calculate days difference
-                    const diffTime = Math.abs(endDate - startDate);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-
-                    // Base price per day
-                    let basePrice = 50;
-
-
-                    // Add driver fee if selected
-                    if (document.getElementById("WithDriver").checked) {
-                        basePrice += 25;
-                    }
-
-                    const totalPrice = basePrice * diffDays;
-                    document.getElementById("totalPrice").textContent = "$" + totalPrice.toFixed(2);
+								document.getElementById("inpTotPri").value = data.totalPrice;
+                                document.getElementById("totalPrice").textContent = formattedPrice;
+                            } else {
+                                document.getElementById("totalPrice").textContent = "Error calculating price111";
+                                console.error(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            document.getElementById("totalPrice").textContent = "Error calculating pricesssss";
+                            console.error("Error fetching price:", error);
+                        });
+                } else {
+                    document.getElementById("totalPrice").textContent = "Please select dates";
                 }
+            }
+
+            if (startDateInput.value && endDateInput.value) {
+                calculateTotalPrice();
             }
         });
     </script>
-}
+}   

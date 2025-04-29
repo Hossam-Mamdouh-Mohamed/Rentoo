@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Rentoo.Application.Interfaces;
 using Rentoo.Domain.Entities;
 using Rentoo.Web.ViewModels;
@@ -7,7 +8,6 @@ namespace Rentoo.Web.Controllers
 {
     public class RequestController : Controller
     {
-        int CarId { get; set; }
         private readonly IService<Request> _ReqServes;
         private readonly IService<Car> _CarServes;
         private readonly IService<RateCode> _RateCodeServes;
@@ -24,9 +24,10 @@ namespace Rentoo.Web.Controllers
         }
 
         [HttpGet]
+        [Route("Request/AddRequest/{carId}")]
         public IActionResult AddRequest(int carId)
         {
-            CarId = carId;
+            ViewBag.CarId = carId;
             return View();
         }
 
@@ -35,44 +36,31 @@ namespace Rentoo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                int days = (int)(requestViewModel.EndDate - requestViewModel.StartDate).TotalDays;
-                int TotalPrice = 0;
-
-                Car car = await _CarServes.GetByIdAsync(1);
-
-
-                RateCode rateCode = await _RateCodeServes.GetByIdAsync(car.RateCodeId.Value); // Use .Value to access the int value
-                var rateCodeDays = await _RateCodeDayServes.GetAllAsync(rcd => rcd.RateCodeId == rateCode.ID);
-
-                for (int i = 0; i < days; i++)
+                // Save the request to the database
+                var request = new Request
                 {
-                    
-                }
-
-                requestViewModel.TotalPrice = TotalPrice;
-                
+                    StartDate = requestViewModel.StartDate.ToString("yyyy-MM-dd"),
+                    EndDate = requestViewModel.EndDate.ToString("yyyy-MM-dd"),
+                    TotalPrice = requestViewModel.TotalPrice,
+                    Status = RequestStatus.Pending,
+                    DeliveryAddress = requestViewModel.DeliveryAddress,
+                    pickupAddress = requestViewModel.pickupAddress,
+                    WithDriver = requestViewModel.WithDriver,
+                    CarId = requestViewModel.CarId,
+                    UserID = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                };
+                await _ReqServes.AddAsync(request);
             }
+            ViewBag.CarId = requestViewModel.CarId;
             return View("AddRequest", requestViewModel);
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> SaveRequest(RequestViewModel requestViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                // Here you would typically save the request to the database
-                // await _ReqSetves.AddAsync(request);
-               
-                return RedirectToAction("Index", "Home");
-            }
-            return View(requestViewModel);
-        }
-
-        private async Task<float> CalculateTotalPrice(DateTime startDate, DateTime endDate, int carId)
+       
+        private async Task<float> CalculateTotalPrice(DateTime startDate, DateTime endDate, int carId, bool WithDriver)
         {
             float totalPrice = 0;
-            var car = await _CarServes.GetByIdAsync(1);
+            var car = await _CarServes.GetByIdAsync(carId);
             if (car == null || !car.RateCodeId.HasValue)
             {
                 throw new Exception("Car not found or no rate code assigned");
@@ -83,7 +71,7 @@ namespace Rentoo.Web.Controllers
             for (int i = 0; i < totalDays; i++)
             {
                 DateTime currentDate = startDate.AddDays(i);
-                int dayOfWeek = (int)currentDate.DayOfWeek; // هنا هيجبلي الايام في الفتره دي 
+                int dayOfWeek = (int)currentDate.DayOfWeek+1; // هنا هيجبلي الايام في الفتره دي 
 
                 // Find the rate for this day
                 var rateForDay = rateCodeDays.FirstOrDefault(rcd => rcd.DayId == dayOfWeek);
@@ -101,15 +89,20 @@ namespace Rentoo.Web.Controllers
                     totalPrice += defaultRate.Price;
                 }
             }
+            // Add driver cost if applicable
+            if (WithDriver)
+            {
+                totalPrice += totalDays * 25;  
+            }
 
             return totalPrice;
         }
         [HttpGet]
-        public async Task<IActionResult> GetTotalPrice(DateTime startDate, DateTime endDate, int carId)
+        public async Task<IActionResult> GetTotalPrice(DateTime startDate, DateTime endDate, int carId, bool WithDriver)
         {
             try
             {
-                var totalPrice = await CalculateTotalPrice(startDate, endDate, carId);
+                var totalPrice = await CalculateTotalPrice(startDate, endDate, carId, WithDriver);
                 return Json(new { success = true, totalPrice });
             }
             catch (Exception ex)
