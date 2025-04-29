@@ -108,7 +108,7 @@ namespace Rentoo.Web.Controllers
                     var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        if (_signInManager.IsSignedIn(User) && ((User.IsInRole("Admin"))|| (User.IsInRole("SuperAdmin"))))
+                        if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
                             TempData["SuccessMessage"] = "Sign in Successfully";
                             return RedirectToAction("Index", "Admin");

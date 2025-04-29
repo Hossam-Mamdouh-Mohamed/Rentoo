@@ -2,82 +2,72 @@
 @using X.PagedList.Mvc.Core
 
 @{
-    ViewData["Title"] = "Completed Retals";
+    ViewData["Title"] = "Completed Requests";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container mt-4">
-    <h2 class="text-primary">Completed Rentals</h2>
+<h2 class="mt-4">Completed Requests</h2>
 
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
-            <table class="table table-hover table-striped table-bordered mb-0">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>User</th>
-                        <th>Car</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Total Price</th>
-                        <th>With Driver</th>
-                        <th>Delivery Address</th>
-                        <th>Pickup Address</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int rowIndex = (Model.PageNumber - 1) * Model.PageSize;
-                    }
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>User</th>
+            <th>Car</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total Price</th>
+            <th>With Driver</th>
+            <th>Delivery Address</th>
+            <th>Pickup Address</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int rowIndex = (Model.PageNumber - 1) * Model.PageSize;
+        }
 
-                    @foreach (var request in Model)
-                    {
-                        rowIndex++;
-                        <tr>
-                            <td>@rowIndex</td>
-                            <td>@request.User?.FirstName @request.User?.LastName</td>
-                            <td>@request.Car?.ID</td>
-                            <td>@request.StartDate</td>
-                            <td>@request.EndDate</td>
-                            <td>@request.TotalPrice.ToString("C")</td>
-                            <td>@(request.WithDriver ? "Yes" : "No")</td>
-                            <td>@request.DeliveryAddress</td>
-                            <td>@request.pickupAddress</td>
-                            <td><span class="badge bg-success">@request.Status</span></td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@request.ID" class="btn btn-sm btn-info">Details</a>
-                                @* Optional Delete Button *@
-                                @* <form asp-action="Delete" asp-route-id="@request.ID" method="post" class="d-inline" onsubmit="return confirm('Delete this request?');">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form> *@
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+        @foreach (var request in Model)
+        {
+            rowIndex++;
+            <tr>
+                <td>@rowIndex</td>
+                <td>@request.User?.FirstName @request.User?.LastName</td>
+                <td>@request.Car?.ID</td> 
+                <td>@request.StartDate</td>
+                <td>@request.EndDate</td>
+                <td>@request.TotalPrice.ToString("C")</td>
+                <td>@(request.WithDriver ? "Yes" : "No")</td>
+                <td>@request.DeliveryAddress</td>
+                <td>@request.pickupAddress</td>
+                <td><span class="badge bg-success">@request.Status</span></td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@request.ID" class="btn btn-sm btn-info">Details</a>
+                    @* Optional Delete Button *@
+                    @* <form asp-action="Delete" asp-route-id="@request.ID" method="post" class="d-inline" onsubmit="return confirm('Delete this request?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-    <!-- Pagination Controls -->
-    <div class="d-flex justify-content-center mt-4">
-        @Html.PagedListPager(Model, page => Url.Action("Rentals", new { page }), new PagedListRenderOptions
-   {
-       LiElementClasses = new[] { "page-item" },
-       PageClasses = new[] { "page-link" },
-       UlElementClasses = new[] { "pagination" },
-       DisplayLinkToFirstPage = PagedListDisplayMode.Never,
-       DisplayLinkToLastPage = PagedListDisplayMode.Never,
-       DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-       DisplayLinkToNextPage = PagedListDisplayMode.Always,
-       LinkToPreviousPageFormat = "« Prev",
-       LinkToNextPageFormat = "Next »",
-       MaximumPageNumbersToDisplay = 5,
-       DisplayEllipsesWhenNotShowingAllPageNumbers = true
-   })
-    </div>
+<div class="d-flex justify-content-center mt-4">
+    @Html.PagedListPager(Model, page => Url.Action("Rentals", new { page }), new PagedListRenderOptions
+{
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    UlElementClasses = new[] { "pagination" },
+    DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+    DisplayLinkToLastPage = PagedListDisplayMode.Never,
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+    LinkToPreviousPageFormat = "« Prev",
+    LinkToNextPageFormat = "Next »",
+    MaximumPageNumbersToDisplay = 5,
+    DisplayEllipsesWhenNotShowingAllPageNumbers = true
+})
 </div>
-
-@* Delete Confirmation Script *@
-@await Html.PartialAsync("_DeleteConfirmationScript")
