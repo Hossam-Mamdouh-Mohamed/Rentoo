@@ -229,7 +229,43 @@
             opacity: 0.9;
             transform: translateY(-2px);
         }
+        /* Request Button Styles */
+        .request-button-container {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
 
+        .btn.request-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn.request-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .availability-message {
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+            text-align: center;
+            color: #6c757d;
+        }
         .car-owner-info {
             display: flex;
             align-items: center;
@@ -405,6 +441,21 @@
 
                     </div>
 
+                    @if (Model.Car.IsAvailable)
+                    {
+                        <div class="request-button-container">
+                            <a href="@Url.Action("AddRequest", "Request", new { carId = Model.Car.ID })" class="btn request-btn">
+                                <i class="fas fa-calendar-check"></i> Request to Rent
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="availability-message">
+                            <i class="fas fa-info-circle"></i> This vehicle is currently unavailable for rental
+                        </div>
+                    }
+
                     <!-- Owner Information -->
                     <div class="car-owner-info">
                         <img src="\assets\img\team-1.jpg" alt="Owner" class="owner-avatar">
@@ -417,6 +468,11 @@
                             </div>
                         </div>
                     </div>
+                    @* <div class="request-button-container">
+                        <a href="@Url.Action("AddRequest", "Request", new { carId = Model.Car.ID })" class="btn request-btn">
+                            <i class="fas fa-calendar-check"></i> Request to Rent
+                        </a>
+                    </div> *@
                 </div>
             </div>
         </div>
