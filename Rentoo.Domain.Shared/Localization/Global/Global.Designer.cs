@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rentoo.Domain.Shared.Localization.Global {
+namespace RM {
     using System;
     
     
@@ -70,52 +70,11 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application Request.
-        /// </summary>
-        public static string ApplicationRequest {
-            get {
-                return ResourceManager.GetString("ApplicationRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Car.
+        ///   Looks up a localized string similar to Contact.
         /// </summary>
         public static string Contact {
             get {
                 return ResourceManager.GetString("Contact", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Model Year.
-        /// </summary>
-        public static string FactoryYear {
-            get {
-                return ResourceManager.GetString("FactoryYear", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delivery Address.
-        /// </summary>
-        public static string DeliveryAddress {
-            get {
-                return ResourceManager.GetString("DeliveryAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Model Year.
-        /// </summary>
-
-        
-        /// <summary>
-        ///   Looks up a localized string similar to From.
-        /// </summary>
-        public static string From {
-            get {
-                return ResourceManager.GetString("From", resourceCulture);
             }
         }
         
@@ -134,15 +93,6 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string LanguageToggle {
             get {
                 return ResourceManager.GetString("LanguageToggle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Location.
-        /// </summary>
-        public static string Location {
-            get {
-                return ResourceManager.GetString("Location", resourceCulture);
             }
         }
         
@@ -170,33 +120,6 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string SignUp {
             get {
                 return ResourceManager.GetString("SignUp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To.
-        /// </summary>
-        public static string To {
-            get {
-                return ResourceManager.GetString("To", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transmission.
-        /// </summary>
-        public static string Transmission {
-            get {
-                return ResourceManager.GetString("Transmission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Your Information.
-        /// </summary>
-        public static string YourInformation {
-            get {
-                return ResourceManager.GetString("YourInformation", resourceCulture);
             }
         }
     }

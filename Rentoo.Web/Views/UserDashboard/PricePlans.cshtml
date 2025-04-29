@@ -580,12 +580,10 @@
                             method: 'DELETE'
                         });
 
-                        const result = await response.json();
-                        
-                        if (result.success) {
+                        if (response.ok) {
                             location.reload();
                         } else {
-                            alert(result.message || 'Failed to delete price plan');
+                            alert('Failed to delete price plan');
                         }
                     } catch (error) {
                         console.error('Error:', error);
