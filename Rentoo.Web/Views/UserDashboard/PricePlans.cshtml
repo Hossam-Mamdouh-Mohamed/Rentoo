@@ -1,0 +1,785 @@
+@model IEnumerable<Rentoo.Web.ViewModels.PricePlanViewModel>
+
+@{
+    Layout = "~/Views/Shared/_EndUserLayout.cshtml";
+    ViewData["Title"] = "Price Plans";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f2f3f5;
+            color: #333;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .dashboard-sidebar {
+            width: 280px;
+            background: #1a1a2e;
+            color: #fff;
+            padding-top: 40px;
+        }
+
+        .sidebar-brand {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .sidebar-brand img {
+            max-width: 120px;
+        }
+
+        .sidebar-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar-item:hover {
+            background-color: #16213e;
+        }
+
+        .sidebar-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .dashboard-content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0;
+        }
+
+        .table th,
+        .table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.875rem;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn i {
+            font-size: 0.9em;
+        }
+
+        .modal-content {
+            border-radius: 10px;
+            border: none;
+        }
+
+        .modal-header {
+            background-color: #1a1a2e;
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #1a1a2e;
+            box-shadow: 0 0 0 0.2rem rgba(26, 26, 46, 0.25);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-tab {
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #777;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-tab:hover {
+            color: #e91e63;
+        }
+
+        .nav-tab.active {
+            background-color: #e91e63;
+            color: #fff;
+        }
+
+        .nav-tab i {
+            margin-right: 8px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-content">
+            <div class="page-header">
+                <h1>Price Plans</h1>
+            </div>
+            <div class="nav-tabs">
+                <a href="@Url.Action("UserProfile", "UserDashboard")" class="nav-tab"><i class="fas fa-user"></i> MY ACCOUNT</a>
+                <a href="@Url.Action("MyCar", "UserDashboard")" class="nav-tab"><i class="fas fa-car"></i> MY CARS</a>
+                <a href="@Url.Action("MyRequests", "UserDashboard")" class="nav-tab "><i class="fas fa-file-alt"></i> MY REQUESTS</a>
+                <a href="@Url.Action("Reviews", "UserDashboard")" class="nav-tab"><i class="fas fa-star"></i> REVIEWS</a>
+                <a href="@Url.Action("PricePlans", "UserDashboard")" class="nav-tab active"><i class="fas fa-tags"></i> PRICE PLANS</a>
+            </div>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">Price Plans</h3>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRateCodeModal">
+                        <i class="fas fa-plus"></i> Add New Price Plan
+                    </button>
+ 
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var rateCode in Model)
+                                {
+                                    <tr>
+                                        <td>@rateCode.Name</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-info btn-sm" onclick="showDetails(@rateCode.ID)">
+                                                    <i class="fas fa-eye"></i> Details
+                                                </button>
+                                                <button class="btn btn-warning btn-sm" onclick="editRateCode(@rateCode.ID)">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                                <button class="btn btn-success btn-sm" onclick="assignToCar(@rateCode.ID)">
+                                                    <i class="fas fa-car"></i> Assign
+                                                </button>
+                                                <button class="btn btn-danger btn-sm" onclick="deleteRateCode(@rateCode.ID)">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Rate Code Modal -->
+    <div class="modal fade" id="addRateCodeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Price Plan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="addRateCodeForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Plan Name</label>
+                            <input type="text" class="form-control" name="Name" required>
+                        </div>
+                        <div id="rateCodeDaysContainer">
+                            <div class="rate-code-day mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Day</label>
+                                        <select class="form-select" name="DayId" required>
+                                            <option value="1">Monday</option>
+                                            <option value="2">Tuesday</option>
+                                            <option value="3">Wednesday</option>
+                                            <option value="4">Thursday</option>
+                                            <option value="5">Friday</option>
+                                            <option value="6">Saturday</option>
+                                            <option value="7">Sunday</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Price</label>
+                                        <input type="number" class="form-control" name="Price" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addRateCodeDay()">
+                            <i class="fas fa-plus"></i> Add Another Day
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal fade" id="detailsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Price Plan Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 id="rateCodeName" class="mb-3"></h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rateCodeDaysTable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign to Car Modal -->
+    <div class="modal fade" id="assignToCarModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Price Plan to Car</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Select Car</label>
+                        <select class="form-select" id="carSelect">
+                            <option value="">Select a car</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveCarAssignment()">Assign</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Rate Code Modal -->
+    <div class="modal fade" id="editRateCodeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Price Plan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editRateCodeForm">
+                    <input type="hidden" name="ID" id="editRateCodeId">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Plan Name</label>
+                            <input type="text" class="form-control" name="Name" id="editRateCodeName" required>
+                        </div>
+                        <div id="editRateCodeDaysContainer">
+                            <!-- Days will be added here dynamically -->
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addEditRateCodeDay()">
+                            <i class="fas fa-plus"></i> Add Another Day
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            let currentRateCodeId = null;
+
+            function addRateCodeDay() {
+                const container = document.getElementById('rateCodeDaysContainer');
+                const existingDays = new Set();
+                
+                // Get all existing day values
+                container.querySelectorAll('.rate-code-day select[name="DayId"]').forEach(select => {
+                    existingDays.add(parseInt(select.value));
+                });
+
+                // Check if we already have 7 days
+                if (existingDays.size >= 7) {
+                    alert('You can only add up to 7 days (one for each day of the week)');
+                    return;
+                }
+
+                // Find the first available day
+                let newDayId = 1;
+                while (existingDays.has(newDayId)) {
+                    newDayId++;
+                }
+
+                const newDay = container.firstElementChild.cloneNode(true);
+                const select = newDay.querySelector('select[name="DayId"]');
+                select.value = newDayId;
+                container.appendChild(newDay);
+            }
+
+            function showDetails(id) {
+                const rateCode = @Html.Raw(Json.Serialize(Model));
+                const selectedRateCode = rateCode.find(rc => rc.id === id);
+                
+                document.getElementById('rateCodeName').textContent = selectedRateCode.name;
+                const daysTable = document.getElementById('rateCodeDaysTable');
+                daysTable.innerHTML = '';
+                
+                selectedRateCode.days.forEach(day => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${getDayName(day.dayId)}</td>
+                        <td>$${day.price}</td>
+                    `;
+                    daysTable.appendChild(row);
+                });
+                
+                new bootstrap.Modal(document.getElementById('detailsModal')).show();
+            }
+
+            function getDayName(dayId) {
+                const days = {
+                    1: 'Monday',
+                    2: 'Tuesday',
+                    3: 'Wednesday',
+                    4: 'Thursday',
+                    5: 'Friday',
+                    6: 'Saturday',
+                    7: 'Sunday'
+                };
+                return days[dayId] || 'Unknown';
+            }
+
+            async function assignToCar(id) {
+                currentRateCodeId = id;
+                try {
+                    const response = await fetch('/UserDashboard/GetUserCars');
+                    const cars = await response.json();
+                    
+                    const carSelect = document.getElementById('carSelect');
+                    carSelect.innerHTML = '<option value="">Select a car</option>';
+                    
+                    cars.forEach(car => {
+                        const option = document.createElement('option');
+                        option.value = car.id;
+                        option.textContent = `${car.model} (${car.color})`;
+                        if (car.rateCodeId === id) {
+                            option.selected = true;
+                        }
+                        carSelect.appendChild(option);
+                    });
+                    
+                    new bootstrap.Modal(document.getElementById('assignToCarModal')).show();
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to load cars');
+                }
+            }
+
+            async function saveCarAssignment() {
+                const carId = document.getElementById('carSelect').value;
+                if (!carId) {
+                    alert('Please select a car');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/UserDashboard/AssignRateCodeToCar', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            carId: parseInt(carId),
+                            rateCodeId: currentRateCodeId
+                        })
+                    });
+
+                    if (response.ok) {
+                        alert('Price plan assigned successfully');
+                        bootstrap.Modal.getInstance(document.getElementById('assignToCarModal')).hide();
+                    } else {
+                        alert('Failed to assign price plan');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while assigning the price plan');
+                }
+            }
+
+            async function deleteRateCode(id) {
+                if (confirm('Are you sure you want to delete this price plan?')) {
+                    try {
+                        const response = await fetch(`/UserDashboard/DeletePricePlan/${id}`, {
+                            method: 'DELETE'
+                        });
+
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            location.reload();
+                        } else {
+                            alert(result.message || 'Failed to delete price plan');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred while deleting the price plan');
+                    }
+                }
+            }
+
+            async function editRateCode(id) {
+                try {
+                    const response = await fetch(`/UserDashboard/GetPricePlan/${id}`);
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        const rateCode = result.data;
+                        document.getElementById('editRateCodeId').value = rateCode.id;
+                        document.getElementById('editRateCodeName').value = rateCode.name;
+                        
+                        const container = document.getElementById('editRateCodeDaysContainer');
+                        container.innerHTML = '';
+                        
+                        rateCode.days.forEach(day => {
+                            addEditRateCodeDay(day.dayId, day.price);
+                        });
+                        
+                        new bootstrap.Modal(document.getElementById('editRateCodeModal')).show();
+                    } else {
+                        alert('Failed to load price plan: ' + (result.message || 'Unknown error'));
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while loading the price plan');
+                }
+            }
+
+            function addEditRateCodeDay(dayId = null, price = 0) {
+                const container = document.getElementById('editRateCodeDaysContainer');
+                const existingDays = new Set();
+                
+                // Get all existing day values
+                container.querySelectorAll('.rate-code-day select[name="DayId"]').forEach(select => {
+                    existingDays.add(parseInt(select.value));
+                });
+
+                // Check if we already have 7 days
+                if (existingDays.size >= 7) {
+                    alert('You can only add up to 7 days (one for each day of the week)');
+                    return;
+                }
+
+                // If no dayId provided, find the first available day
+                if (!dayId) {
+                    dayId = 1;
+                    while (existingDays.has(dayId)) {
+                        dayId++;
+                    }
+                }
+
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'rate-code-day mb-3';
+                dayDiv.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Day</label>
+                            <select class="form-select" name="DayId" required onchange="validateDaySelection(this)">
+                                <option value="1" ${dayId === 1 ? 'selected' : ''}>Monday</option>
+                                <option value="2" ${dayId === 2 ? 'selected' : ''}>Tuesday</option>
+                                <option value="3" ${dayId === 3 ? 'selected' : ''}>Wednesday</option>
+                                <option value="4" ${dayId === 4 ? 'selected' : ''}>Thursday</option>
+                                <option value="5" ${dayId === 5 ? 'selected' : ''}>Friday</option>
+                                <option value="6" ${dayId === 6 ? 'selected' : ''}>Saturday</option>
+                                <option value="7" ${dayId === 7 ? 'selected' : ''}>Sunday</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Price</label>
+                            <input type="number" class="form-control" name="Price" step="0.01" value="${price}" required>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(dayDiv);
+            }
+
+            function validateDaySelection(select) {
+                const container = select.closest('#rateCodeDaysContainer, #editRateCodeDaysContainer');
+                const selectedValue = parseInt(select.value);
+                const allSelects = container.querySelectorAll('select[name="DayId"]');
+                
+                // Check for duplicates
+                let duplicateFound = false;
+                allSelects.forEach(otherSelect => {
+                    if (otherSelect !== select && parseInt(otherSelect.value) === selectedValue) {
+                        duplicateFound = true;
+                    }
+                });
+
+                if (duplicateFound) {
+                    alert('This day has already been selected. Please choose a different day.');
+                    select.value = select.getAttribute('data-previous-value') || '1';
+                    return;
+                }
+
+                // Store the current value for next validation
+                select.setAttribute('data-previous-value', selectedValue);
+            }
+
+            // Add event listeners for day selection validation
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('select[name="DayId"]').forEach(select => {
+                    select.addEventListener('change', function() {
+                        validateDaySelection(this);
+                    });
+                });
+            });
+
+            document.getElementById('editRateCodeForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const rateCodeDays = [];
+                
+                document.querySelectorAll('#editRateCodeDaysContainer .rate-code-day').forEach(day => {
+                    rateCodeDays.push({
+                        DayId: parseInt(day.querySelector('[name="DayId"]').value),
+                        Price: parseFloat(day.querySelector('[name="Price"]').value)
+                    });
+                });
+
+                const data = {
+                    ID: parseInt(formData.get('ID')),
+                    Name: formData.get('Name'),
+                    Days: rateCodeDays
+                };
+
+                try {
+                    const response = await fetch('/UserDashboard/UpdatePricePlan', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        location.reload();
+                    } else {
+                        alert('Failed to update price plan: ' + (result.message || 'Unknown error'));
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while updating the price plan');
+                }
+            });
+
+            document.getElementById('addRateCodeForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const rateCodeDays = [];
+                
+                document.querySelectorAll('.rate-code-day').forEach(day => {
+                    rateCodeDays.push({
+                        DayId: parseInt(day.querySelector('[name="DayId"]').value),
+                        Price: parseFloat(day.querySelector('[name="Price"]').value)
+                    });
+                });
+
+                const data = {
+                    Name: formData.get('Name'),
+                    Days: rateCodeDays
+                };
+
+                try {
+                    const response = await fetch('/UserDashboard/CreatePricePlan', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        location.reload();
+                    } else {
+                        alert('Failed to create price plan: ' + (result.message || 'Unknown error'));
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while creating the price plan');
+                }
+            });
+        </script>
+    }
+</body>
+</html> 

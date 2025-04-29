@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Rentoo.Domain.Entities;
 using web.ViewModels;
 
@@ -40,24 +41,45 @@ namespace Rentoo.Web.Controllers
                 UserName = model.UserName,
                 Email = model.Email
             };
-
-            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
+            try
             {
-                await _userManager.AddToRoleAsync(user, model.Role);
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Login", "Account");
-            }
+                var hasUpper = model.Password.Any(char.IsUpper);
+                var hasLower = model.Password.Any(char.IsLower);
+                var hasDigit = model.Password.Any(char.IsDigit);
+                var hasSymbol = model.Password.Any(ch => !char.IsLetterOrDigit(ch));
+                var hasMinLength = model.Password.Length >= 8;
 
-            foreach (var error in result.Errors)
+                if (!(hasUpper && hasLower && hasDigit && hasSymbol && hasMinLength))
+                {
+                    TempData["ErrorMessage"] = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+                    return View("Register", model);
+                }
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, model.Role);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    TempData["SuccessMessage"] = "User Registered Successfully,Please Sign in to continue";
+
+                    return RedirectToAction("Login", "Account");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+
+                }
+                TempData["ErrorMessage"] = "Plese Try Again Later";
+                return View(model);
+            }
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", error.Description);
+                TempData["ErrorMessage"] = "Plese Try Again Later";
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
             }
-
-            return View(model);
         }
-
         [HttpGet]
         public IActionResult Login()
         {
@@ -88,17 +110,21 @@ namespace Rentoo.Web.Controllers
                     {
                         if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
+                            TempData["SuccessMessage"] = "Sign in Successfully";
                             return RedirectToAction("Index", "Admin");
                         }
                         else if (_signInManager.IsSignedIn(User) && User.IsInRole("Owner"))
                         {
+                            TempData["SuccessMessage"] = "Sign in Successfully";
                             return RedirectToAction("UserProfile", "UserDashboard");
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Client");
+                            TempData["SuccessMessage"] = "Sign in Successfully";
+                            return RedirectToAction("ClientProfile", "ClientDashboard");
                         }
                     }
+                    TempData["ErrorMessage"] = "Error Singning in User.";
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
                 }
             }
@@ -112,14 +138,3 @@ namespace Rentoo.Web.Controllers
         }
     }
 }
-//public async Task<IActionResult> Register(RegisterViewModel model)
-// { if (ModelState.IsValid) { User user = new User() { FirstName = model.FirstName, LastName = model.LastName, Age = model.Age, Address = model.Address, PhoneNumber = model.PhoneNumber, UserName = model.UserName, Email = model.Email };
-// IdentityResult result = await _userManager.CreateAsync(user, model.Password); 
-//if (result.Succeeded) { await _userManager.AddToRoleAsync(user, model.Role);
-// await _signInManager.SignInAsync(user, isPersistent: false);
-//if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin")) 
-//{ // return RedirectToAction("Index", "Admin"); //} 
-//else if (_signInManager.IsSignedIn(User) && User.IsInRole("Owner")) 
-//{ // return RedirectToAction("Index", "Owner"); //} //else 
-//{ // return RedirectToAction("Index", "Client"); 
-//} return View("Login"); } else { foreach (var error in result.Errors) { ModelState.AddModelError("", error.Description); } }

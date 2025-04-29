@@ -51,18 +51,15 @@ namespace Rentoo.Domain.Entities
 
         [Required]
         public bool IsAvailable { get; set; }
-
-        [Required]
-        public int RateCodeId { get; set; }
+        public int? RateCodeId { get; set; }
 
         [ForeignKey("RateCodeId")]
         public RateCode rateCode { get; set; }
 
-        [Required]
-        public int CarDocumentId { get; set; }
+        public int? CarDocumentId { get; set; }
 
         [ForeignKey("CarDocumentId")]
-        public CarDocument CarDocument { get; set; }
+        public CarDocument ? CarDocument { get; set; }
 
         [Required]
         public string UserId { get; set; }
@@ -70,14 +67,13 @@ namespace Rentoo.Domain.Entities
         [ForeignKey("UserId")]
         public User User { get; set; }
 
-        public ICollection<CarImage> Images { get; set; }
-        public ICollection<Request> Requests { get; set; }
+        public ICollection<CarImage> ?Images { get; set; }
+        public ICollection<Request> ? Requests { get; set; }
     }
 
     public enum WithDriverEnum
     {
         Yes,
-        No,
-        Both
+        No
     }
 }

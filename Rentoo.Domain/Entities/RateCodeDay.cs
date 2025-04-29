@@ -8,13 +8,13 @@ namespace Rentoo.Domain.Entities
     {
         [Key]
         public int ID { get; set; }
-
-        [Required]
         public int RateCodeId { get; set; }
-
         [Required]
         [StringLength(20)]
-        public string Day { get; set; }
+        public int DayId { get; set; }
+        [Required]
+        [Range(0, float.MaxValue)]
+        public float Price { get; set; }
 
         [ForeignKey("RateCodeId")]
         public RateCode RateCode { get; set; }

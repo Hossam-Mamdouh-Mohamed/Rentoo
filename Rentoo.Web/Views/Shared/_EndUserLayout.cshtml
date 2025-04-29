@@ -27,6 +27,7 @@
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
     <!-- Libraries Stylesheet -->
 	<link href="~/assets/lib/animate/animate.min.css" rel="stylesheet">
@@ -44,6 +45,38 @@
     @RenderSection("Styles", required: false)
 
     <script src="~/assets/js/plugins/jquery.min.js"></script>
+    <style>
+        <style >
+        /* Custom style for toastr notifications */
+        #toast-container > .toast {
+            background-color: #333 !important; /* dark background */
+            color: #fff !important; /* white text */
+            box-shadow: 0 0 10px rgba(0,0,0,0.3); /* optional */
+        }
+
+        /* Optional: Customize success/info/warning/error specifically */
+        #toast-container > .toast-success {
+            background-color: #28a745 !important;
+            color: #fff !important;
+        }
+
+        #toast-container > .toast-info {
+            background-color: #17a2b8 !important;
+            color: #fff !important;
+        }
+
+        #toast-container > .toast-warning {
+            background-color: #ffc107 !important;
+            color: #212529 !important;
+        }
+
+        #toast-container > .toast-error {
+            background-color: #dc3545 !important;
+            color: #fff !important;
+        }
+    </style>
+
+    </style>
 </head>
 <body id="page-top" style="@menuLeft">
 
@@ -237,8 +270,38 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script>
+        $(document).ready(function () {
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>toastr.success('@TempData["SuccessMessage"]');</text>
+        }
+        else if (TempData["ErrorMessage"] != null)
+        {
+            <text>toastr.error('@TempData["ErrorMessage"]');</text>
+        }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right", // change position here
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000", // toast disappears after 5 seconds
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-{
-}

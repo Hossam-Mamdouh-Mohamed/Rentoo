@@ -120,6 +120,9 @@
   <data name="About" xml:space="preserve">
     <value>نبذة</value>
   </data>
+  <data name="Car" xml:space="preserve">
+    <value>سيارة</value>
+  </data>
   <data name="Contact" xml:space="preserve">
     <value>تواصل معنا</value>
   </data>

@@ -19,8 +19,21 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task<T> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
     public async Task<T> GetByIdAsync(string id) => await _dbSet.FindAsync(id);
+    public async Task<T> GetByIdAsync(int id, params string[] includeProperties)
+    {
+        IQueryable<T> query = _dbSet;
+        if (includeProperties != null)
+        {
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+        }
+        return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "ID") == id);
+    }
 
     public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate) => await _dbSet.Where(predicate).ToListAsync();
 
     public async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
 
@@ -28,9 +41,19 @@ public class Repository<T> : IRepository<T> where T : class
 
     public void Remove(T entity) => _dbSet.Remove(entity);
 
-    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate, params string[] includeProperties)
     {
-        return await _dbSet.Where(predicate).ToListAsync();
+        IQueryable<T> query = _dbSet;
+        
+        if (includeProperties != null)
+        {
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+        }
+
+        return await query.Where(predicate).ToListAsync();
     }
 }
 
