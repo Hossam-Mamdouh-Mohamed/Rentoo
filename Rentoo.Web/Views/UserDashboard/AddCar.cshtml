@@ -1,0 +1,131 @@
+﻿@using Rentoo.Domain.Entities
+@model Rentoo.Web.ViewModels.AddCarViewModel
+@{
+    ViewData["Title"] = "Add Car";
+    Layout = "~/Views/Shared/_EndUserLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Add New Car</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="AddCar" asp-controller="UserDashboard" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Model" class="form-label"></label>
+                        <input asp-for="Model" class="form-control" />
+                        <span asp-validation-for="Model" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Transmission" class="form-label"></label>
+                        <select asp-for="Transmission" class="form-select">
+                            <option value="">Select Transmission</option>
+                            <option value="Automatic">Automatic</option>
+                            <option value="Manual">Manual</option>
+                        </select>
+                        <span asp-validation-for="Transmission" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Seats" class="form-label"></label>
+                        <input asp-for="Seats" class="form-control" type="number" min="1" max="10" />
+                        <span asp-validation-for="Seats" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Color" class="form-label"></label>
+                        <input asp-for="Color" class="form-control" />
+                        <span asp-validation-for="Color" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FactoryYear" class="form-label"></label>
+                        <input asp-for="FactoryYear" class="form-control" type="number" min="1900" max="2100" />
+                        <span asp-validation-for="FactoryYear" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Fuel" class="form-label"></label>
+                        <input asp-for="Fuel" class="form-control" />
+                        <span asp-validation-for="Fuel" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Mileage" class="form-label"></label>
+                        <input asp-for="Mileage" class="form-control" type="number" step="0.1" min="0" />
+                        <span asp-validation-for="Mileage" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Address" class="form-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="WithDriver" class="form-label"></label>
+                        <select asp-for="WithDriver" class="form-select">
+                            <option value="">Select Driver Option</option>
+                            <option value="@WithDriverEnum.Yes">With Driver</option>
+                            <option value="@WithDriverEnum.No">Without Driver</option>
+                        </select>
+                        <span asp-validation-for="WithDriver" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="AirCondition" class="form-label"></label>
+                        <div class="form-check">
+                            <input asp-for="AirCondition" class="form-check-input" type="checkbox" />
+                            <label class="form-check-label">Has Air Conditioning</label>
+                        </div>
+                        <span asp-validation-for="AirCondition" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CarImages" class="form-label">Car Images</label>
+                    <input asp-for="CarImages" class="form-control" multiple accept="image/*" />
+                    <span asp-validation-for="CarImages" class="text-danger"></span>
+                    <small class="form-text text-muted">Please upload at least one image of the car</small>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LicenseUrl" class="form-label">License Document</label>
+                    <input asp-for="LicenseUrl" class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                    <span asp-validation-for="LicenseUrl" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LicenseNumber" class="form-label">License Number</label>
+                    <input asp-for="LicenseNumber" class="form-control" />
+                    <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Add Car</button>
+                    <a asp-action="MyCar" asp-controller="UserDashboard" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -54,7 +54,7 @@ namespace Rentoo.Web.Controllers
                 var existingUser = await _userService.GetByIdAsync(id);
                 if (existingUser == null)
                 {
-                    ModelState.AddModelError("", "User not found");
+                    TempData["ErrorMessage"] = "User not found";
                     return View("Profile", user);
                 }
                 if (ProfileImage != null && ProfileImage.Length > 0)
@@ -78,7 +78,7 @@ namespace Rentoo.Web.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "An error occurred while updating your profile. Please try again.");
+                TempData["ErrorMessage"] = "An error occurred while updating your profile. Please try again.";
                 return View("Profile", user);
             }
         }
@@ -89,62 +89,81 @@ namespace Rentoo.Web.Controllers
             var cars = await _carService.GetAllAsync(c => c.UserId == userId, "CarDocument", "Images");
             return View(cars);
         }
+        [HttpGet]
+        public IActionResult AddCar()
+        {
+            return View();
+        }
 
         [HttpPost]
-        public async Task<IActionResult> AddCar([FromForm] Car car, IFormFile licenseUrl, List<IFormFile> carImages, int licenseNumber)
+        public async Task<IActionResult> AddCar(AddCarViewModel addCarViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(addCarViewModel);
+            }
+
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                car.UserId = userId;
-                car.IsAvailable = true;
-                await _carService.AddAsync(car); 
-                CarDocument carDocument = null;
-                if (licenseUrl != null && licenseUrl.Length > 0)
+                
+                // Create new car
+                var car = new Car
                 {
-                    var documentFileName = $"{Guid.NewGuid()}_{Path.GetFileName(licenseUrl.FileName)}";
-                    var documentUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "documents");
-                    Directory.CreateDirectory(documentUploadPath);
-                    var documentFilePath = Path.Combine(documentUploadPath, documentFileName);
+                    Model = addCarViewModel.Model,
+                    Transmission = addCarViewModel.Transmission,
+                    Seats = addCarViewModel.Seats,
+                    Color = addCarViewModel.Color,
+                    AirCondition = addCarViewModel.AirCondition,
+                    Description = addCarViewModel.Description,
+                    FactoryYear = addCarViewModel.FactoryYear,
+                    WithDriver = addCarViewModel.WithDriver,
+                    Fuel = addCarViewModel.Fuel,
+                    Mileage = addCarViewModel.Mileage,
+                    Address = addCarViewModel.Address,
+                    IsAvailable = true,
+                    UserId = userId
+                };
 
-                    using (var stream = new FileStream(documentFilePath, FileMode.Create))
+                await _carService.AddAsync(car);
+
+                // Handle car document
+                if (addCarViewModel.LicenseUrl != null && addCarViewModel.LicenseUrl.Length > 0)
+                {
+                    var uploadPath = Path.Combine("wwwroot", "uploads", "documents");
+                    Directory.CreateDirectory(uploadPath);
+                    var fileName = addCarViewModel.LicenseUrl.FileName;
+                    var filePath = Path.Combine(uploadPath, fileName);
+                    await addCarViewModel.LicenseUrl.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                    var carDocument = new CarDocument
                     {
-                        await licenseUrl.CopyToAsync(stream);
-                    }
-                    carDocument = new CarDocument
-                    {
-                        LicenseUrl = $"uploads/documents/{documentFileName}",
-                        LicenseNumber = licenseNumber,
+                        LicenseUrl = $"uploads/documents/{fileName}",
+                        LicenseNumber = addCarViewModel.LicenseNumber,
                         CarId = car.ID,
                         UserId = userId
                     };
 
                     await _carDocumentService.AddAsync(carDocument);
                     car.CarDocumentId = carDocument.ID;
+                    await _carService.UpdateAsync(car);
                 }
-                if (carDocument != null)
+
+                // Handle car images
+                if (addCarViewModel.CarImages != null && addCarViewModel.CarImages.Count > 0)
                 {
-                    carDocument.CarId = car.ID;
-                    await _carDocumentService.UpdateAsync(carDocument);
-                }
-                if (carImages != null && carImages.Any())
-                {
-                    var imageUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "cars");
+                    var imageUploadPath = Path.Combine("wwwroot", "uploads", "cars");
                     Directory.CreateDirectory(imageUploadPath);
 
-                    foreach (var image in carImages)
+                    foreach (var image in addCarViewModel.CarImages)
                     {
-                        var imageFileName = $"{Guid.NewGuid()}_{Path.GetFileName(image.FileName)}";
-                        var imageFilePath = Path.Combine(imageUploadPath, imageFileName);
-
-                        using (var stream = new FileStream(imageFilePath, FileMode.Create))
-                        {
-                            await image.CopyToAsync(stream);
-                        }
+                        var fileName = image.FileName;
+                        var filePath = Path.Combine(imageUploadPath, fileName);
+                        await image.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
                         var carImage = new CarImage
                         {
-                            ImageUrl = $"uploads/cars/{imageFileName}",
+                            ImageUrl = $"uploads/cars/{fileName}",
                             CarId = car.ID
                         };
 
@@ -152,87 +171,139 @@ namespace Rentoo.Web.Controllers
                     }
                 }
 
-                return Json(new { success = true });
+                TempData["SuccessMessage"] = "Car added successfully!";
+                return RedirectToAction("MyCar");
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+                ModelState.AddModelError("", "An error occurred while adding the car. Please try again.");
+                return View(addCarViewModel);
             }
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditCar(int id)
+        {
+            var car = await _carService.GetByIdAsync(id, "CarDocument", "Images");
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            var editCarViewModel = new EditCarViewModel
+            {
+                ID = car.ID,
+                Model = car.Model,
+                Transmission = car.Transmission,
+                Seats = car.Seats,
+                Color = car.Color,
+                AirCondition = car.AirCondition,
+                Description = car.Description,
+                FactoryYear = car.FactoryYear,
+                WithDriver = car.WithDriver,
+                Fuel = car.Fuel,
+                Mileage = car.Mileage,
+                Address = car.Address,
+                IsAvailable = car.IsAvailable,
+                LicenseNumber = car.CarDocument?.LicenseNumber,
+                ExistingLicenseUrl = car.CarDocument?.LicenseUrl,
+                ExistingCarImages = car.Images?.Select(i => i.ImageUrl).ToList() ?? new List<string>()
+            };
+
+            return View(editCarViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateCar([FromForm] Car car, IFormFile licenseUrl, List<IFormFile> carImages)
+        public async Task<IActionResult> EditCar(EditCarViewModel editCarViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(editCarViewModel);
+            }
+
             try
             {
-                var existingCar = await _carService.GetByIdAsync(car.ID, "CarDocument");
+                var existingCar = await _carService.GetByIdAsync(editCarViewModel.ID, "CarDocument", "Images");
                 if (existingCar == null)
                 {
-                    return Json(new { success = false, message = "Car not found" });
+                    return NotFound();
                 }
-                existingCar.Model = car.Model;
-                existingCar.Transmission = car.Transmission;
-                existingCar.Seats = car.Seats;
-                existingCar.Color = car.Color;
-                existingCar.AirCondition = car.AirCondition;
-                existingCar.Description = car.Description;
-                existingCar.FactoryYear = car.FactoryYear;
-                existingCar.WithDriver = car.WithDriver;
-                existingCar.Fuel = car.Fuel;
-                existingCar.Mileage = car.Mileage;
-                existingCar.Address = car.Address;
-                existingCar.IsAvailable = car.IsAvailable;
+
+                // Update car properties
+                existingCar.Model = editCarViewModel.Model;
+                existingCar.Transmission = editCarViewModel.Transmission;
+                existingCar.Seats = editCarViewModel.Seats;
+                existingCar.Color = editCarViewModel.Color;
+                existingCar.AirCondition = editCarViewModel.AirCondition;
+                existingCar.Description = editCarViewModel.Description;
+                existingCar.FactoryYear = editCarViewModel.FactoryYear;
+                existingCar.WithDriver = editCarViewModel.WithDriver;
+                existingCar.Fuel = editCarViewModel.Fuel;
+                existingCar.Mileage = editCarViewModel.Mileage;
+                existingCar.Address = editCarViewModel.Address;
+                existingCar.IsAvailable = editCarViewModel.IsAvailable;
 
                 // Handle car document update
-                if (licenseUrl != null && licenseUrl.Length > 0)
+                if (editCarViewModel.LicenseUrl != null && editCarViewModel.LicenseUrl.Length > 0)
                 {
-                    var documentFileName = $"{Guid.NewGuid()}_{Path.GetFileName(licenseUrl.FileName)}";
-                    var documentUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "documents");
-                    Directory.CreateDirectory(documentUploadPath);
-                    var documentFilePath = Path.Combine(documentUploadPath, documentFileName);
-
-                    using (var stream = new FileStream(documentFilePath, FileMode.Create))
-                    {
-                        await licenseUrl.CopyToAsync(stream);
-                    }
+                    var uploadPath = Path.Combine("wwwroot", "uploads", "documents");
+                    Directory.CreateDirectory(uploadPath);
+                    var fileName = editCarViewModel.LicenseUrl.FileName;
+                    var filePath = Path.Combine(uploadPath, fileName);
+                    await editCarViewModel.LicenseUrl.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
                     var existingDocument = await _carDocumentService.GetByIdAsync(existingCar.CarDocumentId);
                     if (existingDocument != null)
                     {
-                        existingDocument.LicenseUrl = $"uploads/documents/{documentFileName}";
-                        // Only update license number if it's provided in the form
-                        if (car.CarDocument != null)
+                        existingDocument.LicenseUrl = $"uploads/documents/{fileName}";
+                        existingDocument.LicenseNumber = editCarViewModel.LicenseNumber;
+                        await _carDocumentService.UpdateAsync(existingDocument);
+                    }
+                    else
+                    {
+                        var newDocument = new CarDocument
                         {
-                            existingDocument.LicenseNumber = car.CarDocument.LicenseNumber;
+                            LicenseUrl = $"uploads/documents/{fileName}",
+                            LicenseNumber = editCarViewModel.LicenseNumber,
+                            CarId = existingCar.ID,
+                            UserId = existingCar.UserId
+                        };
+                        await _carDocumentService.AddAsync(newDocument);
+                        existingCar.CarDocumentId = newDocument.ID;
+                    }
+                }
+                else
+                {
+                    var existingDocument = await _carDocumentService.GetByIdAsync(existingCar.CarDocumentId);
+                    if (existingDocument != null)
+                    {
+                        var duplicateDocument = await _carDocumentService.GetAllAsync(d => d.LicenseNumber == editCarViewModel.LicenseNumber && d.ID != existingDocument.ID);
+                        if (duplicateDocument != null && duplicateDocument.Any(s => s.ID != existingDocument.ID))
+                        {
+                            ModelState.AddModelError("LicenseNumber", "رقم الرخصة مستخدم بالفعل.");
+                            return View(editCarViewModel);
                         }
+                        existingDocument.LicenseNumber = editCarViewModel.LicenseNumber;
                         await _carDocumentService.UpdateAsync(existingDocument);
                     }
                 }
 
                 // Handle car images update
-                if (carImages != null && carImages.Any())
+                if (editCarViewModel.CarImages != null && editCarViewModel.CarImages.Count > 0)
                 {
-                    var imageUploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "cars");
+                    var imageUploadPath = Path.Combine("wwwroot", "uploads", "cars");
                     Directory.CreateDirectory(imageUploadPath);
-                    var existingImages = await _carImageService.GetAllAsync(i => i.CarId == car.ID);
-                    foreach (var image in existingImages)
-                    {
-                        await _carImageService.DeleteAsync(image.ID);
-                    }
-                    foreach (var image in carImages)
-                    {
-                        var imageFileName = $"{Guid.NewGuid()}_{Path.GetFileName(image.FileName)}";
-                        var imageFilePath = Path.Combine(imageUploadPath, imageFileName);
 
-                        using (var stream = new FileStream(imageFilePath, FileMode.Create))
-                        {
-                            await image.CopyToAsync(stream);
-                        }
+                    // Add new images without deleting existing ones
+                    foreach (var image in editCarViewModel.CarImages)
+                    {
+                        var fileName = image.FileName;
+                        var filePath = Path.Combine(imageUploadPath, fileName);
+                        await image.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
                         var carImage = new CarImage
                         {
-                            ImageUrl = $"uploads/cars/{imageFileName}",
-                            CarId = car.ID
+                            ImageUrl = $"uploads/cars/{fileName}",
+                            CarId = existingCar.ID
                         };
 
                         await _carImageService.AddAsync(carImage);
@@ -240,56 +311,107 @@ namespace Rentoo.Web.Controllers
                 }
 
                 await _carService.UpdateAsync(existingCar);
-                return Json(new { success = true });
+                TempData["SuccessMessage"] = "Car updated successfully!";
+                return RedirectToAction("MyCar");
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+                ModelState.AddModelError("", "An error occurred while updating the car. Please try again.");
+                return View(editCarViewModel);
             }
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> DeleteCar(int id)
         {
             try
             {
-                var car = await _carService.GetByIdAsync(id);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var car = await _carService.GetByIdAsync(id, "CarDocument", "Images");
+
                 if (car == null)
                 {
-                    return Json(new { success = false, message = "Car not found" });
+                    TempData["ErrorMessage"] = "Car not found";
+                    return RedirectToAction("MyCar");
                 }
 
-                // Delete car document
-                if (car.CarDocumentId > 0)
+                // Verify that the car belongs to the current user
+                if (car.UserId != userId)
                 {
-                    await _carDocumentService.DeleteAsync(car.CarDocumentId);
+                    TempData["ErrorMessage"] = "You don't have permission to delete this car";
+                    return RedirectToAction("MyCar");
+                }
+
+                // Check if the car has any active requests
+                var activeRequests = await _requestService.GetAllAsync(r => 
+                    r.CarId == car.ID && 
+                    (r.Status == RequestStatus.Pending || r.Status == RequestStatus.Accepted)
+                );
+
+                if (activeRequests.Any())
+                {
+                    TempData["ErrorMessage"] = "Cannot delete car with active or pending requests";
+                    return RedirectToAction("MyCar");
+                }
+
+                // Delete car document if exists
+                if (car.CarDocumentId.HasValue)
+                {
+                    await _carDocumentService.DeleteAsync(car.CarDocumentId.Value);
                 }
 
                 // Delete car images
-                var carImages = await _carImageService.GetAllAsync(i => i.CarId == id);
-                foreach (var image in carImages)
+                if (car.Images != null && car.Images.Any())
                 {
-                    await _carImageService.DeleteAsync(image.ID);
+                    foreach (var image in car.Images)
+                    {
+                        await _carImageService.DeleteAsync(image.ID);
+                    }
                 }
 
                 // Delete the car
-                await _carService.DeleteAsync(id);
-                return Json(new { success = true });
+                await _carService.DeleteAsync(car.ID);
+
+                TempData["SuccessMessage"] = "Car deleted successfully";
+                return RedirectToAction("MyCar");
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+                TempData["ErrorMessage"] = "An error occurred while deleting the car. Please try again.";
+                return RedirectToAction("MyCar");
             }
         }
 
         [HttpGet]
         public async Task<IActionResult> MyRequests()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cars = await _carService.GetAllAsync(c => c.UserId == userId);
-            var carIds = cars.Select(c => c.ID).ToList();
-            var requests = await _requestService.GetAllAsync(r => carIds.Contains(r.CarId.Value), "User", "Car");
-            return View(requests);
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var cars = await _carService.GetAllAsync(c => c.UserId == userId);
+                var carIds = cars.Select(c => c.ID).ToList();
+                var requests = await _requestService.GetAllAsync(r => carIds.Contains(r.CarId.Value), "User", "Car");
+
+                // Check and update status for accepted requests that have passed their end date
+                foreach (var request in requests.Where(r => r.Status == RequestStatus.Accepted))
+                {
+                    var endDate = DateTime.ParseExact(request.EndDate, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                    if (DateTime.Now >= endDate)
+                    {
+                        request.Status = RequestStatus.Completed;
+                        await _requestService.UpdateAsync(request);
+                    }
+                }
+
+                // Refresh the requests list after updates
+                requests = await _requestService.GetAllAsync(r => carIds.Contains(r.CarId.Value), "User", "Car");
+                return View(requests);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while loading requests. Please try again.";
+                return RedirectToAction("MyCar");
+            }
         }
 
         [HttpPost]
@@ -585,6 +707,7 @@ namespace Rentoo.Web.Controllers
         {
             try
             {
+
                 var car = await _carService.GetByIdAsync(id, "CarDocument");
                 if (car == null)
                 {

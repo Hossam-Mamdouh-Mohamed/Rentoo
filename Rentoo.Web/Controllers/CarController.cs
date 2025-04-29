@@ -1,27 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Rentoo.Infrastructure.Data;
+using Rentoo.Application.Interfaces;
+using Rentoo.Domain.Entities;
 using Rentoo.Web.ViewModels;
 
 namespace Rentoo.Web.Controllers
 {
     public class CarController : Controller
     {
-        private readonly RentooDbContext _context;
+        private readonly IService<Car> _carService;
 
-        public CarController(RentooDbContext context)
+        public CarController(IService<Car> carService)
         {
-            _context = context;
+            _carService = carService;
         }
 
-        // Details page
         public async Task<IActionResult> Details(int id)
         {
-            var car = await _context.Cars
-        .Include(c => c.Images)
-        .Include(c => c.User) 
-        .FirstOrDefaultAsync(c => c.ID == id);
+            var cars = await _carService.GetAllAsync(
+                c => c.ID == id,
+                "Images", "User"
+            );
 
+            var car = cars.FirstOrDefault();
             if (car == null)
                 return NotFound();
 
