@@ -29,19 +29,19 @@ namespace Rentoo.Web.Controllers
         {
             try
             {
-                var id = user.Id;
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 // Get the existing user from the database
-                var existingUser = await _userService.GetByIdAsync(id);
+                var existingUser = await _userService.GetByIdAsync(userId);
                 if (existingUser == null)
                 {
                     ModelState.AddModelError("", "User not found");
-                    return View("Profile", user);
+                    return View("Profile", User);
                 }
 
                 // Handle profile image upload
-                if (ProfileImageFile != null && ProfileImageFile.Length > 0)
+                if (ProfileImage != null && ProfileImage.Length > 0)
                 {
-                    var fileName = $"{Guid.NewGuid()}_{Path.GetFileName(ProfileImageFile.FileName)}";
+                    var fileName = $"{Guid.NewGuid()}_{Path.GetFileName(ProfileImage.FileName)}";
                     var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
                     Directory.CreateDirectory(uploadPath);
                     var filePath = Path.Combine(uploadPath, fileName);
@@ -49,7 +49,7 @@ namespace Rentoo.Web.Controllers
                     // Save image
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await ProfileImageFile.CopyToAsync(stream);
+                        await ProfileImage.CopyToAsync(stream);
                     }
 
                     // Update the user image path
@@ -57,12 +57,12 @@ namespace Rentoo.Web.Controllers
                 }
 
                 // Update user properties
-                existingUser.FirstName = user.FirstName;
-                existingUser.LastName = user.LastName;
-                existingUser.Email = user.Email;
-                existingUser.BirthDate = user.BirthDate;
-                existingUser.PhoneNumber = user.PhoneNumber;
-                existingUser.Address = user.Address;
+                existingUser.FirstName = profileViewModel.FirstName;
+                existingUser.LastName = profileViewModel.LastName;
+                existingUser.Email = profileViewModel.Email;
+                existingUser.BirthDate = profileViewModel.BirthDate;
+                existingUser.PhoneNumber = profileViewModel.PhoneNumber;
+                existingUser.Address = profileViewModel.Address;
 
                 // Update the user in the database
                 await _userService.UpdateAsync(existingUser);
@@ -73,7 +73,7 @@ namespace Rentoo.Web.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError("", "An error occurred while updating your profile. Please try again.");
-                return View("Profile", user);
+                return View("Profile", User);
             }
 
         }

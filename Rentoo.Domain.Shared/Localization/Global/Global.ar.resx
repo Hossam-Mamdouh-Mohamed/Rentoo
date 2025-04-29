@@ -123,19 +123,40 @@
   <data name="Contact" xml:space="preserve">
     <value>تواصل معنا</value>
   </data>
+  <data name="FactoryYear" xml:space="preserve">
+    <value>سنة التصنيع</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>الرئيسية</value>
   </data>
   <data name="LanguageToggle" xml:space="preserve">
     <value>ع</value>
   </data>
+  <data name="Location" xml:space="preserve">
+    <value>الموقع</value>
+  </data>
   <data name="LogIn" xml:space="preserve">
     <value>تسجيل دخزل</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>بحث</value>
+  </data>
+  <data name="SearchAboutCar" xml:space="preserve">
+    <value>ابحث عن سيارة</value>
+  </data>
+  <data name="Seats" xml:space="preserve">
+    <value>مقعد</value>
+  </data>
+  <data name="SelectYourCartype" xml:space="preserve">
+    <value>اختر نوع عربيتك</value>
   </data>
   <data name="Service" xml:space="preserve">
     <value>خدمات</value>
   </data>
   <data name="SignUp" xml:space="preserve">
     <value>انضم الان</value>
+  </data>
+  <data name="Transmission" xml:space="preserve">
+    <value>ناقل الحركة</value>
   </data>
 </root>

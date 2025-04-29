@@ -1,0 +1,80 @@
+﻿@model Rentoo.Web.ViewModels.CarSearchViewModel;
+
+
+@{
+	Layout = "_EndUserLayout";
+}
+@{
+	ViewData["Title"] = "Search";
+	ViewData["Description"] = "Search for Cars on Rentoo";
+}
+@using RM = Rentoo.Domain.Shared.Localization.Global;
+<div class="container py-4">
+    <div class="col-12 fadeInLeft animated" data-animation="fadeInLeft" data-delay="1s" style="animation-delay: 1s;">
+        <div class="bg-secondary rounded p-2">
+            <h4 class="text-white mb-4">@RM.Global.SearchAboutCar</h4>
+            <form action="Search" method="get">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <select class="form-select" aria-label="Default select example" name="Model" asp-items="ViewBag.CarsModel" asp-for="@Model.Model">
+                            <option selected>@RM.Global.SelectYourCartype</option>
+
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <select class="form-select" id="yearSelect" aria-label="Default select example" name="FactoryYear" asp-for="@Model.FactoryYear">
+                            <option value="">@RM.Global.FactoryYear</option>
+
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <select class="form-select" name="Transmission" asp-for="@Model.Transmission">
+                            <option>@RM.Global.Transmission</option>
+                            <option value="Aotomatic">Aotomatic</option>
+                            <option value="Manualy">Manualy</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <select class="form-select" aria-label="Default select example" name="Address" asp-items="ViewBag.CarsLocation" asp-for="@Model.Address">
+                            <option selected>@RM.Global.Location</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <button class="btn btn-light w-100 py-2">@RM.Global.Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container py-4">
+    @foreach (var item in Model.Cars)
+    {
+        <div class="card">
+		@* <div class="d-flex justify-content-between align-items-center mb-2">
+			<span class="badge-top-pick">Top Pick</span>
+		</div> *@
+		<div class="row align-items-center">
+			<div class="col-md-6 text-center">
+                <img src="@(item.Images.FirstOrDefault()?.ImageUrl)" alt="Car Image" style="width: 300px;">
+			</div>
+            <div class="col-md-3 text-center">
+				<h5 class="mb-1">@item.Model</h5>
+				<ul class="list-unstyled small-text mb-2">
+					<li class="icon-text"><i class="bi bi-people-fill"></i> @item.Seats @RM.Global.Seats | <i class="bi bi-gear-fill"></i> @item.Transmission</li>
+					@* <li class="icon-text"><i class="bi bi-suitcase-lg-fill"></i> @item. Large bag, 1 Small bag</li> *@
+					@* <li class="icon-text"><i class="bi bi-speedometer2"></i> 450 km per rental</li> *@
+					<li class="icon-text"><i class="bi bi-geo-alt-fill"></i> <a href="#" class="text-decoration-none">@item.Address</a></li>
+				</ul>
+			</div>
+            <div class="col-md-3 text-end p-2">
+                <div class="price">EGP 3,011</div>
+                <button class="btn btn-primary btn-sm mt-2">View details</button>
+            </div>
+		</div>
+	</div>
+    }
+    
+</div>

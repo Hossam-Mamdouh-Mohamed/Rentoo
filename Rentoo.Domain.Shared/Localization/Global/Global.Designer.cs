@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RM {
+namespace Rentoo.Domain.Shared.Localization.Global {
     using System;
     
     
@@ -79,6 +79,15 @@ namespace RM {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Model Year.
+        /// </summary>
+        public static string FactoryYear {
+            get {
+                return ResourceManager.GetString("FactoryYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string Home {
@@ -97,11 +106,56 @@ namespace RM {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string Location {
+            get {
+                return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LogIn.
         /// </summary>
         public static string LogIn {
             get {
                 return ResourceManager.GetString("LogIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search About Car.
+        /// </summary>
+        public static string SearchAboutCar {
+            get {
+                return ResourceManager.GetString("SearchAboutCar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seats.
+        /// </summary>
+        public static string Seats {
+            get {
+                return ResourceManager.GetString("Seats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Your Car type.
+        /// </summary>
+        public static string SelectYourCartype {
+            get {
+                return ResourceManager.GetString("SelectYourCartype", resourceCulture);
             }
         }
         
@@ -120,6 +174,15 @@ namespace RM {
         public static string SignUp {
             get {
                 return ResourceManager.GetString("SignUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transmission.
+        /// </summary>
+        public static string Transmission {
+            get {
+                return ResourceManager.GetString("Transmission", resourceCulture);
             }
         }
     }
