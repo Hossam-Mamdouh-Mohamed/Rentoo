@@ -14,7 +14,7 @@ namespace Rentoo.Domain.Entities
         public string LicenseUrl { get; set; }
 
         [Required]
-        public int LicenseNumber { get; set; }
+        public string LicenseNumber { get; set; }
 
         [Required]
         public DocumentStatus status { get; set; } = DocumentStatus.Pending;

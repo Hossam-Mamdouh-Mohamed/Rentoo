@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Rentoo.Application.Interfaces;
+using Rentoo.Domain.Entities;
 using Rentoo.Domain.Interfaces;
 
 namespace Rentoo.Application.Services;
@@ -27,8 +28,6 @@ public class Service<T> : IService<T> where T : class
     {
         return await _repository.GetByIdAsync(id.Value, includeProperties);
     }
-
-
     public async Task<IEnumerable<T>> GetAllAsync() => await _repository.GetAllAsync();
     public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate, params string[] includeProperties)
     {
