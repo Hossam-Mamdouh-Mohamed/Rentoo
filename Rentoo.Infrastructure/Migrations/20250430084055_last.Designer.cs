@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rentoo.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Rentoo.Infrastructure.Data;
 namespace Rentoo.Infrastructure.Migrations
 {
     [DbContext(typeof(RentooDbContext))]
-    partial class RentooDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250430084055_last")]
+    partial class last
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
