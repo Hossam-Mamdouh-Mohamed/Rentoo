@@ -6,12 +6,89 @@
     ViewData["Title"] = "My Requests";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+<div class="dashboard-container">
+    <div class="dashboard-content">
+        <div class="page-header">
+            <h1>Rental Requests</h1>
+        </div>
+        <div class="nav-tabs">
+            <a href="@Url.Action("UserProfile", "UserDashboard")" class="nav-tab"><i class="fas fa-user"></i> MY ACCOUNT</a>
+            <a href="@Url.Action("MyCar", "UserDashboard")" class="nav-tab"><i class="fas fa-car"></i> MY CARS</a>
+            <a href="@Url.Action("MyRequests", "UserDashboard")" class="nav-tab active"><i class="fas fa-file-alt"></i> MY REQUESTS</a>
+            <a href="@Url.Action("Reviews", "UserDashboard")" class="nav-tab"><i class="fas fa-star"></i> REVIEWS</a>
+            <a href="@Url.Action("PricePlans", "UserDashboard")" class="nav-tab"><i class="fas fa-tags"></i> PRICE PLANS</a>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info">
+                You don't have any rental requests yet.
+            </div>
+        }
+        else
+        {
+            foreach (var request in Model)
+            {
+                <div class="request-card">
+                    <div class="request-header">
+                        <h3 class="request-title">Request for @request.Car.Model</h3>
+                        <span class="request-status status-@request.Status.ToString().ToLower()">
+                            @request.Status
+                        </span>
+                    </div>
+                    <div class="request-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <span>@request.User.FirstName @request.User.LastName</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-phone"></i>
+                            <span>@request.User.PhoneNumber</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>@request.StartDate - @request.EndDate</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>@request.pickupAddress</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>@request.TotalPrice EGP</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-car"></i>
+                            <span>@(request.WithDriver ? "With Driver" : "Without Driver")</span>
+                        </div>
+                    </div>
+                    <div class="request-actions">
+                        @if (request.Status == RequestStatus.Pending)
+                        {
+                            <form method="post" action="@Url.Action("UpdateRequestStatus", "UserDashboard")" style="display:inline-block; margin-right:5px;">
+                                <input type="hidden" name="requestId" value="@request.ID" />
+                                <input type="hidden" name="status" value="accepted" />
+                                <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to accept this request?');">
+                                    <i class="fas fa-check"></i> Accept
+                                </button>
+                            </form>
+
+                            <form method="post" action="@Url.Action("UpdateRequestStatus", "UserDashboard")" style="display:inline-block;">
+                                <input type="hidden" name="requestId" value="@request.ID" />
+                                <input type="hidden" name="status" value="rejected" />
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to reject this request?');">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@section Styles {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <style>
         * {
@@ -44,9 +121,9 @@
             padding: 0 20px;
         }
 
-        .sidebar-brand img {
-            max-width: 120px;
-        }
+            .sidebar-brand img {
+                max-width: 120px;
+            }
 
         .sidebar-item {
             padding: 15px 25px;
@@ -61,17 +138,17 @@
             text-decoration: none;
         }
 
-        .sidebar-item i {
-            margin-right: 12px;
-            width: 20px;
-            text-align: center;
-        }
+            .sidebar-item i {
+                margin-right: 12px;
+                width: 20px;
+                text-align: center;
+            }
 
-        .sidebar-item:hover,
-        .sidebar-item.active {
-            background: #e91e63;
-            color: #fff;
-        }
+            .sidebar-item:hover,
+            .sidebar-item.active {
+                background: #e91e63;
+                color: #fff;
+            }
 
         .dashboard-content {
             flex: 1;
@@ -85,11 +162,11 @@
             margin-bottom: 30px;
         }
 
-        .page-header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #333;
-        }
+            .page-header h1 {
+                font-size: 24px;
+                font-weight: 700;
+                color: #333;
+            }
 
         .nav-tabs {
             display: flex;
@@ -111,18 +188,18 @@
             transition: 0.3s;
         }
 
-        .nav-tab:hover {
-            color: #e91e63;
-        }
+            .nav-tab:hover {
+                color: #e91e63;
+            }
 
-        .nav-tab.active {
-            background-color: #e91e63;
-            color: #fff;
-        }
+            .nav-tab.active {
+                background-color: #e91e63;
+                color: #fff;
+            }
 
-        .nav-tab i {
-            margin-right: 8px;
-        }
+            .nav-tab i {
+                margin-right: 8px;
+            }
 
         .request-card {
             background: #fff;
@@ -133,9 +210,9 @@
             transition: transform 0.3s ease;
         }
 
-        .request-card:hover {
-            transform: translateY(-5px);
-        }
+            .request-card:hover {
+                transform: translateY(-5px);
+            }
 
         .request-header {
             display: flex;
@@ -190,9 +267,9 @@
             gap: 8px;
         }
 
-        .detail-item i {
-            color: #e91e63;
-        }
+            .detail-item i {
+                color: #e91e63;
+            }
 
         .request-actions {
             display: flex;
@@ -214,35 +291,59 @@
             color: #fff;
         }
 
-        .btn-primary:hover {
-            background-color: #d81b60;
-        }
+            .btn-primary:hover {
+                background-color: #d81b60;
+            }
 
         .btn-success {
             background-color: #28a745;
             color: #fff;
         }
 
-        .btn-success:hover {
-            background-color: #218838;
-        }
+            .btn-success:hover {
+                background-color: #218838;
+            }
 
         .btn-danger {
             background-color: #dc3545;
             color: #fff;
         }
 
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
+            .btn-danger:hover {
+                background-color: #c82333;
+            }
 
         .btn-info {
             background-color: #17a2b8;
             color: #fff;
         }
 
-        .btn-info:hover {
-            background-color: #138496;
+            .btn-info:hover {
+                background-color: #138496;
+            }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-info {
+            background-color: #cce5ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
 
         .modal {
@@ -293,192 +394,4 @@
             gap: 10px;
         }
     </style>
-</head>
-<body>
-    <div class="dashboard-container">
-        <div class="dashboard-content">
-            <div class="page-header">
-                <h1>Rental Requests</h1>
-            </div>
-
-            <div class="nav-tabs">
-                <a href="@Url.Action("UserProfile", "UserDashboard")" class="nav-tab"><i class="fas fa-user"></i> MY ACCOUNT</a>
-                <a href="@Url.Action("MyCar", "UserDashboard")" class="nav-tab"><i class="fas fa-car"></i> MY CARS</a>
-                <a href="@Url.Action("MyRequests", "UserDashboard")" class="nav-tab active"><i class="fas fa-file-alt"></i> MY REQUESTS</a>
-                <a href="@Url.Action("Reviews", "UserDashboard")" class="nav-tab"><i class="fas fa-star"></i> REVIEWS</a>
-                <a href="@Url.Action("PricePlans", "UserDashboard")" class="nav-tab"><i class="fas fa-tags"></i> PRICE PLANS</a>
-            </div>
-
-            @if (!Model.Any())
-            {
-                <div class="alert alert-info">
-                    You don't have any rental requests yet.
-                </div>
-            }
-            else
-            {
-                foreach (var request in Model)
-                {
-                    <div class="request-card">
-                        <div class="request-header">
-                            <h3 class="request-title">Request for @request.Car.Model</h3>
-                            <span class="request-status status-@request.Status.ToString().ToLower()">
-                                @request.Status
-                            </span>
-                        </div>
-                        <div class="request-details">
-                            <div class="detail-item">
-                                <i class="fas fa-user"></i>
-                                <span>@request.User.FirstName @request.User.LastName</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-calendar"></i>
-                                <span>@request.StartDate - @request.EndDate</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>@request.pickupAddress</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>@request.TotalPrice EGP</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-car"></i>
-                                <span>@(request.WithDriver ? "With Driver" : "Without Driver")</span>
-                            </div>
-                        </div>
-                        <div class="request-actions">
-                            <button class="btn btn-info" onclick="viewRequestDetails(@request.ID)">
-                                <i class="fas fa-eye"></i> View Details
-                            </button>
-                            @if (request.Status == RequestStatus.Pending)
-                            {
-                                <button class="btn btn-success" onclick="updateRequestStatus(@request.ID, 'Accepted')">
-                                    <i class="fas fa-check"></i> Accept
-                                </button>
-                                <button class="btn btn-danger" onclick="updateRequestStatus(@request.ID, 'Rejected')">
-                                    <i class="fas fa-times"></i> Reject
-                                </button>
-                            }
-                        </div>
-                    </div>
-                }
-            }
-        </div>
-    </div>
-
-    <!-- Request Details Modal -->
-    <div id="requestDetailsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Request Details</h3>
-                <span class="close">&times;</span>
-            </div>
-            <div class="modal-body" id="requestDetailsContent">
-                <!-- Details will be loaded here -->
-            </div>
-        </div>
-    </div>
-
-    @section Scripts {
-        <script>
-            function viewRequestDetails(requestId) {
-                // Fetch request details
-                fetch(`/UserDashboard/GetRequest/${requestId}`)
-                    .then(response => response.json())
-                    .then(request => {
-                        // Create the details content
-                        const detailsContent = `
-                            <div class="request-details">
-                                <div class="detail-item">
-                                    <i class="fas fa-car"></i>
-                                    <span><strong>Car:</strong> ${request.car.model}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-user"></i>
-                                    <span><strong>Requester:</strong> ${request.user.firstName} ${request.user.lastName}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-calendar"></i>
-                                    <span><strong>Dates:</strong> ${request.startDate} - ${request.endDate}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span><strong>Pickup Location:</strong> ${request.pickupAddress}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                    <span><strong>Total Price:</strong> ${request.totalPrice} EGP</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-car"></i>
-                                    <span><strong>Driver Option:</strong> ${request.withDriver ? 'With Driver' : 'Without Driver'}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-info-circle"></i>
-                                    <span><strong>Status:</strong> ${request.status}</span>
-                                </div>
-                                ${request.additionalNotes ? `
-                                    <div class="detail-item">
-                                        <i class="fas fa-sticky-note"></i>
-                                        <span><strong>Additional Notes:</strong> ${request.additionalNotes}</span>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `;
-
-                        // Update modal content and show it
-                        document.getElementById('requestDetailsContent').innerHTML = detailsContent;
-                        document.getElementById('requestDetailsModal').style.display = "block";
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred while loading request details.');
-                    });
-            }
-
-            function updateRequestStatus(requestId, status) {
-                if (confirm(`Are you sure you want to ${status.toLowerCase()} this request?`)) {
-                    fetch('/UserDashboard/UpdateRequestStatus', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            requestId: requestId,
-                            status: status
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            location.reload();
-                        } else {
-                            alert('Error updating request status: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred while updating the request status.');
-                    });
-                }
-            }
-
-            // Modal functionality
-            const modal = document.getElementById('requestDetailsModal');
-            const closeBtn = document.getElementsByClassName('close')[0];
-
-            closeBtn.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-        </script>
-    }
-</body>
-</html> 
+}

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Rentoo.Domain.Entities;
@@ -83,7 +80,6 @@ namespace Rentoo.Web.Controllers
                 return View(model);
             }
         }
-
         [HttpGet]
         public IActionResult Login()
         {
@@ -93,59 +89,47 @@ namespace Rentoo.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var user = await _userManager.FindByNameAsync(model.Username);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-                return View(model);
+                
+                var user = await _userManager.FindByNameAsync(model.Username);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                    return View(model);
+                }
+                if (user != null && !await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                    return View(model);
+                }
+                else
+                {
+                    var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+                    if (result.Succeeded)
+                    {
+                        if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            TempData["SuccessMessage"] = "Sign in Successfully";
+                            return RedirectToAction("Index", "Admin");
+                        }
+                        else if (_signInManager.IsSignedIn(User) && User.IsInRole("Owner"))
+                        {
+                            TempData["SuccessMessage"] = "Sign in Successfully";
+                            return RedirectToAction("UserProfile", "UserDashboard");
+                        }
+                        else
+                        {
+                            TempData["SuccessMessage"] = "Sign in Successfully";
+                            return RedirectToAction("ClientProfile", "ClientDashboard");
+                        }
+                    }
+                    TempData["ErrorMessage"] = "Error Singning in User.";
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                }
             }
-
-            // Get roles
-            var roles = await _userManager.GetRolesAsync(user);
-
-            // Create custom claims
-            var claims = new List<Claim>
-            {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-             new Claim(ClaimTypes.Name, user.UserName),
-        new Claim(ClaimTypes.GivenName, user.FirstName ?? ""),
-        new Claim(ClaimTypes.Surname, user.LastName ?? ""),
-        new Claim("UserImage", user.UserImage ?? "/images/default-profile.png")
-    };
-
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
-
-            // Sign in with Identity's application scheme
-            var identity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
-            var principal = new ClaimsPrincipal(identity);
-
-            await _signInManager.SignOutAsync(); // Clear previous sessions
-            await _signInManager.Context.SignInAsync(IdentityConstants.ApplicationScheme, principal);
-
-            // Redirect based on role
-            if (roles.Contains("SuperAdmin") || roles.Contains("Admin"))
-            {
-                TempData["SuccessMessage"] = "Sign in Successfully";
-                return RedirectToAction("Index", "Admin");
-            }
-            else if (roles.Contains("Owner"))
-            {
-                TempData["SuccessMessage"] = "Sign in Successfully";
-                return RedirectToAction("UserProfile", "UserDashboard");
-            }
-            else
-            {
-                TempData["SuccessMessage"] = "Sign in Successfully";
-                return RedirectToAction("Index", "Client");
-            }
+            return View(model);
         }
-
         [HttpGet]
         public async Task<IActionResult> Logout()
         {

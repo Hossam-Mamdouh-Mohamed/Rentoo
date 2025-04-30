@@ -199,9 +199,9 @@
         <div class="dashboard-content">
             <div class="page-header">
                 <h1>My Cars</h1>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCarModal">
+                <a asp-action="AddCar" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Add New Car
-                </button>
+                </a>
             </div>
 
             <div class="nav-tabs">
@@ -227,7 +227,7 @@
                             <div class="card h-100">
                                 @if (car.Images != null && car.Images.Any())
                                 {
-                                    <img src="@car.Images.First().ImageUrl" class="card-img-top" alt="Car Image" style="height: 200px; object-fit: cover;">
+                                    <img src="~/uploads/@car.Images.First().ImageUrl" class="card-img-top" alt="Car Image" style="height: 200px; object-fit: cover;">
                                 }
                                 else
                                 {
@@ -261,9 +261,9 @@
                                             </span>
                                         </div>
                                         <div class="btn-group">
-                                            <button class="btn btn-sm btn-outline-primary" onclick="editCar(@car.ID)">
+                                            <a asp-action="EditCar" asp-route-id="@car.ID" class="btn btn-sm btn-outline-primary">
                                                 <i class="fas fa-edit"></i>
-                                            </button>
+                                            </a>
                                             <button class="btn btn-sm btn-outline-danger" onclick="deleteCar(@car.ID)">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -277,233 +277,6 @@
             }
         </div>
     </div>
-
-    <!-- Add Car Modal -->
-    <div class="modal fade" id="addCarModal" tabindex="-1" aria-labelledby="addCarModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addCarModalLabel">Add New Car</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addCarForm" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="model" class="form-label">Model</label>
-                                <input type="text" class="form-control" id="model" name="model" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="transmission" class="form-label">Transmission</label>
-                                <select class="form-select" id="transmission" name="transmission" required>
-                                    <option value="Automatic">Automatic</option>
-                                    <option value="Manual">Manual</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="seats" class="form-label">Number of Seats</label>
-                                <input type="number" class="form-control" id="seats" name="seats" min="1" max="10" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="color" class="form-label">Color</label>
-                                <input type="text" class="form-control" id="color" name="color" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="factoryYear" class="form-label">Factory Year</label>
-                                <input type="number" class="form-control" id="factoryYear" name="factoryYear" min="1900" max="2100" required>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="fuel" class="form-label">Fuel Type</label>
-                                <select class="form-select" id="fuel" name="fuel" required>
-                                    <option value="Petrol">Petrol</option>
-                                    <option value="Diesel">Diesel</option>
-                                    <option value="Electric">Electric</option>
-                                    <option value="Hybrid">Hybrid</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="mileage" class="form-label">Mileage</label>
-                                <input type="number" class="form-control" id="mileage" name="mileage" min="0" step="0.1" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="address" name="address" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="airCondition" name="airCondition">
-                                <label class="form-check-label" for="airCondition">
-                                    Air Conditioning
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="withDriver" class="form-label">With Driver Option</label>
-                            <select class="form-select" id="withDriver" name="withDriver" required>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                                <option value="Both">Both</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="carImages" class="form-label">Car Images</label>
-                            <input type="file" class="form-control" id="carImages" name="carImages" multiple accept="image/*">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="licenseUrl" class="form-label">Car License Document</label>
-                            <input type="file" class="form-control" id="licenseUrl" name="licenseUrl" accept=".pdf,.jpg,.jpeg,.png" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="licenseNumber" class="form-label">License Number</label>
-                            <input type="number" class="form-control" id="licenseNumber" name="licenseNumber" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="submitCarForm()">Add Car</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Car Modal -->
-    <div class="modal fade" id="editCarModal" tabindex="-1" aria-labelledby="editCarModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editCarModalLabel">Edit Car</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editCarForm" enctype="multipart/form-data">
-                        <input type="hidden" id="editCarId" name="id" />
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="editModel" class="form-label">Model</label>
-                                <input type="text" class="form-control" id="editModel" name="model" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editTransmission" class="form-label">Transmission</label>
-                                <select class="form-select" id="editTransmission" name="transmission" required>
-                                    <option value="Automatic">Automatic</option>
-                                    <option value="Manual">Manual</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="editSeats" class="form-label">Number of Seats</label>
-                                <input type="number" class="form-control" id="editSeats" name="seats" min="1" max="10" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="editColor" class="form-label">Color</label>
-                                <input type="text" class="form-control" id="editColor" name="color" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="editFactoryYear" class="form-label">Factory Year</label>
-                                <input type="number" class="form-control" id="editFactoryYear" name="factoryYear" min="1900" max="2100" required>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="editFuel" class="form-label">Fuel Type</label>
-                                <select class="form-select" id="editFuel" name="fuel" required>
-                                    <option value="Petrol">Petrol</option>
-                                    <option value="Diesel">Diesel</option>
-                                    <option value="Electric">Electric</option>
-                                    <option value="Hybrid">Hybrid</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="editMileage" class="form-label">Mileage</label>
-                                <input type="number" class="form-control" id="editMileage" name="mileage" min="0" step="0.1" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editAddress" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="editAddress" name="address" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="editDescription" name="description" rows="3"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="editAirCondition" name="airCondition">
-                                <label class="form-check-label" for="editAirCondition">
-                                    Air Conditioning
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editWithDriver" class="form-label">With Driver Option</label>
-                            <select class="form-select" id="editWithDriver" name="withDriver" required>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                                <option value="Both">Both</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editCarImages" class="form-label">Car Images</label>
-                            <input type="file" class="form-control" id="editCarImages" name="carImages" multiple accept="image/*">
-                            <small class="text-muted">Leave empty to keep existing images</small>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editLicenseUrl" class="form-label">Car License Document</label>
-                            <input type="file" class="form-control" id="editLicenseUrl" name="licenseUrl" accept=".pdf,.jpg,.jpeg,.png">
-                            <small class="text-muted">Leave empty to keep existing document</small>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editLicenseNumber" class="form-label">License Number</label>
-                            <input type="number" class="form-control" id="editLicenseNumber" name="licenseNumber" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="editIsAvailable" name="isAvailable">
-                                <label class="form-check-label" for="editIsAvailable">
-                                    Available for Rent
-                                </label>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="submitEditCarForm()">Save Changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     @section Scripts {
         <script>
             function submitCarForm() {

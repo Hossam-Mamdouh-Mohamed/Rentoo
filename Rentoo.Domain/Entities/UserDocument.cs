@@ -24,9 +24,9 @@ namespace Rentoo.Domain.Entities
         public DateTime? ReviewdAt { get; set; }
         [MaxLength(300)]
         public string? ReviewNotes { get; set; }
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         [ForeignKey("UserId")] 
-        public User User { get; set; }
+        public User? User { get; set; }
     }
     public enum UserDocumentStatus
     {
