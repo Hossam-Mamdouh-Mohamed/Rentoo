@@ -16,11 +16,14 @@ namespace Rentoo.Web.Controllers
 {
     public class AdminController : Controller
     {
+ 
         private readonly IService<User> service;
         private readonly IService<Car> carService;
         private readonly Microsoft.AspNetCore.Identity.UserManager<User> userManager;
         private readonly IService<Request> RentalService;
         private readonly IService<Car> _carService;
+        private readonly IService<CarDocument> _DocumentService;
+
         public AdminController(IService<User> _service, IService<Request> Rental, IService<Car> carService, Microsoft.AspNetCore.Identity.UserManager<User> _userManager, IService<Car> carservice)
         {
             service = _service;
@@ -29,6 +32,7 @@ namespace Rentoo.Web.Controllers
             _carService = carservice;
             RentalService = Rental;
         }
+       
         public IActionResult Index()
         {
             AdminDashboardViewModel adminDashboardViewModel = new AdminDashboardViewModel();
@@ -42,6 +46,7 @@ namespace Rentoo.Web.Controllers
             adminDashboardViewModel.RentalsPendingCount = RentalService.GetAllAsync(x => x.Status == RequestStatus.Pending).Result?.Count() ?? 0;
             return View(adminDashboardViewModel);
         }
+        
         public async Task<IActionResult> Cars(int page = 1)
         {
             try
@@ -58,12 +63,14 @@ namespace Rentoo.Web.Controllers
             }
 
         }
+        
         public async Task<IActionResult> Profile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userData = await service.GetByIdAsync(userId);
             return View(userData);
         }
+       
         public async Task<IActionResult> Clients(int page = 1)
         {
             try
@@ -78,6 +85,7 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
+        
         public async Task<IActionResult> Owners(int page = 1)
         {
             try
@@ -92,6 +100,7 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
+       
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -132,6 +141,7 @@ namespace Rentoo.Web.Controllers
 
             return RedirectToAction("Index"); // fallback
         }
+        
         [HttpPost]
         public async Task<IActionResult> UserProfile(User user, IFormFile? ProfileImageFile, string? NewPassword, string? ConfirmPassword)
         {
@@ -215,6 +225,7 @@ namespace Rentoo.Web.Controllers
                 return View("Profile", user);
             }
         }
+       
         public async Task<IActionResult> Rentals(int page = 1)
         {
             const int PageSize = 8;
@@ -235,24 +246,24 @@ namespace Rentoo.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> PendingApprovements(int page = 1)
-        {
-            const int PageSize = 10;
-            try
-            {
-                var acceptedRequests = await RentalService.GetAllAsync(x => x.Status == RequestStatus.Rejected);
-                var paginatedRequests = acceptedRequests
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize)
-                    .ToList();
-                return View(paginatedRequests);
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "An error occurred while fetching accepted rental requests.";
-                return RedirectToAction("Index");
-            }
-        }
+        //public async Task<IActionResult> PendingApprovements(int page = 1)
+        //{
+        //    //const int PageSize = 10;
+        //    //try
+        //    //{
+        //    //    var acceptedRequests = await Ren);
+        //    //    var paginatedRequests = acceptedRequests
+        //    //        .Skip((page - 1) * PageSize)
+        //    //        .Take(PageSize)
+        //    //        .ToList();
+        //    //    return View(paginatedRequests);
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    TempData["ErrorMessage"] = "An error occurred while fetching accepted rental requests.";
+        //    //    return RedirectToAction("Index");
+        //    //}
+        //}
 
         public async Task<IActionResult> SystemAdmins(int page = 1)
         {
@@ -268,11 +279,13 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
+        
         [HttpGet]
         public async Task<IActionResult> Create()
         {
             return View();
         }
+        
         [HttpPost]
         public async Task<IActionResult> Create(RegisterViewModel model)
         {

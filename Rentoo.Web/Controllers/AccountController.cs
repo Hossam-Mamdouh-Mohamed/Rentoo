@@ -141,7 +141,7 @@ namespace Rentoo.Web.Controllers
                         else if (_signInManager.IsSignedIn(User) && User.IsInRole("Owner"))
                         {
                             TempData["SuccessMessage"] = "Sign in Successfully";
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("UserProfile", "UserDashboard");
                         }
                         else
                         {

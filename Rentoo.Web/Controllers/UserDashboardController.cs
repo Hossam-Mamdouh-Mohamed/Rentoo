@@ -106,8 +106,7 @@ namespace Rentoo.Web.Controllers
             try
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                
-                // Create new car
+   
                 var car = new Car
                 {
                     Model = addCarViewModel.Model,
