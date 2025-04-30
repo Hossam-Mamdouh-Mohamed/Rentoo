@@ -349,7 +349,7 @@
                 <a href="@Url.Action("MyRequests", "ClientDashboard")" class="nav-tab "><i class="fas fa-file-alt"></i> MY REQUESTS</a>
 				<a href="@Url.Action("YourDoucoment", "ClientDashboard")" class="nav-tab"><i class="fas fa-file-upload"></i> YOUR DOCUMENTS</a>
             </div>
-            @using (Html.BeginForm("UserProfile", "UserDashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("ClientProfile", "ClientDashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
                 <div class="profile-section">

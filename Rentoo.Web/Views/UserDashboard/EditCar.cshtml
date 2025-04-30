@@ -16,12 +16,12 @@
                 {
                     @foreach (var imageUrl in Model.ExistingCarImages)
                     {
-                        <input type="hidden" name="ExistingCarImages" value="@imageUrl" />
+                        <input type="hidden" name="ExistingCarImages" value="/@imageUrl" />
                     }
                 }
                 @if (!string.IsNullOrEmpty(Model.ExistingLicenseUrl))
                 {
-                    <input type="hidden" name="ExistingLicenseUrl" value="@Model.ExistingLicenseUrl" />
+                    <input type="hidden" name="ExistingLicenseUrl" value="/@Model.ExistingLicenseUrl" />
                 }
 
                 <div class="row">
@@ -120,7 +120,7 @@
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach (var imageUrl in Model.ExistingCarImages)
                                 {
-                                    <img src="@imageUrl" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" />
+                                    <img src="/@imageUrl" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" />
                                 }
                             </div>
                         </div>
@@ -135,7 +135,7 @@
                     {
                         <div class="mt-2">
                             <p class="text-muted">Current License Document:</p>
-                            <a href="@Model.ExistingLicenseUrl" target="_blank" class="btn btn-sm btn-info">
+                            <a href="/@Model.ExistingLicenseUrl" target="_blank" class="btn btn-sm btn-info">
                                 <i class="fas fa-file-alt"></i> View Current Document
                             </a>
                         </div>
