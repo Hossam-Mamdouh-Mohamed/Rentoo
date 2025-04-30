@@ -3,7 +3,7 @@
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value + Context.Request.QueryString.Value}";
     string classEn = CultureConfiguration.IsArabic ? "" : "header-en";
 }
-
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 <!DOCTYPE html>
 <html lang="@(CultureConfiguration.IsArabic ? "ar" : "en")" dir="@(CultureConfiguration.IsArabic ? "rtl" : "ltr")">
 <head>
