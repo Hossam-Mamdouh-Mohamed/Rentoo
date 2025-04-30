@@ -122,8 +122,8 @@
                         <a href="service.html" class="nav-item nav-link">@RM.Global.Service</a>
                         <a href="contact.html" class="nav-item nav-link">@RM.Global.Contact</a> *@
                     </div>
-                     @if (User.Identity.IsAuthenticated)
-                     {
+                    @if (User.Identity.IsAuthenticated)
+                    {
                         var user = await UserManager.GetUserAsync(User);
                         if (user != null)
                         {
@@ -132,7 +132,18 @@
                                     Hello, @user.FirstName
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a></li>
+                                    @if (User.IsInRole("Owner"))
+                                    {
+                                        <li><a class="dropdown-item" asp-controller="UserDashboard" asp-action="UserProfile">Dashboard</a></li>
+                                    }
+                                    else if (User.IsInRole("Client"))
+                                    {
+                                        <li><a class="dropdown-item" asp-controller="ClientDashboard" asp-action="ClientProfile">Dashboard</a></li>
+                                    }
+                                    else if (User.IsInRole("Admin"))
+                                    {
+                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index">Dashboard</a></li>
+                                    }
                                     <li>
                                         <form asp-action="Logout" asp-controller="Account" method="post" class="d-inline">
                                             <button type="submit" class="dropdown-item">Logout</button>
@@ -142,30 +153,27 @@
                                 <a asp-controller="home" asp-action="togglelanguage" asp-route-returnUrl="@returnUrl" class="btn btn-outline-light text-body btn-sm d-flex gap-2 align-items-center" id="btnToggle">
                                     <span class="d-none d-lg-flex">@RM.Global.LanguageToggle</span>
                                     <i class="hgi-stroke hgi-language-circle btn-icon"></i>
-
                                 </a>
                             </div>
                         }
-                     }
-                     else{
+                    }
+                    else
+                    {
                         <a class="btn btn-outline-light text-body btn-sm d-flex gap-2 align-items-center" asp-action="Login" asp-controller="Account" id="btnToggle">
                             <span class="d-none d-lg-flex"> @RM.Global.LogIn </span>
                             <i class="hgi-stroke hgi-language-circle btn-icon"></i>
-
                         </a>
-                        
+
                         <a class="btn btn-outline-light text-body btn-sm d-flex gap-2 align-items-center" asp-action="Register" asp-controller="Account" id="btnToggle">
                             <span class="d-none d-lg-flex"> @RM.Global.SignUp </span>
                             <i class="hgi-stroke hgi-language-circle btn-icon"></i>
-
                         </a>
-                        
+
                         <a asp-controller="home" asp-action="togglelanguage" asp-route-returnUrl="@returnUrl" class="btn btn-outline-light text-body btn-sm d-flex gap-2 align-items-center" id="btnToggle">
                             <span class="d-none d-lg-flex">@RM.Global.LanguageToggle</span>
                             <i class="hgi-stroke hgi-language-circle btn-icon"></i>
-
                         </a>
-                     }
+                    }
                     
                     
 

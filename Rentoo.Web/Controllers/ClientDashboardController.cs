@@ -51,7 +51,7 @@ namespace Rentoo.Web.Controllers
                 // Update the user in the database
                 await _userService.UpdateAsync(existingUser);
                 TempData["SuccessMessage"] = "Profile updated successfully!";
-                return RedirectToAction("UserProfile");
+                return RedirectToAction("ClientProfile");
             }
             catch (Exception ex)
             {

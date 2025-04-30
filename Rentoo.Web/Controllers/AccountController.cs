@@ -111,17 +111,17 @@ namespace Rentoo.Web.Controllers
                         if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
                             TempData["SuccessMessage"] = "Sign in Successfully";
-                            return RedirectToAction("Index", "Admin");
+                            return RedirectToAction("Index", "Home");
                         }
                         else if (_signInManager.IsSignedIn(User) && User.IsInRole("Owner"))
                         {
                             TempData["SuccessMessage"] = "Sign in Successfully";
-                            return RedirectToAction("UserProfile", "UserDashboard");
+                            return RedirectToAction("Index", "Home");
                         }
                         else
                         {
                             TempData["SuccessMessage"] = "Sign in Successfully";
-                            return RedirectToAction("ClientProfile", "ClientDashboard");
+                            return RedirectToAction("Index", "Home");
                         }
                     }
                     TempData["ErrorMessage"] = "Error Singning in User.";
