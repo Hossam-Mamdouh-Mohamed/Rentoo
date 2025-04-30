@@ -9,8 +9,8 @@ namespace Rentoo.Domain.Entities
         [Key]
         public int ID { get; set; }
 
-
-        public int ?RequestId { get; set; }
+        [Required]
+        public int RequestId { get; set; }
 
         [Required]
         [Range(1, 5)]
@@ -23,6 +23,6 @@ namespace Rentoo.Domain.Entities
         public DateTime ReviewDate { get; set; }
 
         [ForeignKey("RequestId")]
-        public Request? Request { get; set; }
+        public Request Request { get; set; }
     }
 }

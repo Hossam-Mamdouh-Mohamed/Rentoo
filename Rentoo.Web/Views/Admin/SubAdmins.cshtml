@@ -2,7 +2,7 @@
 @using X.PagedList.Mvc.Core
 
 @{
-    ViewData["Title"] = "SUBAdmins";
+    ViewData["Title"] = "Admins";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <div class="mb-3">
@@ -16,7 +16,6 @@
             <th>Last Name</th>
             <th>Birth Date</th>
             <th>Address</th>
-            <th>Admin Image</th>
             <th>Phone Number</th>
             <th>Actions</th>
         </tr>
@@ -35,12 +34,6 @@
                     <td>@user.LastName</td>
                     <td>@user.BirthDate.ToString("yyyy-MM-dd")</td>
                     <td>@user.Address</td>
-                    <td>
-                    @if (!string.IsNullOrEmpty(user.UserImage))
-                    {
-                                <img src="@user.UserImage" alt="User Image" width="50" height="50" />
-                    }
-                    </td>
                     <td>@user.PhoneNumber</td>
                     <td>
                         @* <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-primary">Edit</a>  *@

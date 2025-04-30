@@ -25,12 +25,12 @@ namespace Rentoo.Domain.Entities
         [RegularExpression("^[0-9]*$", ErrorMessage = "Only numeric characters are allowed.")]
         [MinLength(11)]
         public string PhoneNumber { get; set; }
-        public ICollection<Request>? Requests { get; set; } = new List<Request>();
-        public ICollection<Car>? Cars { get; set; } = new List<Car>();
+        public ICollection<Request> Requests { get; set; } = new List<Request>();
+        public ICollection<Car> Cars { get; set; } = new List<Car>();
 
         [Display(Name = "Request Reviews")]
-        public ICollection<RequestReview>? RequestReview { get; set; } = new List<RequestReview>();
-        public ICollection<RateCode>? RateCode { get; set; } = new List<RateCode>();
+        public ICollection<RequestReview> RequestReview { get; set; } = new List<RequestReview>();
+        public ICollection<RateCode> RateCode { get; set; } = new List<RateCode>();
 
     }
 }

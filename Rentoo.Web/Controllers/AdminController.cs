@@ -258,7 +258,7 @@ namespace Rentoo.Web.Controllers
         {
             try
             {
-                var users = await userManager.GetUsersInRoleAsync("SubAdmin");
+                var users = await userManager.GetUsersInRoleAsync("Admin");
                 var pagedUsers = users.ToPagedList(page, 8);
                 return View("SubAdmins", pagedUsers);
             }

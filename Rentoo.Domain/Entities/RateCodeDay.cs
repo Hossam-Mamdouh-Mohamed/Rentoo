@@ -8,6 +8,7 @@ namespace Rentoo.Domain.Entities
     {
         [Key]
         public int ID { get; set; }
+        [Required]
         public int RateCodeId { get; set; }
         [Required]
         [StringLength(20)]
