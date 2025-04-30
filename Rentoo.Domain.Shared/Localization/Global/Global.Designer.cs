@@ -81,18 +81,18 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         /// <summary>
         ///   Looks up a localized string similar to Car.
         /// </summary>
-        public static string Contact {
+        public static string Car {
             get {
-                return ResourceManager.GetString("Contact", resourceCulture);
+                return ResourceManager.GetString("Car", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Model Year.
+        ///   Looks up a localized string similar to Contact.
         /// </summary>
-        public static string FactoryYear {
+        public static string Contact {
             get {
-                return ResourceManager.GetString("FactoryYear", resourceCulture);
+                return ResourceManager.GetString("Contact", resourceCulture);
             }
         }
         
@@ -160,6 +160,51 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pickup Address.
+        /// </summary>
+        public static string pickupAddress {
+            get {
+                return ResourceManager.GetString("pickupAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search About Car.
+        /// </summary>
+        public static string SearchAboutCar {
+            get {
+                return ResourceManager.GetString("SearchAboutCar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seats.
+        /// </summary>
+        public static string Seats {
+            get {
+                return ResourceManager.GetString("Seats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Your Car type.
+        /// </summary>
+        public static string SelectYourCartype {
+            get {
+                return ResourceManager.GetString("SelectYourCartype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service.
         /// </summary>
         public static string Service {
@@ -196,11 +241,11 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your Information.
+        ///   Looks up a localized string similar to With Driver.
         /// </summary>
-        public static string YourInformation {
+        public static string WithDriver {
             get {
-                return ResourceManager.GetString("YourInformation", resourceCulture);
+                return ResourceManager.GetString("WithDriver", resourceCulture);
             }
         }
     }
