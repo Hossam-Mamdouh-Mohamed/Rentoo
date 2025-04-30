@@ -290,13 +290,30 @@ namespace Rentoo.Web.Controllers
                 // Handle car images update
                 if (editCarViewModel.CarImages != null && editCarViewModel.CarImages.Count > 0)
                 {
+                    // First, delete all existing images
+                    if (existingCar.Images != null && existingCar.Images.Any())
+                    {
+                        foreach (var existingImage in existingCar.Images.ToList())
+                        {
+                            // Optionally delete the physical file
+                            var physicalPath = Path.Combine("wwwroot", existingImage.ImageUrl);
+                            if (System.IO.File.Exists(physicalPath))
+                            {
+                                System.IO.File.Delete(physicalPath);
+                            }
+
+                            // Remove from database
+                            await _carImageService.DeleteAsync(existingImage);
+                        }
+                    }
+
+                    // Then add the new images
                     var imageUploadPath = Path.Combine("wwwroot", "uploads", "cars");
                     Directory.CreateDirectory(imageUploadPath);
 
-                    // Add new images without deleting existing ones
                     foreach (var image in editCarViewModel.CarImages)
                     {
-                        var fileName = image.FileName;
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName); // Generate unique filename
                         var filePath = Path.Combine(imageUploadPath, fileName);
                         await image.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
@@ -398,12 +415,19 @@ namespace Rentoo.Web.Controllers
                     var endDate = DateTime.ParseExact(request.EndDate, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
                     if (DateTime.Now >= endDate)
                     {
+                        // Update request status
                         request.Status = RequestStatus.Completed;
                         await _requestService.UpdateAsync(request);
+
+                        // Update car availability
+                        var car = await _carService.GetByIdAsync(request.CarId.Value);
+                        if (car != null)
+                        {
+                            car.IsAvailable = true;
+                            await _carService.UpdateAsync(car);
+                        }
                     }
                 }
-
-                // Refresh the requests list after updates
                 requests = await _requestService.GetAllAsync(r => carIds.Contains(r.CarId.Value), "User", "Car");
                 return View(requests);
             }
@@ -446,6 +470,13 @@ namespace Rentoo.Web.Controllers
                 {
                     case "accepted":
                         newStatus = RequestStatus.Accepted;
+                        // Update car availability
+                        var car = await _carService.GetByIdAsync(request.CarId.Value);
+                        if (car != null)
+                        {
+                            car.IsAvailable = false;
+                            await _carService.UpdateAsync(car);
+                        }
                         break;
                     case "rejected":
                         newStatus = RequestStatus.Rejected;

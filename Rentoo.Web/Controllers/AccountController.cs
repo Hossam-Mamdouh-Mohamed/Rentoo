@@ -130,7 +130,7 @@ namespace Rentoo.Web.Controllers
             }
             return View(model);
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

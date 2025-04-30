@@ -57,6 +57,10 @@ namespace Rentoo.Web.ViewModels
 
         public List<string> ExistingCarImages { get; set; }
 
+        // New property for controlling whether to keep existing images
+        [Display(Name = "Keep Existing Images")]
+        public bool KeepExistingImages { get; set; } = true;
+
         [Display(Name = "License Document")]
         public IFormFile? LicenseUrl { get; set; }
 
@@ -67,4 +71,4 @@ namespace Rentoo.Web.ViewModels
         [RegularExpression(@"^[\p{L}\u0600-\u06FF]{3}(\s?[\p{L}\u0600-\u06FF]){0,2}\s?\d{3,4}$", ErrorMessage = "Plate number should consist of 3 Arabic letters followed by 3 or 4 digits.")]
         public string? LicenseNumber { get; set; }
     }
-} 
+}
