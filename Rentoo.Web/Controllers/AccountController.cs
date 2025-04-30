@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Rentoo.Domain.Entities;
 using web.ViewModels;
@@ -10,22 +11,25 @@ namespace Rentoo.Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
         public IActionResult Register()
         {
+            ViewBag.RoleList = new SelectList(new[] { "Admin", "Client", "Owner" });
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -41,8 +45,10 @@ namespace Rentoo.Web.Controllers
                 UserName = model.UserName,
                 Email = model.Email
             };
+
             try
             {
+                // Validate password strength
                 var hasUpper = model.Password.Any(char.IsUpper);
                 var hasLower = model.Password.Any(char.IsLower);
                 var hasDigit = model.Password.Any(char.IsDigit);
@@ -54,32 +60,51 @@ namespace Rentoo.Web.Controllers
                     TempData["ErrorMessage"] = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
                     return View("Register", model);
                 }
+
+                // Check if the role exists, and create it if it doesn't
+                if (!await _roleManager.RoleExistsAsync(model.Role))
+                {
+                    IdentityRole newRole = new IdentityRole(model.Role);
+                    var roleResult = await _roleManager.CreateAsync(newRole);
+                    if (!roleResult.Succeeded)
+                    {
+                        foreach (var error in roleResult.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                        TempData["ErrorMessage"] = "Role creation failed. Please try again.";
+                        return View(model);
+                    }
+                }
+
+                // Create user
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // Assign role
                     await _userManager.AddToRoleAsync(user, model.Role);
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    TempData["SuccessMessage"] = "User Registered Successfully,Please Sign in to continue";
-
+                    TempData["SuccessMessage"] = "User registered successfully. Please sign in to continue.";
                     return RedirectToAction("Login", "Account");
                 }
 
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
-
                 }
-                TempData["ErrorMessage"] = "Plese Try Again Later";
+
+                TempData["ErrorMessage"] = "Please try again later.";
                 return View(model);
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Plese Try Again Later";
+                TempData["ErrorMessage"] = "An error occurred. Please try again later.";
                 ModelState.AddModelError("", ex.Message);
                 return View(model);
             }
         }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -108,10 +133,10 @@ namespace Rentoo.Web.Controllers
                     var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        if (_signInManager.IsSignedIn(User) && (User.IsInRole("Admin")|| User.IsInRole("SuperAdmin")))
                         {
                             TempData["SuccessMessage"] = "Sign in Successfully";
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Admin");
                         }
                         else if (_signInManager.IsSignedIn(User) && User.IsInRole("Owner"))
                         {
@@ -130,7 +155,7 @@ namespace Rentoo.Web.Controllers
             }
             return View(model);
         }
-        [HttpPost]
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
