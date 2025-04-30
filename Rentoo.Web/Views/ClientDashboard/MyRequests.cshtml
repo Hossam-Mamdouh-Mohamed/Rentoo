@@ -267,18 +267,14 @@
             max-width: 500px;
             position: relative;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            animation: modalFadeIn 0.3s ease-out;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
 
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .modal.show .modal-content {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .modal-header {
@@ -533,7 +529,11 @@
         // Function to open the review modal
         function openReviewModal(requestId) {
             document.getElementById("requestId").value = requestId;
-            modal.style.display = "block";
+            modal.style.display = "flex";
+            // Add a small delay to allow the display change to take effect
+            setTimeout(() => {
+                modal.classList.add("show");
+            }, 10);
             
             // Reset the form
             document.getElementById("rating").value = "5";
@@ -557,7 +557,11 @@
         
         // Function to close the review modal
         function closeReviewModal() {
-            modal.style.display = "none";
+            modal.classList.remove("show");
+            // Wait for the transition to complete before hiding the modal
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300);
         }
         
         // Close the modal when clicking outside of it
