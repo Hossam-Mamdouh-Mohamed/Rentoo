@@ -21,6 +21,7 @@
             --border-radius: 8px;
             --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
+            --warning-color: #ffc107;
         }
 
         * {
@@ -166,6 +167,68 @@
             color: #495057;
         }
 
+
+        /* Simplified Reviews Section */
+        .reviews-section {
+            margin-top: 2rem;
+            padding: 1.5rem 0;
+        }
+
+        .reviews-title {
+            font-size: 1.3rem;
+            color: var(--dark-color);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .review-box {
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 1rem;
+        }
+
+            .review-box:last-child {
+                border-bottom: none;
+            }
+
+        .review-user {
+            font-weight: 500;
+            color: var(--dark-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .review-rating {
+            color: var(--warning-color);
+            margin: 0.3rem 0;
+        }
+
+        .review-date {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .review-content {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .fa-star {
+            color: var(--warning-color);
+        }
+
+        .fa-star-empty {
+            color: black;
+        }
+
+        .no-reviews {
+            color: #777;
+            font-style: italic;
+            padding: 1rem 0;
+        }
+
+
         .car-availability {
             background: #f8f9fa;
             padding: 1.5rem;
@@ -252,11 +315,11 @@
             text-align: center;
         }
 
-        .btn.request-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
+            .btn.request-btn:hover {
+                opacity: 0.9;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
 
         .availability-message {
             padding: 0.8rem;
@@ -266,6 +329,7 @@
             text-align: center;
             color: #6c757d;
         }
+
         .car-owner-info {
             display: flex;
             align-items: center;
@@ -325,7 +389,6 @@
             background: #eee;
             margin: 2rem 0;
         }
-
     </style>
 </head>
 <body>
@@ -408,7 +471,32 @@
                     </div>
 
                     <div class="section-divider"></div>
+                    <div class="reviews-section">
+                        <h3 class="reviews-title">Customer Reviews</h3>
 
+                        @if (Model.Reviews != null && Model.Reviews.Any())
+                        {
+                            foreach (var review in Model.Reviews)
+                            {
+                                <div class="review-box">
+                                    <div class="review-user">@review.UserName</div>
+                                    <div class="review-rating">
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            <i class="fas @(i < review.Rating ? "fa-star" : "fa-star-empty")"></i>
+                                        }
+                                        (@review.Rating.ToString("0.0"))
+                                    </div>
+                                    <div class="review-date">@review.ReviewDate.ToString("MMM dd, yyyy")</div>
+                                    <div class="review-content">@review.Comment</div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="no-reviews">No reviews yet for this car.</div>
+                        }
+                    </div>
                 </div>
 
                 <!-- Right Column -->

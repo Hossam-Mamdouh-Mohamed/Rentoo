@@ -1,37 +1,52 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Rentoo.Application.Interfaces;
 using Rentoo.Domain.Entities;
+using Rentoo.Infrastructure.Data;
 using Rentoo.Web.ViewModels;
 
-namespace Rentoo.Web.Controllers
+public class CarController : Controller
 {
-    public class CarController : Controller
+    private readonly IService<Car> _carService;
+    private readonly RentooDbContext _context;
+
+    public CarController(IService<Car> carService, RentooDbContext context)
     {
-        private readonly IService<Car> _carService;
+        _carService = carService;
+        _context = context;
+    }
 
-        public CarController(IService<Car> carService)
-        {
-            _carService = carService;
-        }
+    public async Task<IActionResult> Details(int id)
+    {
+        var car = await _context.Cars
+            .Include(c => c.Images)
+            .Include(c => c.Requests.Where(r => r.Status == RequestStatus.Completed && r.Review != null))
+                .ThenInclude(r => r.Review)
+            .Include(c => c.Requests)
+                .ThenInclude(r => r.User)
+            .FirstOrDefaultAsync(c => c.ID == id);
 
-        public async Task<IActionResult> Details(int id)
-        {
-            var cars = await _carService.GetAllAsync(
-                c => c.ID == id,
-                "Images", "User"
-            );
+        if (car == null)
+            return NotFound();
 
-            var car = cars.FirstOrDefault();
-            if (car == null)
-                return NotFound();
-
-            var viewModel = new CarDetailsViewModel
+        var reviews = car.Requests
+            .Where(r => r.Review != null)
+            .Select(r => new CarReviewViewModel
             {
-                Car = car,
-                CarImages = car.Images.ToList()
-            };
+                UserName = r.User?.FirstName ?? "Anonymous",
+                Rating = r.Review!.Rating,
+                Comment = r.Review.Comment,
+                ReviewDate = r.Review.ReviewDate
+            })
+            .ToList();
 
-            return View(viewModel);
-        }
+        var viewModel = new CarDetailsViewModel
+        {
+            Car = car,
+            CarImages = car.Images.ToList(),
+            Reviews = reviews
+        };
+
+        return View(viewModel);
     }
 }
