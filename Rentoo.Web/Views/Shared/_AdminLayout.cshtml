@@ -237,9 +237,9 @@
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "PendingJoins" ? "active" : "")" asp-controller="Admin" asp-action="PendingApprovements">
                     <i class="fas fa-clock"></i>
-                    <span class="nav-link-text">Pending Requests</span>
+                    <span class="nav-link-text">Pending Verifications</span>
                 </a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "System Admins" ? "active" : "")" asp-controller="Admin" asp-action="SystemAdmins">
                     <i class="fas fa-users"></i>

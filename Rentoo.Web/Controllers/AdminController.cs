@@ -16,23 +16,24 @@ namespace Rentoo.Web.Controllers
 {
     public class AdminController : Controller
     {
- 
+
         private readonly IService<User> service;
         private readonly IService<Car> carService;
         private readonly Microsoft.AspNetCore.Identity.UserManager<User> userManager;
         private readonly IService<Request> RentalService;
         private readonly IService<Car> _carService;
-        private readonly IService<CarDocument> _DocumentService;
+        private readonly IService<CarDocument> DocumentService;
 
-        public AdminController(IService<User> _service, IService<Request> Rental, IService<Car> carService, Microsoft.AspNetCore.Identity.UserManager<User> _userManager, IService<Car> carservice)
+        public AdminController(IService<CarDocument> _document, IService<User> _service, IService<Request> Rental, IService<Car> carService, Microsoft.AspNetCore.Identity.UserManager<User> _userManager, IService<Car> carservice)
         {
             service = _service;
             this.carService = carService;
             userManager = _userManager;
             _carService = carservice;
             RentalService = Rental;
+            DocumentService = _document;
         }
-       
+
         public IActionResult Index()
         {
             AdminDashboardViewModel adminDashboardViewModel = new AdminDashboardViewModel();
@@ -46,13 +47,13 @@ namespace Rentoo.Web.Controllers
             adminDashboardViewModel.RentalsPendingCount = RentalService.GetAllAsync(x => x.Status == RequestStatus.Pending).Result?.Count() ?? 0;
             return View(adminDashboardViewModel);
         }
-        
+
         public async Task<IActionResult> Cars(int page = 1)
         {
             try
             {
-                var allCars = await carService.GetAllAsync();
-                var pagedCars = allCars.ToPagedList(page, 10);
+                var allCars = await carService.GetAllAsync(x => x.CarDocument.status == DocumentStatus.Accepted, ["User"]);
+                var pagedCars = allCars.ToPagedList(page, 8);
 
                 return View(pagedCars);
             }
@@ -63,14 +64,14 @@ namespace Rentoo.Web.Controllers
             }
 
         }
-        
+
         public async Task<IActionResult> Profile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userData = await service.GetByIdAsync(userId);
             return View(userData);
         }
-       
+
         public async Task<IActionResult> Clients(int page = 1)
         {
             try
@@ -85,7 +86,7 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
-        
+
         public async Task<IActionResult> Owners(int page = 1)
         {
             try
@@ -100,7 +101,7 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -141,7 +142,7 @@ namespace Rentoo.Web.Controllers
 
             return RedirectToAction("Index"); // fallback
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> UserProfile(User user, IFormFile? ProfileImageFile, string? NewPassword, string? ConfirmPassword)
         {
@@ -225,7 +226,7 @@ namespace Rentoo.Web.Controllers
                 return View("Profile", user);
             }
         }
-       
+
         public async Task<IActionResult> Rentals(int page = 1)
         {
             const int PageSize = 8;
@@ -246,24 +247,77 @@ namespace Rentoo.Web.Controllers
             }
         }
 
-        //public async Task<IActionResult> PendingApprovements(int page = 1)
-        //{
-        //    //const int PageSize = 10;
-        //    //try
-        //    //{
-        //    //    var acceptedRequests = await Ren);
-        //    //    var paginatedRequests = acceptedRequests
-        //    //        .Skip((page - 1) * PageSize)
-        //    //        .Take(PageSize)
-        //    //        .ToList();
-        //    //    return View(paginatedRequests);
-        //    //}
-        //    //catch (Exception ex)
-        //    //{
-        //    //    TempData["ErrorMessage"] = "An error occurred while fetching accepted rental requests.";
-        //    //    return RedirectToAction("Index");
-        //    //}
-        //}
+        public async Task<IActionResult> PendingApprovements(int page = 1)
+        {
+            try
+            {
+                var CarDocuments = await DocumentService.GetAllAsync(x => x.status == DocumentStatus.Pending, ["Car", "User"]);
+                var PagedDoc = CarDocuments.ToPagedList(page, 8);
+
+                return View(PagedDoc);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching Pending  Requests.";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PendingCarDetails(int id)
+        {
+            try
+            {
+                var CarDoc = await DocumentService.GetAllAsync(x => x.ID == id, ["Car", "User"]);
+                var car = CarDoc.FirstOrDefault()?.Car;  // Access the Car object associated with CarDocument
+
+                if (car != null)
+                {
+                    var carImage = car.Images?.FirstOrDefault();  // Get the first car image
+                    ViewBag.CarImage = carImage?.ImageUrl;  // Store the image URL in ViewBag
+                }
+
+                return View(CarDoc.FirstOrDefault());
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching the pending request.";
+                return RedirectToAction("PendingApprovements");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int id, string status)
+        {
+            try
+            {
+                var document = await DocumentService.GetByIdAsync(id);
+                if (document == null)
+                {
+                    TempData["ErrorMessage"] = "Document not found.";
+                    return RedirectToAction("PendingApprovements");
+                }
+
+                if (Enum.TryParse<DocumentStatus>(status, out var newStatus))
+                {
+                    document.status = newStatus;
+                    document.ReviewdAt = DateTime.UtcNow;
+
+                    await DocumentService.UpdateAsync(document);
+
+                    TempData["SuccessMessage"] = $"Document has been {status.ToLower()} successfully.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Invalid status value.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while updating the document status.";
+            }
+
+            return RedirectToAction("PendingApprovements");
+        }
 
         public async Task<IActionResult> SystemAdmins(int page = 1)
         {
@@ -279,13 +333,13 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
-        
+
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             return View();
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Create(RegisterViewModel model)
         {
@@ -338,7 +392,7 @@ namespace Rentoo.Web.Controllers
                 TempData["ErrorMessage"] = "This Phone Number Already Exist";
                 return View(model);
             }
-          
+
         }
 
         public async Task<IActionResult> OwnerCars(string id)
