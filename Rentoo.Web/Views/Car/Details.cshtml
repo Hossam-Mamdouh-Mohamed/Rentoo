@@ -3,6 +3,7 @@
 @using RM = Rentoo.Domain.Shared.Localization.Global;
 @model CarDetailsViewModel
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -421,20 +422,20 @@
                     <h2>@Model.Car.Model</h2>
                     <div class="car-meta">
                         <span><i class="fas fa-calendar-alt"></i> @Model.Car.FactoryYear</span>
-                        <span><i class="fas fa-tachometer-alt"></i> @Model.Car.Mileage km</span>
+                        <span><i class="fas fa-tachometer-alt"></i> @Model.Car.Mileage @RM.Global.km</span>
                         <span><i class="fas fa-palette"></i> @Model.Car.Color</span>
                     </div>
                 </div>
 
                 <!-- Car Image Gallery -->
                 <div class="car-image-gallery">
-                    <img id="mainImage" src="/@Model.CarImages.FirstOrDefault()?.ImageUrl" alt="@Model.Car.Model" class="main-image">
+                    <img id="mainImage" src="@Model.CarImages.FirstOrDefault()?.ImageUrl" alt="@Model.Car.Model" class="main-image">
 
                     <div class="thumbnail-container">
                         @foreach (var (image, index) in Model.CarImages.Select((img, i) => (img, i)))
                         {
-                            <img src="/@image.ImageUrl" alt="Thumbnail @(index + 1)" class="thumbnail @(index == 0 ? "active" : "")"
-                                 onclick="changeMainImage('/@image.ImageUrl', this)">
+                            <img src="@image.ImageUrl" alt="Thumbnail @(index + 1)" class="thumbnail @(index == 0 ? "active" : "")"
+                                 onclick="changeMainImage('@image.ImageUrl', this)">
                         }
                     </div>
                 </div>
@@ -450,7 +451,7 @@
                 <div class="left-column">
                     <!-- Car Description -->
                     <div class="car-description">
-                        <h3>Description</h3>
+                        <h3>@RM.Global.Description</h3>
                         <p>@Model.Car.Description</p>
                     </div>
 
@@ -458,33 +459,33 @@
 
                     <!-- Car Specifications -->
                     <div class="car-specifications">
-                        <h3>Specifications</h3>
+                        <h3>@RM.Global.Specifications</h3>
                         <div class="specs-grid">
                             <div class="spec-item">
                                 <i class="fas fa-cog spec-icon"></i>
                                 <div>
-                                    <div class="spec-label">Transmission</div>
+                                    <div class="spec-label">@RM.Global.Transmission</div>
                                     <div class="spec-value">@Model.Car.Transmission</div>
                                 </div>
                             </div>
                             <div class="spec-item">
                                 <i class="fas fa-gas-pump spec-icon"></i>
                                 <div>
-                                    <div class="spec-label">Fuel Type</div>
+                                    <div class="spec-label">@RM.Global.FuelType</div>
                                     <div class="spec-value">@Model.Car.Fuel</div>
                                 </div>
                             </div>
                             <div class="spec-item">
                                 <i class="fas fa-users spec-icon"></i>
                                 <div>
-                                    <div class="spec-label">Seats</div>
+                                    <div class="spec-label">@RM.Global.Seats</div>
                                     <div class="spec-value">@Model.Car.Seats</div>
                                 </div>
                             </div>
                             <div class="spec-item">
                                 <i class="fas fa-snowflake spec-icon"></i>
                                 <div>
-                                    <div class="spec-label">Air Condition</div>
+                                    <div class="spec-label">@RM.Global.AirCondition</div>
                                     <div class="spec-value">@(Model.Car.AirCondition ? "Yes" : "No")</div>
                                 </div>
                             </div>
@@ -493,7 +494,7 @@
 
                     <div class="section-divider"></div>
                     <div class="reviews-section">
-                        <h3 class="reviews-title">Customer Reviews</h3>
+                        <h3 class="reviews-title">@RM.Global.CustomerReviews</h3>
 
                         @if (Model.Reviews != null && Model.Reviews.Any())
                         {
@@ -524,17 +525,17 @@
                 <div class="right-column">
                     <!-- Rate & Availability -->
                     <div class="car-availability">
-                        <h3>Availability</h3>
+                        <h3>@RM.Global.Availability</h3>
 
 
                         <div class="availability-badge @(Model.Car.IsAvailable ? "available" : "not-available")">
-                            @(Model.Car.IsAvailable ? "Available" : "Not Available")
+                            @(Model.Car.IsAvailable ? @RM.Global.Available : @RM.Global.NotAvailable)
                         </div>
 
                         <div class="driver-option">
                             <i class="fas fa-user-tie driver-icon"></i>
                             <span>
-                                <strong>With Driver:</strong>
+                                <strong>@RM.Global.WithDriver :</strong>
                                 @(Model.Car.WithDriver == WithDriverEnum.No ? "No" :
                                     Model.Car.WithDriver == WithDriverEnum.Yes ? "Yes" : "Both")
                             </span>
@@ -542,7 +543,7 @@
                         <div class="location-option">
                             <i class="fas fa-map-marker-alt location-icon"></i>
                             <span>
-                                <strong>Location:</strong>
+                                <strong>@RM.Global.Location :</strong>
                                 @Model.Car.Address
                             </span>
                         </div>
@@ -554,20 +555,20 @@
                     {
                         <div class="request-button-container">
                             <a href="@Url.Action("AddRequest", "Request", new { carId = Model.Car.ID })" class="btn request-btn">
-                                <i class="fas fa-calendar-check"></i> Request to Rent
+                                <i class="fas fa-calendar-check"></i> @RM.Global.RequestToRent
                             </a>
                         </div>
                     }
                     else
                     {
                         <div class="availability-message">
-                            <i class="fas fa-info-circle"></i> This vehicle is currently unavailable for rental
+                            <i class="fas fa-info-circle"></i> @RM.Global.Thisvehicleiscurrentlyunavailableforrental
                         </div>
                     }
 
                     <!-- Owner Information -->
                     <div class="car-owner-info">
-                        <img src="/@(string.IsNullOrEmpty(Model.Car.User?.UserImage) ? "/uploads/user.jpg" : Model.Car.User.UserImage)"
+                        <img src="@(string.IsNullOrEmpty(Model.Car.User?.UserImage) ? "/uploads/user.jpg" : Model.Car.User.UserImage)"
                              alt="Owner Avatar" class="owner-avatar" />
                         <div class="owner-details">
                             <h4>@(Model.Car.User?.FirstName ?? "Unknown Owner")</h4>

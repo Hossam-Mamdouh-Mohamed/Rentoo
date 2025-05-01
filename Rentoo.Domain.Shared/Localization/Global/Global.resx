@@ -291,4 +291,40 @@
   <data name="YourProfilePicture" xml:space="preserve">
     <value>Your Profile Picture</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="AirCondition" xml:space="preserve">
+    <value>Air Condition</value>
+  </data>
+  <data name="Availability" xml:space="preserve">
+    <value>Availability</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="CustomerReviews" xml:space="preserve">
+    <value>Customer Reviews</value>
+  </data>
+  <data name="FuelType" xml:space="preserve">
+    <value>Fuel Type</value>
+  </data>
+  <data name="km" xml:space="preserve">
+    <value>km</value>
+  </data>
+  <data name="Noreviewsyetforthiscar" xml:space="preserve">
+    <value>No reviews yet for this car.</value>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>Not Available</value>
+  </data>
+  <data name="RequestToRent" xml:space="preserve">
+    <value>Request to Rent</value>
+  </data>
+  <data name="Specifications" xml:space="preserve">
+    <value>Specifications</value>
+  </data>
+  <data name="Thisvehicleiscurrentlyunavailableforrental" xml:space="preserve">
+    <value>This vehicle is currently unavailable for rental</value>
+  </data>
 </root>
