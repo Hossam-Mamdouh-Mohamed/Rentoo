@@ -120,7 +120,7 @@ namespace Rentoo.Web.Controllers
                     Fuel = addCarViewModel.Fuel,
                     Mileage = addCarViewModel.Mileage,
                     Address = addCarViewModel.Address,
-                    IsAvailable = true,
+                    IsAvailable = false,
                     UserId = userId
                 };
 
@@ -175,7 +175,7 @@ namespace Rentoo.Web.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "An error occurred while adding the car. Please try again.");
+                TempData["ErrorMessage"] = "An error occurred while adding the car. Please try again.";
                 return View(addCarViewModel);
             }
         }

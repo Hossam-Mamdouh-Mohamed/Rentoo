@@ -25,8 +25,8 @@
                         <th>Mileage</th>
                         <th>Address</th>
                         <th>Owner Name</th>
-                        <th>Rate Code</th>
-                        <th>Actions</th>
+                        @* <th>Rate Code</th> *@
+                        @* <th>Actions</th> *@
                     </tr>
                 </thead>
                 <tbody>
@@ -48,13 +48,7 @@
                             <td>@car.Fuel</td>
                             <td>@car.Mileage</td>
                             <td>@car.Address</td>
-                            <td>@car.User?.FirstName @car.User?.LastName</td> <!-- Assuming User is the owner -->
-                            <td>@car.rateCode?.Name</td>
-                            <td>
-                                <form asp-action="Delete" asp-route-id="@car.ID" method="post" class="delete-form" style="display:inline;">
-                                    <button type="button" class="btn btn-sm btn-danger delete-btn" onclick="confirmDelete(@car.ID)">Delete</button>
-                                </form>
-                            </td>
+                            <td>@car.User?.FirstName @car.User?.LastName</td> 
                         </tr>
                     }
                 </tbody>
