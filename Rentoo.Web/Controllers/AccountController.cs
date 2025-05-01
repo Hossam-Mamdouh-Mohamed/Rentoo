@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Rentoo.Domain.Entities;
 using web.ViewModels;
@@ -30,8 +31,26 @@ namespace Rentoo.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            ViewBag.RoleList = new SelectList(new[] { "Admin", "Client", "Owner" });
+
             if (!ModelState.IsValid)
             {
+                return View(model);
+            }
+
+            var existingPhoneUser = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == model.PhoneNumber);
+            if (existingPhoneUser != null)
+            {
+                TempData["ErrorMessage"] = "Phone number is already in use."; 
+                return View(model);
+            }
+
+
+            // Check if username already exists
+            var existingUsername = await _userManager.FindByNameAsync(model.UserName);
+            if (existingUsername != null)
+            {
+                TempData["ErrorMessage"] = "Username is already taken.";
                 return View(model);
             }
 
@@ -48,7 +67,6 @@ namespace Rentoo.Web.Controllers
 
             try
             {
-                // Validate password strength
                 var hasUpper = model.Password.Any(char.IsUpper);
                 var hasLower = model.Password.Any(char.IsLower);
                 var hasDigit = model.Password.Any(char.IsDigit);
@@ -58,10 +76,11 @@ namespace Rentoo.Web.Controllers
                 if (!(hasUpper && hasLower && hasDigit && hasSymbol && hasMinLength))
                 {
                     TempData["ErrorMessage"] = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+
                     return View("Register", model);
                 }
 
-                // Check if the role exists, and create it if it doesn't
+                // Check if the role exists
                 if (!await _roleManager.RoleExistsAsync(model.Role))
                 {
                     IdentityRole newRole = new IdentityRole(model.Role);
@@ -77,14 +96,11 @@ namespace Rentoo.Web.Controllers
                     }
                 }
 
-                // Create user
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // Assign role
                     await _userManager.AddToRoleAsync(user, model.Role);
                     await _signInManager.SignInAsync(user, isPersistent: false);
-
                     TempData["SuccessMessage"] = "User registered successfully. Please sign in to continue.";
                     return RedirectToAction("Login", "Account");
                 }
