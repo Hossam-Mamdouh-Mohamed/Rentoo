@@ -17,6 +17,7 @@ public class CarController : Controller
     }
 
     [HttpGet]
+    //[Route("Car/Details/{carId}")]
     public async Task<IActionResult> Details(int id)
     {
         var car = await _context.Cars
