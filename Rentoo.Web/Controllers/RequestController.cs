@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Rentoo.Application.Interfaces;
 using Rentoo.Domain.Entities;
 using Rentoo.Web.ViewModels;
@@ -25,8 +26,24 @@ namespace Rentoo.Web.Controllers
 
         [HttpGet]
         [Route("Request/AddRequest/{carId}")]
-        public IActionResult AddRequest(int carId)
+        public async Task<IActionResult> AddRequestAsync(int carId)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction( "Login", "Account");
+            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var existingRequest = await _ReqServes.GetAllAsync(r =>
+                r.UserID == userId &&
+                r.CarId == carId &&
+                r.Status == RequestStatus.Pending);
+
+            if (existingRequest.Any())
+            {
+                TempData["HasReq"] = "You Has Pending Request";
+                return RedirectToAction("Details","Car",new { id =  carId });
+            }
+
             ViewBag.CarId = carId;
             return View();
         }
