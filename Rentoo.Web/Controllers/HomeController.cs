@@ -10,6 +10,7 @@ using Rentoo.Domain.Entities;
 using Rentoo.Domain.Shared;
 using Rentoo.Infrastructure.Data;
 using Rentoo.Web.ViewModels;
+using X.PagedList.Extensions;
 
 
 namespace Rentoo.Web.Controllers;
@@ -30,20 +31,18 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
-        
-        ViewBag.CarsModel = new SelectList(_context.Cars.Select(c => c.Model).Distinct().ToList());
-        //ViewBag.CarsTransmission = new SelectList( _context.Cars.Select(c => c.Transmission).Distinct().ToList());
-        ViewBag.CarsLocation = new SelectList(_context.Cars.Select(c => c.Address).Distinct().ToList());
-        ViewBag.Cars = _context.Cars.Include(c => c.Images).ToList();
+        ViewBag.CarsModel = new SelectList(await _context.Cars.Select(c => c.Model).Distinct().ToListAsync());
+        ViewBag.CarsLocation = new SelectList(await _context.Cars.Select(c => c.Address).Distinct().ToListAsync());
+        ViewBag.Cars = _context.Cars.Include(c => c.Images).OrderBy(c => c.ID).ToList();
         return View();
     }
-    public IActionResult Search(CarSearchViewModel search)
+    public async Task<IActionResult> Search(CarSearchViewModel search)
     {
-        ViewBag.CarsModel = new SelectList(_context.Cars.Select(c=>c.Model).Distinct().ToList());
+        ViewBag.CarsModel = new SelectList( await _context.Cars.Select(c=>c.Model).Distinct().ToListAsync());
         //ViewBag.CarsTransmission = new SelectList( _context.Cars.Select(c => c.Transmission).Distinct().ToList());
-        ViewBag.CarsLocation = new SelectList(_context.Cars.Select(c => c.Address).Distinct().ToList());
+        ViewBag.CarsLocation = new SelectList(await _context.Cars.Select(c => c.Address).Distinct().ToListAsync());
 
         var query = _context.Cars.AsQueryable();
 
