@@ -3,8 +3,10 @@
 
 @{
     Layout = "~/Views/Shared/_EndUserLayout.cshtml";
-    ViewData["Title"] = "My Requests";
+    ViewData["Title"] = RM.Global.MyRequests;
 }
+
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 
 <head>
     <meta charset="utf-8" />
@@ -388,18 +390,18 @@
     <div class="dashboard-container">
         <div class="dashboard-content">
             <div class="page-header">
-                <h1>Rental Requests</h1>
+                <h1>@RM.Global.MyRequests</h1>
             </div>
 
             <div class="nav-tabs">
-                <a href="@Url.Action("ClientProfile", "ClientDashboard")" class="nav-tab "><i class="fas fa-user"></i> MY ACCOUNT</a>
-                <a href="@Url.Action("MyRequests", "ClientDashboard")" class="nav-tab active"><i class="fas fa-file-alt"></i> MY REQUESTS</a>
-                <a href="@Url.Action("YourDoucoment", "ClientDashboard")" class="nav-tab"><i class="fas fa-file-upload"></i> YOUR DOCUMENTS</a>
+                <a href="@Url.Action("ClientProfile", "ClientDashboard")" class="nav-tab"><i class="fas fa-user"></i> @RM.Global.MyAccount</a>
+                <a href="@Url.Action("MyRequests", "ClientDashboard")" class="nav-tab active"><i class="fas fa-file-alt"></i> @RM.Global.MyRequests</a>
+                <a href="@Url.Action("YourDoucoment", "ClientDashboard")" class="nav-tab"><i class="fas fa-file-upload"></i> @RM.Global.YourDocuments</a>
             </div>
             @if (!Model.Any())
             {
                 <div class="alert alert-info">
-                    You don't have any rental requests yet.
+                    @RM.Global.Youdon_thaveanyrentalrequestsyet_
                 </div>
             }
             else
@@ -408,10 +410,11 @@
                 {
                     <div class="request-card">
                         <div class="request-header">
-                            <h3 class="request-title">Request for @request.Car.Model</h3>
-                            <span class="request-status status-@request.Status.ToString().ToLower()">
-                                @request.Status
-                            </span>
+                            <h3 class="request-title">@RM.Global.RequestDetails</h3>
+                            <span class="request-status status-@request.Status.ToString().ToLower()">@(request.Status == RequestStatus.Pending ? RM.Global.Pending : 
+                                request.Status == RequestStatus.Accepted ? RM.Global.Accepted : 
+                                request.Status == RequestStatus.Rejected ? RM.Global.Rejected : 
+                                RM.Global.Completed)</span>
                         </div>
                         <div class="request-details">
                             <div class="detail-item">
@@ -444,7 +447,7 @@
                             {
                                 <div class="request-actions">
                                     <button class="btn btn-info" onclick="openReviewModal(@request.ID)">
-                                        <i class="fas fa-star"></i> Add Review
+                                        <i class="fas fa-star"></i> @RM.Global.AddReview
                                     </button>
                                 </div>
                             }
@@ -452,7 +455,7 @@
                             {
                                 <div class="request-actions">
                                     <div class="alert alert-info">
-                                        <i class="fas fa-check-circle"></i> You have already reviewed this request.
+                                        <i class="fas fa-check-circle"></i> @RM.Global.Youhavealreadyreviewedthisrequest.
                                     </div>
                                 </div>
                             }
@@ -470,14 +473,14 @@
                 <i class="fas fa-times"></i>
             </button>
             <div class="modal-header">
-                <h3 class="modal-title">Add Review</h3>
+                <h3 class="modal-title">@RM.Global.AddReview</h3>
             </div>
             <div class="modal-body">
                 <form id="reviewForm" asp-action="AddReview" method="post" onsubmit="return validateReviewForm()">
                     <input type="hidden" id="requestId" name="requestId" />
 
                     <div class="form-group">
-                        <label>Rating</label>
+                        <label>@RM.Global.Rating</label>
                         <div class="rating-stars">
                             <i class="fas fa-star star" data-rating="1"></i>
                             <i class="fas fa-star star" data-rating="2"></i>
@@ -486,18 +489,18 @@
                             <i class="fas fa-star star" data-rating="5"></i>
                         </div>
                         <input type="hidden" id="rating" name="rating" value="5" />
-                        <span id="ratingError" class="text-danger" style="display: none; color: #dc3545; font-size: 14px;">Please select a rating</span>
+                        <span id="ratingError" class="text-danger" style="display: none; color: #dc3545; font-size: 14px;">@RM.Global.Pleaseselectarating</span>
                     </div>
 
                     <div class="form-group">
                         <label for="comment">Comment</label>
                         <textarea id="comment" name="comment" class="form-control" placeholder="Share your experience with this rental..."></textarea>
-                        <span id="commentError" class="text-danger" style="display: none; color: #dc3545; font-size: 14px;">Please provide a comment</span>
+                        <span id="commentError" class="text-danger" style="display: none; color: #dc3545; font-size: 14px;">@RM.Global.Pleaseprovideacomment</span>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" onclick="closeReviewModal()">Cancel</button>
-                        <button type="submit" class="btn btn-success">Submit Review</button>
+                        <button type="button" class="btn btn-danger" onclick="closeReviewModal()">@RM.Global.Cancel</button>
+                        <button type="submit" class="btn btn-success">@RM.Global.SubmitReview</button>
                     </div>
                 </form>
             </div>
