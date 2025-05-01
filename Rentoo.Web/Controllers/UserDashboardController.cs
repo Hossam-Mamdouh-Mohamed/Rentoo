@@ -120,7 +120,7 @@ namespace Rentoo.Web.Controllers
                     Fuel = addCarViewModel.Fuel,
                     Mileage = addCarViewModel.Mileage,
                     Address = addCarViewModel.Address,
-                    IsAvailable = true,
+                    IsAvailable = false,
                     UserId = userId
                 };
 
