@@ -56,11 +56,11 @@
 		@* <div class="d-flex justify-content-between align-items-center mb-2">
 			<span class="badge-top-pick">Top Pick</span>
 		</div> *@
-		<div class="row align-items-center">
+            <div class="row align-items-center" id="card-container">
 			<div class="col-md-6 text-center">
                 <img src="@(item.Images.FirstOrDefault()?.ImageUrl)" alt="Car Image" style="width: 300px;">
 			</div>
-            <div class="col-md-3 text-center">
+                <div class="col-md-3 text-center Carcard">
 				<h5 class="mb-1">@item.Model</h5>
 				<ul class="list-unstyled small-text mb-2">
 					<li class="icon-text"><i class="bi bi-people-fill"></i> @item.Seats @RM.Global.Seats | <i class="bi bi-gear-fill"></i> @item.Transmission</li>
@@ -76,5 +76,73 @@
 		</div>
 	</div>
     }
+    <nav class="mt-3">
+        <ul id="pagination" class="pagination justify-content-center"></ul>
+    </nav>
     
 </div>
+<script>
+    const yearSelect = document.getElementById('yearSelect');
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y >= 1900; y--) {
+      const option = document.createElement('option');
+      option.value = y;
+      option.textContent = y;
+      yearSelect.appendChild(option);
+    }
+     $(document).ready(function () {
+      const itemsPerPage = 9;
+      const visiblePageCount = 5;
+      const $cards = $("#card-container .Carcard");
+      const totalItems = $cards.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      let currentPage = 1;
+      let currentGroup = 1;
+
+      function renderPagination() {
+        $("#pagination").empty();
+        const totalGroups = Math.ceil(totalPages / visiblePageCount);
+        const startPage = (currentGroup - 1) * visiblePageCount + 1;
+        const endPage = Math.min(startPage + visiblePageCount - 1, totalPages);
+
+        if (currentGroup > 1) {
+          $("#pagination").append("<button class='arrow btn btn-danger' data-nav='prev'>&laquo;</button>");
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+          $("#pagination").append(`<button class="btn" data-page='${i}'>${i}</button>`);
+        }
+
+        if (currentGroup < totalGroups) {
+          $("#pagination").append("<button class='arrow btn btn-danger' data-nav='next'>&raquo;</button>");
+        }
+
+        $(`#pagination button[data-page='${currentPage}']`).addClass("active");
+      }
+
+      function showPage(page) {
+        currentPage = page;
+        $cards.hide();
+        const start = (page - 1) * itemsPerPage;
+        $cards.slice(start, start + itemsPerPage).show();
+        renderPagination();
+      }
+
+      $("#pagination").on("click", "button", function () {
+        const $btn = $(this);
+        if ($btn.hasClass("arrow")) {
+          if ($btn.data("nav") === "prev") {
+            currentGroup--;
+          } else {
+            currentGroup++;
+          }
+          renderPagination();
+        } else {
+          const page = parseInt($btn.data("page"));
+          showPage(page);
+        }
+      });
+
+      showPage(1);
+    });
+</script>
