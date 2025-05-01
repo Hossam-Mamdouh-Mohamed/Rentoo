@@ -115,6 +115,24 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Birth Date.
+        /// </summary>
+        public static string BirthDate {
+            get {
+                return ResourceManager.GetString("BirthDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Car.
         /// </summary>
         public static string Car {
@@ -498,6 +516,51 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string YouAlreadyHavePendingRequest {
             get {
                 return ResourceManager.GetString("YouAlreadyHavePendingRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have any rental requests yet..
+        /// </summary>
+        public static string Youdon_thaveanyrentalrequestsyet_ {
+            get {
+                return ResourceManager.GetString("Youdon\'thaveanyrentalrequestsyet.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have already reviewed this request.
+        /// </summary>
+        public static string Youhavealreadyreviewedthisrequest {
+            get {
+                return ResourceManager.GetString("Youhavealreadyreviewedthisrequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Documents.
+        /// </summary>
+        public static string YourDocuments {
+            get {
+                return ResourceManager.GetString("YourDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your documents are currently under review. You cannot update them until they are accepted..
+        /// </summary>
+        public static string YourdocumentsarecurrentlyunderreviewYoucannotupdatethemuntiltheyareaccepted_ {
+            get {
+                return ResourceManager.GetString("YourdocumentsarecurrentlyunderreviewYoucannotupdatethemuntiltheyareaccepted.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your documents have been rejected Please update them with the correct information.
+        /// </summary>
+        public static string YourdocumentshavebeenrejectedPleaseupdatethemwiththecorrectinformation {
+            get {
+                return ResourceManager.GetString("YourdocumentshavebeenrejectedPleaseupdatethemwiththecorrectinformation", resourceCulture);
             }
         }
         
