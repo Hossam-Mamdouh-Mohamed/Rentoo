@@ -213,7 +213,7 @@
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Clients" ? "active" : "")" asp-controller="Admin" asp-action="Clients">
                     <i class="fas fa-users"></i>
-                    <span class="nav-link-text">Clients</span>
+                    <span class="nav-link-text">Renters</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -299,9 +299,10 @@
                             <a href="contact.html" class="nav-item nav-link"></a>
                         </div>
                         &nbsp;
-                        <a class="btn btn-outline-light text-body btn-sm d-flex gap-2 align-items-center" id="btnToggle">
-                            <span class="d-none d-lg-flex">Logout </span>
-                            <i class="hgi-stroke hgi-language-circle btn-icon"></i>
+                            <a class="btn btn-outline-light text-body btn-sm d-flex gap-2 align-items-center" id="btnToggle" class="nav-link" asp-controller="Account" asp-action="Logout">
+                                <i class="hgi-stroke hgi-language-circle btn-icon"></i>
+                                <span class="d-none d-lg-flex">Logout</span>
+                            </a>
 
                         </a>
                         &nbsp;

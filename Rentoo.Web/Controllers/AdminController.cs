@@ -23,8 +23,9 @@ namespace Rentoo.Web.Controllers
         private readonly IService<Request> RentalService;
         private readonly IService<Car> _carService;
         private readonly IService<CarDocument> DocumentService;
+        private IService<UserDocument> UserDocumentService;
 
-        public AdminController(IService<CarDocument> _document, IService<User> _service, IService<Request> Rental, IService<Car> carService, Microsoft.AspNetCore.Identity.UserManager<User> _userManager, IService<Car> carservice)
+        public AdminController(IService<UserDocument> userdoc,IService<CarDocument> _document, IService<User> _service, IService<Request> Rental, IService<Car> carService, Microsoft.AspNetCore.Identity.UserManager<User> _userManager, IService<Car> carservice)
         {
             service = _service;
             this.carService = carService;
@@ -32,6 +33,7 @@ namespace Rentoo.Web.Controllers
             _carService = carservice;
             RentalService = Rental;
             DocumentService = _document;
+            UserDocumentService = userdoc;
         }
 
         public IActionResult Index()
@@ -244,19 +246,33 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-        public async Task<IActionResult> PendingApprovements(int page = 1)
+        public async Task<IActionResult> PendingApprovements(int page = 1, string documentType = "Car")
         {
             try
             {
-                var CarDocuments = await DocumentService.GetAllAsync(x => x.status == DocumentStatus.Pending, ["Car", "User"]);
-                var PagedDoc = CarDocuments.ToPagedList(page, 8);
+                var documentStatus = DocumentStatus.Pending;
+                // Fetch the documents based on the type (Car or User) and status (Pending)
+                if (documentType == "User")
+                {
+                    var userDocuments = await UserDocumentService.GetAllAsync(x =>x.Status== UserDocumentStatus.Pending, ["User"]);
+                    var pagedUserDocs = userDocuments.ToPagedList(page, 8);
 
-                return View(PagedDoc);
+                    ViewBag.DocumentType = "User";
+                    return View(pagedUserDocs);
+                }
+                else
+                {
+                    // Get the pending car documents
+                    var carDocuments = await DocumentService.GetAllAsync(x => x.status == DocumentStatus.Pending, ["Car", "User"]);
+                    var pagedCarDocs = carDocuments.ToPagedList(page, 8);       
+                    ViewBag.DocumentType = "Car";
+                    return View(pagedCarDocs);
+                }
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while fetching Pending  Requests.";
+                // Handle any errors that occur during the fetch
+                TempData["ErrorMessage"] = "An error occurred while fetching pending requests.";
                 return RedirectToAction("Index");
             }
         }
@@ -283,6 +299,19 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("PendingApprovements");
             }
         }
+        public async Task<IActionResult> PendingUserDetails(int id)
+        {
+            try
+            {
+                var UserDoc = await UserDocumentService.GetAllAsync(x => x.ID == id, ["User"]);
+                return View(UserDoc.FirstOrDefault());
+            }
+            catch
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching the pending request.";
+                return RedirectToAction("PendingApprovements");
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> UpdateStatus(int id, string status)
         {
@@ -301,6 +330,39 @@ namespace Rentoo.Web.Controllers
                     document.ReviewdAt = DateTime.UtcNow;
 
                     await DocumentService.UpdateAsync(document);
+
+                    TempData["SuccessMessage"] = $"Document has been {status.ToLower()} successfully.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Invalid status value.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while updating the document status.";
+            }
+
+            return RedirectToAction("PendingApprovements");
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus2(int id, string status)
+        {
+            try
+            {
+                var document = await UserDocumentService.GetByIdAsync(id);
+                if (document == null)
+                {
+                    TempData["ErrorMessage"] = "Document not found.";
+                    return RedirectToAction("PendingApprovements");
+                }
+
+                if (Enum.TryParse<UserDocumentStatus>(status, out var newStatus))
+                {
+                    document.Status= newStatus;
+                    document.ReviewdAt = DateTime.UtcNow;
+
+                    await UserDocumentService.UpdateAsync(document);
 
                     TempData["SuccessMessage"] = $"Document has been {status.ToLower()} successfully.";
                 }
