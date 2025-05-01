@@ -21,8 +21,8 @@
                         <th>Last Name</th>
                         <th>Birth Date</th>
                         <th>Address</th>
-                        <th>Number Of Cars</th>
                         <th>Phone Number</th>
+                        <th>Cars</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -40,13 +40,18 @@
                             <td>@owner.LastName</td>
                             <td>@owner.BirthDate.ToString("yyyy-MM-dd")</td>
                             <td>@owner.Address</td>
-                            <td>@owner.Cars?.Count</td>
                             <td>@owner.PhoneNumber</td>
                             <td>
                                 @if (owner.Cars?.Count > 0)
                                 {
                                     <a asp-action="OwnerCars" asp-route-id="@owner.Id" class="btn btn-sm btn-primary mb-1">Show Cars</a>
                                 }
+                                else
+                                {
+                                    @:0
+                                }
+                            </td>
+                            <td>
                                 <form asp-action="Delete" asp-route-id="@owner.Id" method="post" class="delete-form d-inline">
                                     <button type="button" class="btn btn-sm btn-danger delete-btn">Delete</button>
                                 </form>

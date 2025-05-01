@@ -233,9 +233,7 @@ namespace Rentoo.Web.Controllers
 
             try
             {
-                var acceptedRequests = await RentalService.GetAllAsync(x => x.Status == RequestStatus.Accepted);
-
-                // Convert to paginated list
+                var acceptedRequests = await RentalService.GetAllAsync(x => x.Status == RequestStatus.Completed);
                 var paginatedRequests = acceptedRequests.ToPagedList(page, PageSize);
 
                 return View(paginatedRequests);
@@ -269,12 +267,12 @@ namespace Rentoo.Web.Controllers
             try
             {
                 var CarDoc = await DocumentService.GetAllAsync(x => x.ID == id, ["Car", "User"]);
-                var car = CarDoc.FirstOrDefault()?.Car;  // Access the Car object associated with CarDocument
+                var car = CarDoc.FirstOrDefault()?.Car;  
 
                 if (car != null)
                 {
-                    var carImage = car.Images?.FirstOrDefault();  // Get the first car image
-                    ViewBag.CarImage = carImage?.ImageUrl;  // Store the image URL in ViewBag
+                    var carImage = car.Images?.FirstOrDefault();
+                    ViewBag.CarImage = carImage?.ImageUrl;  
                 }
 
                 return View(CarDoc.FirstOrDefault());
