@@ -71,7 +71,7 @@
 			</div>
             <div class="col-md-3 text-end p-2">
                 <div class="price">EGP 3,011</div>
-                <button class="btn btn-primary btn-sm mt-2">View details</button>
+                    <a asp-controller="Car" asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary rounded-pill py-2 px-4">View Details</a>
             </div>
 		</div>
 	</div>
