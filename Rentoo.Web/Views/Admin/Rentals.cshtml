@@ -24,7 +24,7 @@
                         <th>Delivery Address</th>
                         <th>Pickup Address</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        @* <th>Actions</th> *@
                     </tr>
                 </thead>
                 <tbody>
@@ -46,13 +46,10 @@
                             <td>@request.DeliveryAddress</td>
                             <td>@request.pickupAddress</td>
                             <td><span class="badge bg-success">@request.Status</span></td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@request.ID" class="btn btn-sm btn-info">Details</a>
-                                @* Optional Delete Button *@
-                                @* <form asp-action="Delete" asp-route-id="@request.ID" method="post" class="d-inline" onsubmit="return confirm('Delete this request?');">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form> *@
-                            </td>
+                            @* <td> *@
+                            @*     <a asp-action="Details" asp-route-id="@request.ID" class="btn btn-sm btn-info">Details</a> *@
+                               
+                            @* </td> *@
                         </tr>
                     }
                 </tbody>
