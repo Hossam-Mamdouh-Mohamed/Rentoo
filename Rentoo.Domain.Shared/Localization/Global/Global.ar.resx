@@ -123,6 +123,9 @@
   <data name="ApplicationRequest" xml:space="preserve">
     <value>طلب تأجير</value>
   </data>
+  <data name="BackToHome" xml:space="preserve">
+    <value>الرجوع الى الصفحة الرئيسية</value>
+  </data>
   <data name="Car" xml:space="preserve">
     <value>سيارة</value>
   </data>
@@ -165,6 +168,9 @@
   <data name="SelectYourCartype" xml:space="preserve">
     <value>اختر نوع عربيتك</value>
   </data>
+  <data name="SendRequest" xml:space="preserve">
+    <value>إرسال طلب</value>
+  </data>
   <data name="Service" xml:space="preserve">
     <value>خدمات</value>
   </data>
@@ -180,7 +186,223 @@
   <data name="WithDriver" xml:space="preserve">
     <value>بالسائق</value>
   </data>
+  <data name="YouAlreadyHavePendingRequest" xml:space="preserve">
+    <value>لديك طلب بالفعل </value>
+  </data>
   <data name="YourInformation" xml:space="preserve">
     <value>معلوماتك</value>
+  </data>
+  <data name="ClientProfile" xml:space="preserve">
+    <value>الملف الشخصي للعميل</value>
+  </data>
+  <data name="MyRequests" xml:space="preserve">
+    <value>طلباتي</value>
+  </data>
+  <data name="YourDocuments" xml:space="preserve">
+    <value>مستنداتك</value>
+  </data>
+  <data name="MyAccount" xml:space="preserve">
+    <value>حسابي</value>
+  </data>
+  <data name="UploadDocuments" xml:space="preserve">
+    <value>رفع المستندات</value>
+  </data>
+  <data name="NoDocuments" xml:space="preserve">
+    <value>لم تقم برفع أي مستندات بعد. يرجى رفع مستنداتك أدناه.</value>
+  </data>
+  <data name="PersonalInformation" xml:space="preserve">
+    <value>المعلومات الشخصية</value>
+  </data>
+  <data name="ContactInformation" xml:space="preserve">
+    <value>معلومات الاتصال</value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>حفظ التغييرات</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="RequestDetails" xml:space="preserve">
+    <value>تفاصيل الطلب</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>قيد الانتظار</value>
+  </data>
+  <data name="Accepted" xml:space="preserve">
+    <value>مقبول</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>مرفوض</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>مكتمل</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="AddReview" xml:space="preserve">
+    <value>اضف تقييم</value>
+  </data>
+  <data name="BirthDate" xml:space="preserve">
+    <value>تاريخ الميلاد</value>
+  </data>
+  <data name="DocumentStatus" xml:space="preserve">
+    <value>حالة المستند</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>البريد الالكتروني</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>الاسم الاول</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>الاسم الاخير</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>رقم الهاتف</value>
+  </data>
+  <data name="Pleaseprovideacomment" xml:space="preserve">
+    <value>برجاء اضافة تعليق</value>
+  </data>
+  <data name="Pleaseselectarating" xml:space="preserve">
+    <value>برجاء اختيار التقييم</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>التقييم</value>
+  </data>
+  <data name="SubmitReview" xml:space="preserve">
+    <value>أضف التقييم</value>
+  </data>
+  <data name="Youdon'thaveanyrentalrequestsyet." xml:space="preserve">
+    <value>ليس لديك أي طلبات إيجار حتى الآن.</value>
+  </data>
+  <data name="Youhavealreadyreviewedthisrequest" xml:space="preserve">
+    <value>لقد قمت بتقييم  هذا الطلب بالفعل</value>
+  </data>
+  <data name="YourdocumentsarecurrentlyunderreviewYoucannotupdatethemuntiltheyareaccepted." xml:space="preserve">
+    <value>مستنداتك قيد المراجعة حاليًا. لا يمكنك تحديثها حتى يتم قبولها.</value>
+  </data>
+  <data name="YourdocumentshavebeenrejectedPleaseupdatethemwiththecorrectinformation" xml:space="preserve">
+    <value>لقد تم رفض مستنداتك، يرجى تحديثها بالمعلومات الصحيحة</value>
+  </data>
+  <data name="YourProfilePicture" xml:space="preserve">
+    <value>الصورة الشخصية</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="AirCondition" xml:space="preserve">
+    <value>مكيف الهواء</value>
+  </data>
+  <data name="Availability" xml:space="preserve">
+    <value>توافر السيارة</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>متوفرة</value>
+  </data>
+  <data name="CustomerReviews" xml:space="preserve">
+    <value>مراجعات العملاء</value>
+  </data>
+  <data name="FuelType" xml:space="preserve">
+    <value>نوع الوقود</value>
+  </data>
+  <data name="km" xml:space="preserve">
+    <value>كم</value>
+  </data>
+  <data name="Noreviewsyetforthiscar" xml:space="preserve">
+    <value>لا توجد مراجعات لهذه السيارة حتى الآن.</value>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>غير متوفرة</value>
+  </data>
+  <data name="RequestToRent" xml:space="preserve">
+    <value>طلب الإيجار</value>
+  </data>
+  <data name="Specifications" xml:space="preserve">
+    <value>المواصفات</value>
+  </data>
+  <data name="Thisvehicleiscurrentlyunavailableforrental" xml:space="preserve">
+    <value>هذه السيارة غير متاحة للتأجير حاليًا</value>
+  </data>
+  <data name="lbRenters" xml:space="preserve">
+    <value>المستأجرين</value>
+  </data>
+  <data name="lbOwners" xml:space="preserve">
+    <value>الملاك</value>
+  </data>
+  <data name="lbCars" xml:space="preserve">
+    <value>السيارات</value>
+  </data>
+  <data name="lbRentels" xml:space="preserve">
+    <value>الايجارات</value>
+  </data>
+  <data name="lbPendingverify" xml:space="preserve">
+    <value>تحت المراجعة</value>
+  </data>
+  <data name="lbLogout" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
+  <data name="lbSystemAdmin" xml:space="preserve">
+    <value>مديري الموقع</value>
+  </data>
+  <data name="lbOwnersCount" xml:space="preserve">
+    <value>اجمالي الملاك</value>
+  </data>
+  <data name="lbRentersCount" xml:space="preserve">
+    <value>أجمالي المستأجرين</value>
+  </data>
+  <data name="lbCarsCount" xml:space="preserve">
+    <value>اجمالي السيارات</value>
+  </data>
+  <data name="lbRentelsCount" xml:space="preserve">
+    <value>اجمالي الايجارات</value>
+  </data>
+  <data name="lbCurrentRentels" xml:space="preserve">
+    <value>الايجارات الجارية</value>
+  </data>
+  <data name="lbCompletedRent" xml:space="preserve">
+    <value>الايجارات المكتملة</value>
+  </data>
+  <data name="lbcancelledRent" xml:space="preserve">
+    <value>الايجارات الملغية</value>
+  </data>
+  <data name="lbPendingRent" xml:space="preserve">
+    <value>الايجارات المعلقة</value>
+  </data>
+  <data name="lbProfile" xml:space="preserve">
+    <value>الملف الشخصي</value>
+  </data>
+  <data name="lbDashboard" xml:space="preserve">
+    <value>لوح التحكم</value>
+  </data>
+  <data name="lbFirstName" xml:space="preserve">
+    <value>الاسم الاول</value>
+  </data>
+  <data name="lbLastName" xml:space="preserve">
+    <value>الاسم الاخير</value>
+  </data>
+  <data name="lbBirthDate" xml:space="preserve">
+    <value>تاريخ الميلاد</value>
+  </data>
+  <data name="lbAddress" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="lbPhoneNumber" xml:space="preserve">
+    <value>رقم التليفون</value>
+  </data>
+  <data name="lbActions" xml:space="preserve">
+    <value>العمليات</value>
+  </data>
+  <data name="lbOwnersList" xml:space="preserve">
+    <value>قائمة الملاك</value>
+  </data>
+  <data name="lbDelete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="lbCreatenewAdmin" xml:space="preserve">
+    <value>اضافة مسئول جديد</value>
   </data>
 </root>

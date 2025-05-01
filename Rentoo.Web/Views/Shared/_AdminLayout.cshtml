@@ -201,55 +201,55 @@
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Index" && ViewContext.RouteData.Values["Controller"].ToString() == "Admin" ? "active" : "")" asp-controller="Admin" asp-action="Index">
                     <i class="fas fa-home"></i>
-                    <span class="nav-link-text">Dashboard</span>
+                    <span class="nav-link-text">@RM.Global.lbDashboard</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Profile" && ViewContext.RouteData.Values["Controller"].ToString() == "Admin" ? "active" : "")" asp-controller="Admin" asp-action="Profile">
                     <i class="fas fa-user-tie"></i>
-                    <span class="nav-link-text">Profile</span>
+                    <span class="nav-link-text">@RM.Global.lbProfile</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Clients" ? "active" : "")" asp-controller="Admin" asp-action="Clients">
                     <i class="fas fa-users"></i>
-                    <span class="nav-link-text">Clients</span>
+                    <span class="nav-link-text">@RM.Global.lbRenters</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Owners" ? "active" : "")" asp-controller="Admin" asp-action="Owners">
                     <i class="fas fa-user-tie"></i>
-                    <span class="nav-link-text">Owners</span>
+                    <span class="nav-link-text">@RM.Global.lbOwners</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Cars" ? "active" : "")" asp-controller="Admin" asp-action="Cars">
                     <i class="fas fa-car"></i>
-                    <span class="nav-link-text">Cars</span>
+                    <span class="nav-link-text">@RM.Global.lbCars</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "Rentals" ? "active" : "")" asp-controller="Admin" asp-action="Rentals">
                     <i class="fas fa-key"></i>
-                    <span class="nav-link-text">Rentals</span>
+                    <span class="nav-link-text">@RM.Global.lbRentels</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "PendingJoins" ? "active" : "")" asp-controller="Admin" asp-action="PendingApprovements">
                     <i class="fas fa-clock"></i>
-                    <span class="nav-link-text">Pending Requests</span>
+                    <span class="nav-link-text">@RM.Global.lbPendingverify</span>
                 </a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "System Admins" ? "active" : "")" asp-controller="Admin" asp-action="SystemAdmins">
                     <i class="fas fa-users"></i>
-                    <span class="nav-link-text">System Admins</span>
+                    <span class="nav-link-text">@RM.Global.lbSystemAdmin</span>
                 </a>
             </li>
             <li class="nav-item mt-4">
                 <a class="nav-link" asp-controller="Account" asp-action="Logout">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span class="nav-link-text">Logout</span>
+                    <span class="nav-link-text">@RM.Global.lbLogout</span>
                 </a>
             </li>
         </ul>
@@ -293,15 +293,16 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav mx-auto py-0">
-                            <a href="index.html" class="nav-item nav-link active">@RM.Global.Home</a>
-                            <a href="about.html" class="nav-item nav-link">@RM.Global.About</a>
-                            <a href="service.html" class="nav-item nav-link">@RM.Global.Service</a>
-                            <a href="contact.html" class="nav-item nav-link">@RM.Global.Contact</a>
+                            <a href="index.html" class="nav-item nav-link active"></a>
+                            <a href="about.html" class="nav-item nav-link"></a>
+                            <a href="service.html" class="nav-item nav-link"></a>
+                            <a href="contact.html" class="nav-item nav-link"></a>
                         </div>
                         &nbsp;
-                        <a class="btn btn-outline-light text-body btn-sm d-flex gap-2 align-items-center" id="btnToggle">
-                            <span class="d-none d-lg-flex"> @RM.Global.SignUp </span>
-                            <i class="hgi-stroke hgi-language-circle btn-icon"></i>
+                            <a class="btn btn-outline-light text-body btn-sm d-flex gap-2 align-items-center" id="btnToggle" class="nav-link" asp-controller="Account" asp-action="Logout">
+                                <i class="hgi-stroke hgi-language-circle btn-icon"></i>
+                                <span class="d-none d-lg-flex">Logout</span>
+                            </a>
 
                         </a>
                         &nbsp;

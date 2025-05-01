@@ -2,9 +2,10 @@
 @using System.IO
 @model Rentoo.Domain.Entities.UserDocument
 @{
-    ViewData["Title"] = "Your Documents";
+    ViewData["Title"] = RM.Global.YourDocuments;
     Layout = "~/Views/Shared/_EndUserLayout.cshtml";
 }
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 
 <head>
     <meta charset="utf-8" />
@@ -236,24 +237,24 @@
 <div class="doc-dashboard-container">
     <div class="doc-dashboard-content">
         <div class="doc-page-header">
-            <h1>Your Documents</h1>
+            <h1>@RM.Global.YourDocuments</h1>
         </div>
 
         <div class="doc-nav-tabs">
-            <a href="@Url.Action("ClientProfile", "ClientDashboard")" class="doc-nav-tab"><i class="fas fa-user"></i> MY ACCOUNT</a>
-            <a href="@Url.Action("MyRequests", "ClientDashboard")" class="doc-nav-tab"><i class="fas fa-file-alt"></i> MY REQUESTS</a>
-            <a href="@Url.Action("YourDoucoment", "ClientDashboard")" class="doc-nav-tab active"><i class="fas fa-file-upload"></i> YOUR DOCUMENTS</a>
+            <a href="@Url.Action("ClientProfile", "ClientDashboard")" class="doc-nav-tab"><i class="fas fa-user"></i> @RM.Global.MyAccount</a>
+            <a href="@Url.Action("MyRequests", "ClientDashboard")" class="doc-nav-tab"><i class="fas fa-file-alt"></i> @RM.Global.MyRequests</a>
+            <a href="@Url.Action("YourDoucoment", "ClientDashboard")" class="doc-nav-tab active"><i class="fas fa-file-upload"></i> @RM.Global.YourDocuments</a>
         </div>
         @if (Model == null)
         {
             <div class="doc-alert doc-alert-info">
-                You haven't uploaded any documents yet. Please upload your documents below.
+                @RM.Global.NoDocuments
             </div>
         }
         else
         {
             <div class="doc-profile-section">
-                <h2>Document Status</h2>
+                <h2>@RM.Global.DocumentStatus</h2>
                 <div style="margin-bottom: 20px;">
                     <h5>Status: <span class="doc-badge @(Model.Status == UserDocumentStatus.Accepted ? "doc-bg-success" : Model.Status == UserDocumentStatus.Rejected ? "doc-bg-danger" : "doc-bg-warning")">@Model.Status</span></h5>
                     @if (Model.ReviewdAt.HasValue)
@@ -267,13 +268,13 @@
                     @if (Model.Status == UserDocumentStatus.Pending)
                     {
                         <div class="doc-alert doc-alert-warning" style="margin-top: 15px;">
-                            Your documents are currently under review. You cannot update them until they are accepted.
+                            @RM.Global.YourdocumentsarecurrentlyunderreviewYoucannotupdatethemuntiltheyareaccepted_
                         </div>
                     }
                     else if (Model.Status == UserDocumentStatus.Rejected)
                     {
                         <div class="doc-alert doc-alert-danger" style="margin-top: 15px;">
-                            Your documents have been rejected. Please update them with the correct information.
+                            @RM.Global.YourdocumentshavebeenrejectedPleaseupdatethemwiththecorrectinformation.
                         </div>
                     }
                 </div>

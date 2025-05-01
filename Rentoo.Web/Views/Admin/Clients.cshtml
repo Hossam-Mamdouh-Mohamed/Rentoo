@@ -1,14 +1,14 @@
 ﻿@model IPagedList<Rentoo.Domain.Entities.User>
 @using X.PagedList.Mvc.Core
-
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 @{
-    ViewData["Title"] = "Clients";
+    ViewData["Title"] = "Renters";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="text-primary mb-0">Clients List</h2>
+        <h2 class="text-primary mb-0">Renters List</h2>
         @* <a asp-action="Create" class="btn btn-success">Add New Client</a> *@
     </div>
 
@@ -18,12 +18,12 @@
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Birth Date</th>
-                        <th>Address</th>
-                        <th>Phone Number</th>
-                        <th>Actions</th>
+                        <th>@RM.Global.lbFirstName</th>
+                        <th>@RM.Global.lbLastName</th>
+                        <th>@RM.Global.lbBirthDate</th>
+                        <th>@RM.Global.lbAddress</th>
+                        <th>@RM.Global.lbPhoneNumber</th>
+                        <th>@RM.Global.lbActions</th>
                     </tr>
                 </thead>
                 <tbody>

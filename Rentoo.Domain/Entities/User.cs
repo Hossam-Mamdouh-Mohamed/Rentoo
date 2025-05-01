@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Net.NetworkInformation;
 using Microsoft.AspNetCore.Identity;
-
 namespace Rentoo.Domain.Entities
 {
     public class User : IdentityUser
     {
         [Required]
-       // [Range(3, 100, ErrorMessage = "Name At Lest 3 characters ")]
+   
         public string FirstName { get; set; }
 
         [Required]

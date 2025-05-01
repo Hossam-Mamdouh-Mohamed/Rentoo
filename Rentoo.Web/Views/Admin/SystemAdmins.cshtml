@@ -1,23 +1,23 @@
 ﻿@model IPagedList<Rentoo.Domain.Entities.User>
 @using X.PagedList.Mvc.Core
-
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 @{
     ViewData["Title"] = "System Admins";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <div class="mb-3">
-    <a asp-action="Create" class="btn btn-success">Create New Admin</a>
+    <a asp-action="Create" class="btn btn-success">@RM.Global.lbCreatenewAdmin</a>
 </div>
 <table class="table table-bordered">
     <thead>
         <tr>
             <th>#</th> <!-- Row number column -->
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Birth Date</th>
-            <th>Address</th>
-            <th>Phone Number</th>
-            <th>Actions</th>
+            <th>@RM.Global.lbFirstName</th>
+            <th>@RM.Global.lbLastName</th>
+            <th>@RM.Global.lbBirthDate</th>
+            <th>@RM.Global.lbAddress</th>
+            <th>@RM.Global.lbPhoneNumber</th>
+            <th>@RM.Global.lbActions</th>
         </tr>
     </thead>
     <tbody>
@@ -37,7 +37,7 @@
                     <td>@user.PhoneNumber</td>
                     <td>
                     <form asp-action="Delete" asp-route-id="@user.Id" method="post" class="delete-form d-inline">
-                        <button type="button" class="btn btn-sm btn-danger delete-btn">Delete</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-btn">@RM.Global.lbDelete</button>
                     </form>
                     </td>
                 </tr>

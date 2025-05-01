@@ -1,0 +1,132 @@
+﻿@model object // General model to handle either Car or User document lists
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@{
+    ViewData["Title"] = "Documents";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var documentType = ViewBag.DocumentType as string ?? "Car";
+
+    var pagedListModel = Model as IPagedList; // Fix for pagination helper
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary">
+        @(documentType == "User" ? "User Documents" : "Car Documents")
+    </h2>
+
+    <!-- Toggle Button -->
+    <div class="mb-3">
+        @if (documentType == "User")
+        {
+            <a asp-action="PendingApprovements" asp-route-documentType="Car" class="btn btn-outline-secondary">
+                Show Car Documents
+            </a>
+        }
+        else
+        {
+            <a asp-action="PendingApprovements" asp-route-documentType="User" class="btn btn-outline-primary">
+                Show User Documents
+            </a>
+        }
+    </div>
+
+    <!-- Conditional Rendering for Car and User Documents -->
+    @if (documentType == "Car")
+    {
+        var carDocs = Model as IPagedList<Rentoo.Domain.Entities.CarDocument>;
+        <div class="shadow-sm">
+            <div class="body p-0">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>License Number</th>
+                            <th>Car ID</th>
+                            <th>Owner Name</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int rowIndex = (carDocs.PageNumber - 1) * carDocs.PageSize;
+                        }
+
+                        @foreach (var carDoc in carDocs)
+                        {
+                            rowIndex++;
+                            <tr>
+                                <td>@rowIndex</td>
+                                <td>@carDoc.LicenseNumber</td>
+                                <td>@carDoc.CarId</td>
+                                <td>@carDoc.User?.FirstName @carDoc.User?.LastName</td>
+                                <td>
+                                    <a asp-action="PendingCarDetails" asp-route-id="@carDoc.ID" class="btn btn-sm btn-info">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        var userDocs = Model as IPagedList<Rentoo.Domain.Entities.UserDocument>;
+        <div class="shadow-sm">
+            <div class="body p-0">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Renter Name</th>
+                            <th>Phone Number</th>
+                            <th>Birth Date</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int rowIndex = (userDocs.PageNumber - 1) * userDocs.PageSize;
+                        }
+
+                        @foreach (var userDoc in userDocs)
+                        {
+                            rowIndex++;
+                            <tr>
+                                <td>@rowIndex</td>
+                                <td>@userDoc.User?.FirstName @userDoc.User?.LastName</td>
+                                <td>@userDoc.User.PhoneNumber</td>
+                                <td>@userDoc.User.BirthDate</td>
+                                <td>
+                                    <a asp-action="PendingUserDetails" asp-route-id="@userDoc.ID" class="btn btn-sm btn-info">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    <!-- Pagination Controls -->
+    @if (pagedListModel != null)
+    {
+        <div class="d-flex justify-content-center mt-4">
+            @Html.PagedListPager(pagedListModel, page => Url.Action("PendingApprovements", new { page, documentType }), new PagedListRenderOptions
+   {
+       LiElementClasses = new[] { "page-item" },
+       PageClasses = new[] { "page-link" },
+       UlElementClasses = new[] { "pagination" },
+       DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+       DisplayLinkToLastPage = PagedListDisplayMode.Never,
+       DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+       DisplayLinkToNextPage = PagedListDisplayMode.Always,
+       LinkToPreviousPageFormat = "« Prev",
+       LinkToNextPageFormat = "Next »",
+       MaximumPageNumbersToDisplay = 5,
+       DisplayEllipsesWhenNotShowingAllPageNumbers = true
+   })
+        </div>
+    }
+</div>
