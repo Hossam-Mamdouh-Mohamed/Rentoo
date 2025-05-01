@@ -1,5 +1,6 @@
 ﻿@using Rentoo.Web.ViewModels
 @using Rentoo.Domain.Entities
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 @model CarDetailsViewModel
 
 <!DOCTYPE html>
@@ -12,394 +13,394 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --primary-color: #3a86ff;
-            --secondary-color: #8338ec;
-            --dark-color: #212529;
-            --light-color: #f8f9fa;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --border-radius: 8px;
-            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-            --warning-color: #ffc107;
+        --primary-color: #3a86ff;
+        --secondary-color: #8338ec;
+        --dark-color: #212529;
+        --light-color: #f8f9fa;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --border-radius: 8px;
+        --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --warning-color: #ffc107;
         }
 
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            color: var(--dark-color);
-            line-height: 1.6;
-            background-color: #f5f7fa;
+        font-family: 'Poppins', sans-serif;
+        color: var(--dark-color);
+        line-height: 1.6;
+        background-color: #f5f7fa;
         }
 
         .container-main {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 20px;
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 20px;
         }
 
         .car-details-container {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            overflow: hidden;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
         }
 
         .car-header {
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
         }
 
         .car-title h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--dark-color);
-            margin-bottom: 0.5rem;
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
         }
 
         .car-meta {
-            display: flex;
-            gap: 1rem;
-            color: #6c757d;
-            margin-bottom: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        color: #6c757d;
+        margin-bottom: 1.5rem;
         }
 
-            .car-meta span {
-                display: flex;
-                align-items: center;
-                gap: 0.3rem;
-            }
+        .car-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        }
 
         .car-image-gallery {
-            position: relative;
-            margin: 2rem 0;
+        position: relative;
+        margin: 2rem 0;
         }
 
         .main-image {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: var(--border-radius);
-            margin-bottom: 1rem;
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+        margin-bottom: 1rem;
         }
 
         .thumbnail-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 10px;
         }
 
         .thumbnail {
-            width: 100%;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 2px solid transparent;
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: var(--transition);
+        border: 2px solid transparent;
         }
 
-            .thumbnail:hover, .thumbnail.active {
-                border-color: var(--primary-color);
-            }
+        .thumbnail:hover, .thumbnail.active {
+        border-color: var(--primary-color);
+        }
 
         .car-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            padding: 2rem;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        padding: 2rem;
         }
 
 
 
         .car-specifications, .car-description, .car-owner-info {
-            margin-bottom: 2rem;
+        margin-bottom: 2rem;
         }
 
         h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark-color);
-            position: relative;
-            padding-bottom: 0.5rem;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+        position: relative;
+        padding-bottom: 0.5rem;
         }
 
-            h3::after {
-                content: '';
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                width: 50px;
-                height: 3px;
-                background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            }
+        h3::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
 
         .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
         }
 
         .spec-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem;
-            background: #f8f9fa;
-            border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem;
+        background: #f8f9fa;
+        border-radius: var(--border-radius);
         }
 
         .spec-icon {
-            color: var(--primary-color);
-            font-size: 1.2rem;
+        color: var(--primary-color);
+        font-size: 1.2rem;
         }
 
         .spec-label {
-            font-weight: 500;
+        font-weight: 500;
         }
 
         .spec-value {
-            color: #495057;
+        color: #495057;
         }
 
 
         /* Simplified Reviews Section */
         .reviews-section {
-            margin-top: 2rem;
-            padding: 1.5rem 0;
+        margin-top: 2rem;
+        padding: 1.5rem 0;
         }
 
         .reviews-title {
-            font-size: 1.3rem;
-            color: var(--dark-color);
-            margin-bottom: 1.2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #eee;
+        font-size: 1.3rem;
+        color: var(--dark-color);
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eee;
         }
 
         .review-box {
-            padding: 1rem 0;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid #f0f0f0;
+        margin-bottom: 1rem;
         }
 
-            .review-box:last-child {
-                border-bottom: none;
-            }
+        .review-box:last-child {
+        border-bottom: none;
+        }
 
         .review-user {
-            font-weight: 500;
-            color: var(--dark-color);
-            margin-bottom: 0.3rem;
+        font-weight: 500;
+        color: var(--dark-color);
+        margin-bottom: 0.3rem;
         }
 
         .review-rating {
-            color: var(--warning-color);
-            margin: 0.3rem 0;
+        color: var(--warning-color);
+        margin: 0.3rem 0;
         }
 
         .review-date {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 0.5rem;
+        font-size: 0.8rem;
+        color: #888;
+        margin-bottom: 0.5rem;
         }
 
         .review-content {
-            color: #555;
-            line-height: 1.5;
+        color: #555;
+        line-height: 1.5;
         }
 
         .fa-star {
-            color: var(--warning-color);
+        color: var(--warning-color);
         }
 
         .fa-star-empty {
-            color: black;
+        color: black;
         }
 
         .no-reviews {
-            color: #777;
-            font-style: italic;
-            padding: 1rem 0;
+        color: #777;
+        font-style: italic;
+        padding: 1rem 0;
         }
 
 
         .car-availability {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            /* margin-bottom: 2rem; */
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        /* margin-bottom: 2rem; */
         }
 
 
 
         .availability-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-weight: 500;
-            margin-bottom: 1rem;
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        margin-bottom: 1rem;
         }
 
         .available {
-            background-color: rgba(40, 167, 69, 0.1);
-            color: var(--success-color);
+        background-color: rgba(40, 167, 69, 0.1);
+        color: var(--success-color);
         }
 
         .not-available {
-            background-color: rgba(220, 53, 69, 0.1);
-            color: var(--danger-color);
+        background-color: rgba(220, 53, 69, 0.1);
+        color: var(--danger-color);
         }
 
         .driver-option {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0.5rem 0;
         }
 
         .driver-icon {
-            color: var(--secondary-color);
+        color: var(--secondary-color);
         }
 
         .location-option {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 0.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0.5rem 0;
         }
 
         .location-icon {
-            color: var(--danger-color);
+        color: var(--danger-color);
         }
 
 
 
         label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
         }
 
 
 
         .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+        opacity: 0.9;
+        transform: translateY(-2px);
         }
         /* Request Button Styles */
         .request-button-container {
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
         }
 
         .btn.request-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.8rem 1.5rem;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            border-radius: var(--border-radius);
-            font-weight: 500;
-            text-decoration: none;
-            transition: var(--transition);
-            width: 100%;
-            text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        text-decoration: none;
+        transition: var(--transition);
+        width: 100%;
+        text-align: center;
         }
 
-            .btn.request-btn:hover {
-                opacity: 0.9;
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            }
+        .btn.request-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
 
         .availability-message {
-            padding: 0.8rem;
-            background: #f8f9fa;
-            border-radius: var(--border-radius);
-            margin-top: 1rem;
-            text-align: center;
-            color: #6c757d;
+        padding: 0.8rem;
+        background: #f8f9fa;
+        border-radius: var(--border-radius);
+        margin-top: 1rem;
+        text-align: center;
+        color: #6c757d;
         }
 
         .car-owner-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
         }
 
         .owner-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
         }
 
         .owner-details h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
+        font-size: 1.2rem;
+        margin-bottom: 0.3rem;
         }
 
 
 
         .owner-contact {
-            display: flex;
-            gap: 1rem;
-            margin-top: 0.5rem;
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
         }
 
         .contact-btn {
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
-            font-size: 0.9rem;
-            transition: var(--transition);
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+        transition: var(--transition);
         }
 
         .message-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
+        background: var(--primary-color);
+        color: white;
+        border: none;
         }
 
         .call-btn {
-            background: white;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
+        background: white;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
         }
 
         .contact-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
 
         .section-divider {
-            height: 1px;
-            background: #eee;
-            margin: 2rem 0;
+        height: 1px;
+        background: #eee;
+        margin: 2rem 0;
         }
 
         .no-contact-info {
-            color: #6c757d;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        color: #6c757d;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         }
 
         .no-contact-info i {
-            color: #ffc107;
+        color: #ffc107;
         }
     </style>
 </head>
@@ -407,8 +408,16 @@
     <div class="container-main">
         <div class="car-details-container">
             <!-- Car Header -->
+
             <div class="car-header">
                 <div class="car-title">
+                    @if (TempData["HasReq"] != null)
+                    {
+                        <div class="alert alert-warning text-center mb-4">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            @RM.Global.YouAlreadyHavePendingRequest
+                        </div>
+                    }
                     <h2>@Model.Car.Model</h2>
                     <div class="car-meta">
                         <span><i class="fas fa-calendar-alt"></i> @Model.Car.FactoryYear</span>
@@ -558,15 +567,18 @@
 
                     <!-- Owner Information -->
                     <div class="car-owner-info">
-                        <img src="\assets\img\team-1.jpg" alt="Owner" class="owner-avatar">
+                        <img src="/@(string.IsNullOrEmpty(Model.Car.User?.UserImage) ? "/uploads/user.jpg" : Model.Car.User.UserImage)"
+                             alt="Owner Avatar" class="owner-avatar" />
                         <div class="owner-details">
                             <h4>@(Model.Car.User?.FirstName ?? "Unknown Owner")</h4>
 
                             <div class="owner-contact">
-                                @if (Model.Car.User != null)
+                                @if (!string.IsNullOrEmpty(Model.Car.User?.PhoneNumber))
                                 {
-                                    <button class="contact-btn message-btn"><i class="fas fa-envelope"></i> Message</button>
-                                    <button class="contact-btn call-btn"><i class="fas fa-phone"></i> Call</button>
+                                    @* <button class="contact-btn message-btn"><i class="fas fa-envelope"></i> Message</button> *@
+                                    <a href="tel:@Model.Car.User.PhoneNumber" class="contact-btn call-btn">
+                                        <i class="fas fa-phone-alt"></i> Call
+                                    </a>
                                 }
                                 else
                                 {

@@ -57,17 +57,17 @@
                         <!-- Total Price Display -->
                         <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded mb-4">
                             <span class="fw-bold fs-5">Total Price:</span>
-                            <span id="totalPrice" class="text-success fw-bold fs-5">Loading...</span>
+                            <span id="totalPrice" class="text-success fw-bold fs-5">...</span>
                             <input asp-for="TotalPrice" id="inpTotPri"  hidden/>
                         </div>
 
                         <!-- Submit -->
                         <div class="form-group">
-                            <input type="submit" value="Continue to Payment" class="btn btn-primary btn-lg w-100" />
+                            <input type="submit" value="@RM.Global.SendRequest" class="btn btn-success btn-lg w-100" />
                         </div>
 
                         <div class="text-center mt-3">
-                            <a asp-action="Index" class="text-decoration-none">Back to Listings</a>
+                            <a asp-action="Index" asp-controller="Home" class="text-decoration-none hgi-text-color">@RM.Global.BackToHome</a>
                         </div>
                     </form>
                 </div>

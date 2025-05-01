@@ -123,6 +123,9 @@
   <data name="ApplicationRequest" xml:space="preserve">
     <value>طلب تأجير</value>
   </data>
+  <data name="BackToHome" xml:space="preserve">
+    <value>الرجوع الى الصفحة الرئيسية</value>
+  </data>
   <data name="Car" xml:space="preserve">
     <value>سيارة</value>
   </data>
@@ -165,6 +168,9 @@
   <data name="SelectYourCartype" xml:space="preserve">
     <value>اختر نوع عربيتك</value>
   </data>
+  <data name="SendRequest" xml:space="preserve">
+    <value>إرسال طلب</value>
+  </data>
   <data name="Service" xml:space="preserve">
     <value>خدمات</value>
   </data>
@@ -179,6 +185,9 @@
   </data>
   <data name="WithDriver" xml:space="preserve">
     <value>بالسائق</value>
+  </data>
+  <data name="YouAlreadyHavePendingRequest" xml:space="preserve">
+    <value>لديك طلب بالفعل </value>
   </data>
   <data name="YourInformation" xml:space="preserve">
     <value>معلوماتك</value>

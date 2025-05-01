@@ -106,6 +106,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back To Home.
+        /// </summary>
+        public static string BackToHome {
+            get {
+                return ResourceManager.GetString("BackToHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Birth Date.
         /// </summary>
         public static string BirthDate {
@@ -421,6 +430,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send Request.
+        /// </summary>
+        public static string SendRequest {
+            get {
+                return ResourceManager.GetString("SendRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service.
         /// </summary>
         public static string Service {
@@ -489,6 +507,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string WithDriver {
             get {
                 return ResourceManager.GetString("WithDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You Already Have Pending Request.
+        /// </summary>
+        public static string YouAlreadyHavePendingRequest {
+            get {
+                return ResourceManager.GetString("YouAlreadyHavePendingRequest", resourceCulture);
             }
         }
         

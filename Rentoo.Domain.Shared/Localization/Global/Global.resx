@@ -123,6 +123,9 @@
   <data name="ApplicationRequest" xml:space="preserve">
     <value>Application Request</value>
   </data>
+  <data name="BackToHome" xml:space="preserve">
+    <value>Back To Home</value>
+  </data>
   <data name="Car" xml:space="preserve">
     <value>Car</value>
   </data>
@@ -165,6 +168,9 @@
   <data name="SelectYourCartype" xml:space="preserve">
     <value>Select Your Car type</value>
   </data>
+  <data name="SendRequest" xml:space="preserve">
+    <value>Send Request</value>
+  </data>
   <data name="Service" xml:space="preserve">
     <value>Service</value>
   </data>
@@ -179,6 +185,9 @@
   </data>
   <data name="WithDriver" xml:space="preserve">
     <value>With Driver</value>
+  </data>
+  <data name="YouAlreadyHavePendingRequest" xml:space="preserve">
+    <value>You Already Have Pending Request</value>
   </data>
   <data name="YourInformation" xml:space="preserve">
     <value>Your Information</value>
