@@ -58,7 +58,7 @@
 		</div> *@
             <div class="row align-items-center" id="card-container">
 			<div class="col-md-6 text-center">
-                <img src="@(item.Images.FirstOrDefault()?.ImageUrl)" alt="Car Image" style="width: 300px;">
+                <img src="@(item.Images?.FirstOrDefault()?.ImageUrl)" alt="Car Image" style="width: 300px;">
 			</div>
                 <div class="col-md-3 text-center Carcard">
 				<h5 class="mb-1">@item.Model</h5>
