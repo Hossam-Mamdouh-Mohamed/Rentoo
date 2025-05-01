@@ -439,9 +439,6 @@
                         <div id="editRateCodeDaysContainer">
                             <!-- Days will be added here dynamically -->
                         </div>
-                        <button type="button" class="btn btn-secondary" onclick="addEditRateCodeDay()">
-                            <i class="fas fa-plus"></i> Add Another Day
-                        </button>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -471,17 +468,98 @@
                     return;
                 }
 
-                // Find the first available day
+                // Find the first available day starting from Saturday (1)
                 let newDayId = 1;
                 while (existingDays.has(newDayId)) {
                     newDayId++;
+                    if (newDayId > 7) newDayId = 1; // Wrap around to Saturday
                 }
 
                 const newDay = container.firstElementChild.cloneNode(true);
                 const select = newDay.querySelector('select[name="DayId"]');
-                select.value = newDayId;
+                
+                // Update the select options to start from Saturday and hide selected days
+                select.innerHTML = '';
+                for (let i = 1; i <= 7; i++) {
+                    if (!existingDays.has(i)) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = getDayName(i);
+                        if (i === newDayId) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+                    }
+                }
+                
                 container.appendChild(newDay);
+                
+                // Update the add button visibility
+                updateAddButtonVisibility();
             }
+
+            function updateAddButtonVisibility() {
+                const container = document.getElementById('rateCodeDaysContainer');
+                const addButton = document.querySelector('button[onclick="addRateCodeDay()"]');
+                const existingDays = new Set();
+                
+                // Get all existing day values
+                container.querySelectorAll('.rate-code-day select[name="DayId"]').forEach(select => {
+                    existingDays.add(parseInt(select.value));
+                });
+
+                // Hide the add button if we have all 7 days
+                if (existingDays.size >= 7) {
+                    addButton.style.display = 'none';
+                } else {
+                    addButton.style.display = 'inline-flex';
+                }
+            }
+
+            function validateDaySelection(select) {
+                const container = select.closest('#rateCodeDaysContainer');
+                const selectedValue = parseInt(select.value);
+                const allSelects = container.querySelectorAll('.rate-code-day select[name="DayId"]');
+                
+                // Update all select options to hide selected days
+                allSelects.forEach(currentSelect => {
+                    if (currentSelect !== select) {
+                        const currentValue = parseInt(currentSelect.value);
+                        const options = currentSelect.querySelectorAll('option');
+                        
+                        options.forEach(option => {
+                            const optionValue = parseInt(option.value);
+                            if (optionValue === selectedValue) {
+                                option.style.display = 'none';
+                            } else if (optionValue === currentValue) {
+                                option.style.display = '';
+                            }
+                        });
+                    }
+                });
+                
+                // Update the add button visibility
+                updateAddButtonVisibility();
+            }
+
+            // Update the initial day select options
+            document.addEventListener('DOMContentLoaded', function() {
+                const initialSelect = document.querySelector('#rateCodeDaysContainer .rate-code-day select[name="DayId"]');
+                if (initialSelect) {
+                    initialSelect.innerHTML = `
+                        <option value="1">Saturday</option>
+                        <option value="2">Sunday</option>
+                        <option value="3">Monday</option>
+                        <option value="4">Tuesday</option>
+                        <option value="5">Wednesday</option>
+                        <option value="6">Thursday</option>
+                        <option value="7">Friday</option>
+                    `;
+                }
+                
+                // Update add button visibility on page load
+                updateAddButtonVisibility();
+            });
 
             function showDetails(id) {
                 const rateCode = @Html.Raw(Json.Serialize(Model));
@@ -505,13 +583,13 @@
 
             function getDayName(dayId) {
                 const days = {
-                    1: 'Monday',
-                    2: 'Tuesday',
-                    3: 'Wednesday',
-                    4: 'Thursday',
-                    5: 'Friday',
-                    6: 'Saturday',
-                    7: 'Sunday'
+                    1: 'Saturday',
+                    2: 'Sunday',
+                    3: 'Monday',
+                    4: 'Tuesday',
+                    5: 'Wednesday',
+                    6: 'Thursday',
+                    7: 'Friday'
                 };
                 return days[dayId] || 'Unknown';
             }
@@ -607,6 +685,7 @@
                         const container = document.getElementById('editRateCodeDaysContainer');
                         container.innerHTML = '';
                         
+                        // Add all days at once
                         rateCode.days.forEach(day => {
                             addEditRateCodeDay(day.dayId, day.price);
                         });
@@ -623,41 +702,14 @@
 
             function addEditRateCodeDay(dayId = null, price = 0) {
                 const container = document.getElementById('editRateCodeDaysContainer');
-                const existingDays = new Set();
-                
-                // Get all existing day values
-                container.querySelectorAll('.rate-code-day select[name="DayId"]').forEach(select => {
-                    existingDays.add(parseInt(select.value));
-                });
-
-                // Check if we already have 7 days
-                if (existingDays.size >= 7) {
-                    alert('You can only add up to 7 days (one for each day of the week)');
-                    return;
-                }
-
-                // If no dayId provided, find the first available day
-                if (!dayId) {
-                    dayId = 1;
-                    while (existingDays.has(dayId)) {
-                        dayId++;
-                    }
-                }
-
                 const dayDiv = document.createElement('div');
                 dayDiv.className = 'rate-code-day mb-3';
                 dayDiv.innerHTML = `
                     <div class="row">
                         <div class="col-md-6">
                             <label class="form-label">Day</label>
-                            <select class="form-select" name="DayId" required onchange="validateDaySelection(this)">
-                                <option value="1" ${dayId === 1 ? 'selected' : ''}>Monday</option>
-                                <option value="2" ${dayId === 2 ? 'selected' : ''}>Tuesday</option>
-                                <option value="3" ${dayId === 3 ? 'selected' : ''}>Wednesday</option>
-                                <option value="4" ${dayId === 4 ? 'selected' : ''}>Thursday</option>
-                                <option value="5" ${dayId === 5 ? 'selected' : ''}>Friday</option>
-                                <option value="6" ${dayId === 6 ? 'selected' : ''}>Saturday</option>
-                                <option value="7" ${dayId === 7 ? 'selected' : ''}>Sunday</option>
+                            <select class="form-select" name="DayId" required disabled>
+                                <option value="${dayId}" selected>${getDayName(dayId)}</option>
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -666,40 +718,9 @@
                         </div>
                     </div>
                 `;
+                
                 container.appendChild(dayDiv);
             }
-
-            function validateDaySelection(select) {
-                const container = select.closest('#rateCodeDaysContainer, #editRateCodeDaysContainer');
-                const selectedValue = parseInt(select.value);
-                const allSelects = container.querySelectorAll('select[name="DayId"]');
-                
-                // Check for duplicates
-                let duplicateFound = false;
-                allSelects.forEach(otherSelect => {
-                    if (otherSelect !== select && parseInt(otherSelect.value) === selectedValue) {
-                        duplicateFound = true;
-                    }
-                });
-
-                if (duplicateFound) {
-                    alert('This day has already been selected. Please choose a different day.');
-                    select.value = select.getAttribute('data-previous-value') || '1';
-                    return;
-                }
-
-                // Store the current value for next validation
-                select.setAttribute('data-previous-value', selectedValue);
-            }
-
-            // Add event listeners for day selection validation
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('select[name="DayId"]').forEach(select => {
-                    select.addEventListener('change', function() {
-                        validateDaySelection(this);
-                    });
-                });
-            });
 
             document.getElementById('editRateCodeForm').addEventListener('submit', async function(e) {
                 e.preventDefault();

@@ -243,6 +243,10 @@ namespace Rentoo.Web.Controllers
                 
                 await _reviewService.AddAsync(review);
                 
+                // Update the request with the review ID
+                request.reviewId = review.ID;
+                await _requestService.UpdateAsync(request);
+                
                 TempData["SuccessMessage"] = "Review submitted successfully!";
                 return RedirectToAction("MyRequests");
             }

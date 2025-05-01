@@ -16,10 +16,12 @@ public class CarController : Controller
         _context = context;
     }
 
+    [HttpGet]
     public async Task<IActionResult> Details(int id)
     {
         var car = await _context.Cars
             .Include(c => c.Images)
+            .Include(c => c.User)
             .Include(c => c.Requests.Where(r => r.Status == RequestStatus.Completed && r.Review != null))
                 .ThenInclude(r => r.Review)
             .Include(c => c.Requests)
@@ -29,21 +31,26 @@ public class CarController : Controller
         if (car == null)
             return NotFound();
 
-        var reviews = car.Requests
-            .Where(r => r.Review != null)
-            .Select(r => new CarReviewViewModel
-            {
-                UserName = r.User?.FirstName ?? "Anonymous",
-                Rating = r.Review!.Rating,
-                Comment = r.Review.Comment,
-                ReviewDate = r.Review.ReviewDate
-            })
-            .ToList();
+        var reviews = new List<CarReviewViewModel>();
+        if (car.Requests != null)
+        {
+            reviews = car.Requests
+                .Where(r => r.Status == RequestStatus.Completed && r.Review != null)
+                .OrderByDescending(r => r.Review.ReviewDate)
+                .Select(r => new CarReviewViewModel
+                {
+                    UserName = r.User?.FirstName ?? "Anonymous",
+                    Rating = r.Review!.Rating,
+                    Comment = r.Review.Comment,
+                    ReviewDate = r.Review.ReviewDate
+                })
+                .ToList();
+        }
 
         var viewModel = new CarDetailsViewModel
         {
             Car = car,
-            CarImages = car.Images.ToList(),
+            CarImages = car.Images?.ToList() ?? new List<CarImage>(),
             Reviews = reviews
         };
 

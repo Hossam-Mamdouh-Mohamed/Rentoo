@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_EndUserLayout.cshtml";
     ViewData["Title"] = "Client Profile";
 }
-
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -370,7 +370,7 @@
                     </div>
                 </div>
                 <div class="profile-section">
-                    <h2>Your Information:</h2>
+                    <h2>@RM.Global.YourInformation:</h2>
                     @Html.HiddenFor(model => model.Id)
                     <div class="form-row">
                         <div class="form-group">

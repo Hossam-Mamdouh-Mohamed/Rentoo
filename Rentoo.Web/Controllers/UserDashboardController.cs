@@ -411,7 +411,7 @@ namespace Rentoo.Web.Controllers
                 // Check and update status for accepted requests that have passed their end date
                 foreach (var request in requests.Where(r => r.Status == RequestStatus.Accepted))
                 {
-                    var endDate = DateTime.ParseExact(request.EndDate, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                    var endDate = DateTime.ParseExact(request.EndDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
                     if (DateTime.Now >= endDate)
                     {
                         // Update request status
