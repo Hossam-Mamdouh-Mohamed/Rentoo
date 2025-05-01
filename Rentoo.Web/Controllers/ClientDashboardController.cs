@@ -10,11 +10,17 @@ namespace Rentoo.Web.Controllers
         private readonly IService<User> _userService;
         private readonly IService<Request> _requestService;
         private readonly IService<UserDocument> _userDoucoment;
-        public ClientDashboardController(IService<User> userService, IService<Request> requestService, IService<UserDocument> userDoucoment)
+        private readonly IService<RequestReview> _reviewService;
+        public ClientDashboardController(
+            IService<User> userService, 
+            IService<Request> requestService, 
+            IService<UserDocument> userDoucoment,
+            IService<RequestReview> reviewService)
         {
             _userService = userService;
             _requestService = requestService;
             _userDoucoment = userDoucoment;
+            _reviewService = reviewService;
         }
         public async Task<IActionResult> ClientProfile()
         {
@@ -51,7 +57,7 @@ namespace Rentoo.Web.Controllers
                 // Update the user in the database
                 await _userService.UpdateAsync(existingUser);
                 TempData["SuccessMessage"] = "Profile updated successfully!";
-                return RedirectToAction("UserProfile");
+                return RedirectToAction("ClientProfile");
             }
             catch (Exception ex)
             {
@@ -64,6 +70,23 @@ namespace Rentoo.Web.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var requests = await _requestService.GetAllAsync(r => r.UserID == userId, "Car", "User");
+            
+            // Get all reviews for the current user
+            var reviews = await _reviewService.GetAllAsync();
+            
+            // Create a dictionary of request IDs that have reviews
+            var reviewedRequestIds = new HashSet<int>();
+            foreach (var review in reviews)
+            {
+                if (review.RequestId.HasValue)
+                {
+                    reviewedRequestIds.Add(review.RequestId.Value);
+                }
+            }
+            
+            // Pass the reviewed request IDs to the view
+            ViewBag.ReviewedRequestIds = reviewedRequestIds;
+            
             return View(requests);
         }
         [HttpGet]
@@ -176,6 +199,61 @@ namespace Rentoo.Web.Controllers
             {
                 TempData["ErrorMessage"] = "An error occurred while deleting your documents. Please try again.";
                 return RedirectToAction(nameof(YourDoucoment));
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReview(int requestId, int rating, string comment)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                
+                // Check if the request exists and belongs to the current user
+                var request = await _requestService.GetByIdAsync(requestId);
+                if (request == null || request.UserID != userId)
+                {
+                    TempData["ErrorMessage"] = "Request not found or you don't have permission to review it.";
+                    return RedirectToAction("MyRequests");
+                }
+                
+                // Check if the request is completed
+                if (request.Status != RequestStatus.Completed)
+                {
+                    TempData["ErrorMessage"] = "You can only review completed requests.";
+                    return RedirectToAction("MyRequests");
+                }
+                
+                // Check if a review already exists for this request
+                var existingReviews = await _reviewService.GetAllAsync(r => r.RequestId == requestId);
+                if (existingReviews.Any())
+                {
+                    TempData["ErrorMessage"] = "You have already reviewed this request.";
+                    return RedirectToAction("MyRequests");
+                }
+                
+                // Create the review
+                var review = new RequestReview
+                {
+                    RequestId = requestId,
+                    Rating = rating,
+                    Comment = comment,
+                    ReviewDate = DateTime.Now
+                };
+                
+                await _reviewService.AddAsync(review);
+                
+                // Update the request with the review ID
+                request.reviewId = review.ID;
+                await _requestService.UpdateAsync(request);
+                
+                TempData["SuccessMessage"] = "Review submitted successfully!";
+                return RedirectToAction("MyRequests");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while submitting your review. Please try again.";
+                return RedirectToAction("MyRequests");
             }
         }
     }

@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_EndUserLayout.cshtml";
     ViewData["Title"] = "Client Profile";
 }
-
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -349,7 +349,7 @@
                 <a href="@Url.Action("MyRequests", "ClientDashboard")" class="nav-tab "><i class="fas fa-file-alt"></i> MY REQUESTS</a>
 				<a href="@Url.Action("YourDoucoment", "ClientDashboard")" class="nav-tab"><i class="fas fa-file-upload"></i> YOUR DOCUMENTS</a>
             </div>
-            @using (Html.BeginForm("UserProfile", "UserDashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("ClientProfile", "ClientDashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
                 <div class="profile-section">
@@ -370,7 +370,7 @@
                     </div>
                 </div>
                 <div class="profile-section">
-                    <h2>Your Information:</h2>
+                    <h2>@RM.Global.YourInformation:</h2>
                     @Html.HiddenFor(model => model.Id)
                     <div class="form-row">
                         <div class="form-group">

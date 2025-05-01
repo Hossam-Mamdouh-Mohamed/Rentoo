@@ -248,5 +248,14 @@ namespace Rentoo.Domain.Shared.Localization.Global {
                 return ResourceManager.GetString("WithDriver", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Information.
+        /// </summary>
+        public static string YourInformation {
+            get {
+                return ResourceManager.GetString("YourInformation", resourceCulture);
+            }
+        }
     }
 }

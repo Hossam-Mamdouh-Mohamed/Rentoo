@@ -16,11 +16,14 @@ namespace Rentoo.Web.Controllers
 {
     public class AdminController : Controller
     {
+ 
         private readonly IService<User> service;
         private readonly IService<Car> carService;
         private readonly Microsoft.AspNetCore.Identity.UserManager<User> userManager;
         private readonly IService<Request> RentalService;
         private readonly IService<Car> _carService;
+        private readonly IService<CarDocument> _DocumentService;
+
         public AdminController(IService<User> _service, IService<Request> Rental, IService<Car> carService, Microsoft.AspNetCore.Identity.UserManager<User> _userManager, IService<Car> carservice)
         {
             service = _service;
@@ -29,6 +32,7 @@ namespace Rentoo.Web.Controllers
             _carService = carservice;
             RentalService = Rental;
         }
+       
         public IActionResult Index()
         {
             AdminDashboardViewModel adminDashboardViewModel = new AdminDashboardViewModel();
@@ -42,6 +46,7 @@ namespace Rentoo.Web.Controllers
             adminDashboardViewModel.RentalsPendingCount = RentalService.GetAllAsync(x => x.Status == RequestStatus.Pending).Result?.Count() ?? 0;
             return View(adminDashboardViewModel);
         }
+        
         public async Task<IActionResult> Cars(int page = 1)
         {
             try
@@ -58,12 +63,14 @@ namespace Rentoo.Web.Controllers
             }
 
         }
+        
         public async Task<IActionResult> Profile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userData = await service.GetByIdAsync(userId);
             return View(userData);
         }
+       
         public async Task<IActionResult> Clients(int page = 1)
         {
             try
@@ -78,6 +85,7 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
+        
         public async Task<IActionResult> Owners(int page = 1)
         {
             try
@@ -92,6 +100,7 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
+       
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -104,34 +113,35 @@ namespace Rentoo.Web.Controllers
             var roles = await userManager.GetRolesAsync(user);
             var isClient = roles.Contains("Client");
             var isOwner = roles.Contains("Owner");
-            var isSubAdmin = roles.Contains("SubAdmin");
+            var isAdmin = roles.Contains("Admin");
             var result = await userManager.DeleteAsync(user);
 
             if (result.Succeeded)
             {
-                TempData["SuccessMessage"] = "User deleted successfully.";
+                if (isClient)
+                {
+                    TempData["SuccessMessage"] = "Client deleted successfully.";
+                    return RedirectToAction("Clients");
+                }
+                else if (isOwner)
+                {
+                    TempData["SuccessMessage"] = "Owner deleted successfully.";
+                    return RedirectToAction("Owners");
+                }
+                else if (isAdmin)
+                {
+                    TempData["SuccessMessage"] = "Admin deleted successfully.";
+                    return RedirectToAction("SystemAdmins");
+                }
             }
             else
             {
                 TempData["ErrorMessage"] = "Error deleting user.";
             }
 
-            // Redirect based on role
-            if (isClient)
-            {
-                return RedirectToAction("Clients");
-            }
-            else if (isOwner)
-            {
-                return RedirectToAction("Owners");
-            }
-            else if (isSubAdmin)
-            {
-                return RedirectToAction("SystemAdmins");
-            }
-
             return RedirectToAction("Index"); // fallback
         }
+        
         [HttpPost]
         public async Task<IActionResult> UserProfile(User user, IFormFile? ProfileImageFile, string? NewPassword, string? ConfirmPassword)
         {
@@ -215,6 +225,7 @@ namespace Rentoo.Web.Controllers
                 return View("Profile", user);
             }
         }
+       
         public async Task<IActionResult> Rentals(int page = 1)
         {
             const int PageSize = 8;
@@ -235,32 +246,32 @@ namespace Rentoo.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> PendingApprovements(int page = 1)
-        {
-            const int PageSize = 10;
-            try
-            {
-                var acceptedRequests = await RentalService.GetAllAsync(x => x.Status == RequestStatus.Rejected);
-                var paginatedRequests = acceptedRequests
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize)
-                    .ToList();
-                return View(paginatedRequests);
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "An error occurred while fetching accepted rental requests.";
-                return RedirectToAction("Index");
-            }
-        }
+        //public async Task<IActionResult> PendingApprovements(int page = 1)
+        //{
+        //    //const int PageSize = 10;
+        //    //try
+        //    //{
+        //    //    var acceptedRequests = await Ren);
+        //    //    var paginatedRequests = acceptedRequests
+        //    //        .Skip((page - 1) * PageSize)
+        //    //        .Take(PageSize)
+        //    //        .ToList();
+        //    //    return View(paginatedRequests);
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    TempData["ErrorMessage"] = "An error occurred while fetching accepted rental requests.";
+        //    //    return RedirectToAction("Index");
+        //    //}
+        //}
 
         public async Task<IActionResult> SystemAdmins(int page = 1)
         {
             try
             {
-                var users = await userManager.GetUsersInRoleAsync("SubAdmin");
+                var users = await userManager.GetUsersInRoleAsync("Admin");
                 var pagedUsers = users.ToPagedList(page, 8);
-                return View("SubAdmins", pagedUsers);
+                return View("SystemAdmins", pagedUsers);
             }
             catch (Exception ex)
             {
@@ -268,11 +279,13 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
+        
         [HttpGet]
         public async Task<IActionResult> Create()
         {
             return View();
         }
+        
         [HttpPost]
         public async Task<IActionResult> Create(RegisterViewModel model)
         {
@@ -302,23 +315,30 @@ namespace Rentoo.Web.Controllers
                 TempData["ErrorMessage"] = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
                 return View("Create", model);
             }
-
-            Microsoft.AspNetCore.Identity.IdentityResult result = await userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
+            try
             {
-                await userManager.AddToRoleAsync(user, model.Role);
-                TempData["SuccessMessage"] = "User Registered Successfully";
-                return RedirectToAction("SystemAdmins", "admin");
-            }
+                Microsoft.AspNetCore.Identity.IdentityResult result = await userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, model.Role);
+                    TempData["SuccessMessage"] = "User Registered Successfully";
+                    return RedirectToAction("SystemAdmins", "admin");
+                }
 
-            foreach (var error in result.Errors)
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+
+                }
+                TempData["ErrorMessage"] = "Plese Try Again Later";
+                return View(model);
+            }
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", error.Description);
-
+                TempData["ErrorMessage"] = "This Phone Number Already Exist";
+                return View(model);
             }
-            TempData["ErrorMessage"] = "Plese Try Again Later";
-            return View(model);
+          
         }
 
         public async Task<IActionResult> OwnerCars(string id)

@@ -180,4 +180,7 @@
   <data name="WithDriver" xml:space="preserve">
     <value>بالسائق</value>
   </data>
+  <data name="YourInformation" xml:space="preserve">
+    <value>معلوماتك</value>
+  </data>
 </root>

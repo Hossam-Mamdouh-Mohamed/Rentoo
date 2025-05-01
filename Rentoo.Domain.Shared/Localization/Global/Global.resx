@@ -180,4 +180,7 @@
   <data name="WithDriver" xml:space="preserve">
     <value>With Driver</value>
   </data>
+  <data name="YourInformation" xml:space="preserve">
+    <value>Your Information</value>
+  </data>
 </root>
