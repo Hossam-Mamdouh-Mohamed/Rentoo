@@ -26,6 +26,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\ServicesData\" />
+    <Folder Include="wwwroot\uploads\cars\" />
+    <Folder Include="wwwroot\uploads\documents\" />
   </ItemGroup>
 
   <PropertyGroup>

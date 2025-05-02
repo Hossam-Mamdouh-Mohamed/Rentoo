@@ -421,6 +421,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Photo.
+        /// </summary>
+        public static string lbChangePhoto {
+            get {
+                return ResourceManager.GetString("lbChangePhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
         public static string lbColor {
@@ -637,6 +646,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string lbNext {
+            get {
+                return ResourceManager.GetString("lbNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Owner Name.
         /// </summary>
         public static string lbOwnerName {
@@ -727,11 +745,29 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prev.
+        /// </summary>
+        public static string lbPrev {
+            get {
+                return ResourceManager.GetString("lbPrev", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
         public static string lbProfile {
             get {
                 return ResourceManager.GetString("lbProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Picture.
+        /// </summary>
+        public static string lbProfilePicture {
+            get {
+                return ResourceManager.GetString("lbProfilePicture", resourceCulture);
             }
         }
         

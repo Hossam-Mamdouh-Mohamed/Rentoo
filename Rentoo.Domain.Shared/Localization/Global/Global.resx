@@ -528,4 +528,16 @@
   <data name="lbPass" xml:space="preserve">
     <value>Leave blank if you don't want to change your password.</value>
   </data>
+  <data name="lbProfilePicture" xml:space="preserve">
+    <value>Profile Picture</value>
+  </data>
+  <data name="lbChangePhoto" xml:space="preserve">
+    <value>Change Photo</value>
+  </data>
+  <data name="lbNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="lbPrev" xml:space="preserve">
+    <value>Prev</value>
+  </data>
 </root>

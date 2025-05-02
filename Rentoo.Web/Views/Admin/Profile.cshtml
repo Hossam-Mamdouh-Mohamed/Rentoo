@@ -10,7 +10,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Admin Profile</h4>
+                    <h4 class="card-title">@RM.Global.lbProfile</h4>
                 </div>
                 <div class="card-body">
                     @using (Html.BeginForm("UserProfile", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -20,12 +20,12 @@
                             <div class="col-md-3 text-center mb-4">
                                 <div class="profile-image-container">
                                     <img src="@(string.IsNullOrEmpty(Model.UserImage) ? "/images/default-profile.png" : Url.Content($"~/{Model.UserImage}"))"
-                                         alt="Profile Picture"
+                                         alt="@RM.Global.lbProfilePicture"
                                          class="img-fluid rounded-circle profile-image mb-3"
                                          style="width: 150px; height: 150px; object-fit: cover;">
                                     <div class="mt-2">
                                         <label class="btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-camera"></i> Change Photo
+                                            <i class="fas fa-camera"></i> @RM.Global.lbChangePhoto
                                             <input type="file" name="ProfileImageFile" style="display: none;" accept="image/png, image/jpeg, image/jpg, image/gif">
                                         </label>
                                     </div>
