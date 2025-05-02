@@ -131,13 +131,15 @@ namespace Rentoo.Web.Controllers
                 {
                     var uploadPath = Path.Combine("wwwroot", "uploads", "documents");
                     Directory.CreateDirectory(uploadPath);
-                    var fileName = addCarViewModel.LicenseUrl.FileName;
-                    var filePath = Path.Combine(uploadPath, fileName);
+
+                    var extension = Path.GetExtension(addCarViewModel.LicenseUrl.FileName);
+                    var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+                    var filePath = Path.Combine(uploadPath, uniqueFileName);
                     await addCarViewModel.LicenseUrl.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
                     var carDocument = new CarDocument
                     {
-                        LicenseUrl = $"uploads/documents/{fileName}",
+                        LicenseUrl = $"uploads/documents/{uniqueFileName}",
                         LicenseNumber = addCarViewModel.LicenseNumber,
                         CarId = car.ID,
                         UserId = userId
@@ -148,6 +150,7 @@ namespace Rentoo.Web.Controllers
                     await _carService.UpdateAsync(car);
                 }
 
+
                 // Handle car images
                 if (addCarViewModel.CarImages != null && addCarViewModel.CarImages.Count > 0)
                 {
@@ -156,13 +159,14 @@ namespace Rentoo.Web.Controllers
 
                     foreach (var image in addCarViewModel.CarImages)
                     {
-                        var fileName = image.FileName;
-                        var filePath = Path.Combine(imageUploadPath, fileName);
+                        var extension = Path.GetExtension(image.FileName);
+                        var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+                        var filePath = Path.Combine(imageUploadPath, uniqueFileName);
                         await image.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
                         var carImage = new CarImage
                         {
-                            ImageUrl = $"uploads/cars/{fileName}",
+                            ImageUrl = $"uploads/cars/{uniqueFileName}",
                             CarId = car.ID
                         };
 

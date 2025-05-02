@@ -8,7 +8,7 @@
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="text-primary mb-0">Renters List</h2>
+        <h2 class="text-primary mb-0">@RM.Global.lbRenters</h2>
         @* <a asp-action="Create" class="btn btn-success">Add New Client</a> *@
     </div>
 
@@ -43,7 +43,7 @@
                             <td>@user.PhoneNumber</td>
                             <td>
                                 <form asp-action="Delete" asp-route-id="@user.Id" method="post" class="delete-form d-inline">
-                                    <button type="button" class="btn btn-sm btn-danger delete-btn">Delete</button>
+                                    <button type="button" class="btn btn-sm btn-danger delete-btn">@RM.Global.lbDelete</button>
                                 </form>
                             </td>
                         </tr>
@@ -63,8 +63,8 @@
        DisplayLinkToLastPage = PagedListDisplayMode.Never,
        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
        DisplayLinkToNextPage = PagedListDisplayMode.Always,
-       LinkToPreviousPageFormat = "« Prev",
-       LinkToNextPageFormat = "Next »",
+       LinkToPreviousPageFormat = $"« {RM.Global.lbPrev}",
+       LinkToNextPageFormat = $"{RM.Global.lbNext}»",
        MaximumPageNumbersToDisplay = 5,
        DisplayEllipsesWhenNotShowingAllPageNumbers = true
    })
