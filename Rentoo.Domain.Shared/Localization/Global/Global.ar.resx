@@ -540,4 +540,19 @@
   <data name="lbPrev" xml:space="preserve">
     <value>السابق</value>
   </data>
+  <data name="lbRole" xml:space="preserve">
+    <value>التسجيل بصفة</value>
+  </data>
+  <data name="lbLogin" xml:space="preserve">
+    <value>الدخول</value>
+  </data>
+  <data name="lbsignup" xml:space="preserve">
+    <value>ليس لديك حساب؟</value>
+  </data>
+  <data name="lbremember" xml:space="preserve">
+    <value>تذكرني</value>
+  </data>
+  <data name="lbRegister" xml:space="preserve">
+    <value>التسجيل</value>
+  </data>
 </root>
