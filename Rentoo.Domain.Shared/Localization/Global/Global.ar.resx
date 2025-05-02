@@ -291,6 +291,42 @@
   <data name="YourProfilePicture" xml:space="preserve">
     <value>الصورة الشخصية</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="AirCondition" xml:space="preserve">
+    <value>مكيف الهواء</value>
+  </data>
+  <data name="Availability" xml:space="preserve">
+    <value>توافر السيارة</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>متوفرة</value>
+  </data>
+  <data name="CustomerReviews" xml:space="preserve">
+    <value>مراجعات العملاء</value>
+  </data>
+  <data name="FuelType" xml:space="preserve">
+    <value>نوع الوقود</value>
+  </data>
+  <data name="km" xml:space="preserve">
+    <value>كم</value>
+  </data>
+  <data name="Noreviewsyetforthiscar" xml:space="preserve">
+    <value>لا توجد مراجعات لهذه السيارة حتى الآن.</value>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>غير متوفرة</value>
+  </data>
+  <data name="RequestToRent" xml:space="preserve">
+    <value>طلب الإيجار</value>
+  </data>
+  <data name="Specifications" xml:space="preserve">
+    <value>المواصفات</value>
+  </data>
+  <data name="Thisvehicleiscurrentlyunavailableforrental" xml:space="preserve">
+    <value>هذه السيارة غير متاحة للتأجير حاليًا</value>
+  </data>
   <data name="lbRenters" xml:space="preserve">
     <value>المستأجرين</value>
   </data>
