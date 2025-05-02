@@ -259,6 +259,240 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string lbActions {
+            get {
+                return ResourceManager.GetString("lbActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        public static string lbAddress {
+            get {
+                return ResourceManager.GetString("lbAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Birth Date.
+        /// </summary>
+        public static string lbBirthDate {
+            get {
+                return ResourceManager.GetString("lbBirthDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rentals Cancelled.
+        /// </summary>
+        public static string lbcancelledRent {
+            get {
+                return ResourceManager.GetString("lbcancelledRent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cars.
+        /// </summary>
+        public static string lbCars {
+            get {
+                return ResourceManager.GetString("lbCars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Cars.
+        /// </summary>
+        public static string lbCarsCount {
+            get {
+                return ResourceManager.GetString("lbCarsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rentals Completed.
+        /// </summary>
+        public static string lbCompletedRent {
+            get {
+                return ResourceManager.GetString("lbCompletedRent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create New Admin.
+        /// </summary>
+        public static string lbCreatenewAdmin {
+            get {
+                return ResourceManager.GetString("lbCreatenewAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rentals In Progress.
+        /// </summary>
+        public static string lbCurrentRentels {
+            get {
+                return ResourceManager.GetString("lbCurrentRentels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dashboard.
+        /// </summary>
+        public static string lbDashboard {
+            get {
+                return ResourceManager.GetString("lbDashboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string lbDelete {
+            get {
+                return ResourceManager.GetString("lbDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Name.
+        /// </summary>
+        public static string lbFirstName {
+            get {
+                return ResourceManager.GetString("lbFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Name.
+        /// </summary>
+        public static string lbLastName {
+            get {
+                return ResourceManager.GetString("lbLastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string lbLogout {
+            get {
+                return ResourceManager.GetString("lbLogout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owner.
+        /// </summary>
+        public static string lbOwners {
+            get {
+                return ResourceManager.GetString("lbOwners", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Owners.
+        /// </summary>
+        public static string lbOwnersCount {
+            get {
+                return ResourceManager.GetString("lbOwnersCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owners List.
+        /// </summary>
+        public static string lbOwnersList {
+            get {
+                return ResourceManager.GetString("lbOwnersList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rentals Pending.
+        /// </summary>
+        public static string lbPendingRent {
+            get {
+                return ResourceManager.GetString("lbPendingRent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending Verifications.
+        /// </summary>
+        public static string lbPendingverify {
+            get {
+                return ResourceManager.GetString("lbPendingverify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone Number.
+        /// </summary>
+        public static string lbPhoneNumber {
+            get {
+                return ResourceManager.GetString("lbPhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string lbProfile {
+            get {
+                return ResourceManager.GetString("lbProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rentels.
+        /// </summary>
+        public static string lbRentels {
+            get {
+                return ResourceManager.GetString("lbRentels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Rentels.
+        /// </summary>
+        public static string lbRentelsCount {
+            get {
+                return ResourceManager.GetString("lbRentelsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renters.
+        /// </summary>
+        public static string lbRenters {
+            get {
+                return ResourceManager.GetString("lbRenters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Renters.
+        /// </summary>
+        public static string lbRentersCount {
+            get {
+                return ResourceManager.GetString("lbRentersCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Admins.
+        /// </summary>
+        public static string lbSystemAdmin {
+            get {
+                return ResourceManager.GetString("lbSystemAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location.
         /// </summary>
         public static string Location {
