@@ -53,15 +53,20 @@ namespace Rentoo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ReservationReauest=await _ReqServes.GetAllAsync(r =>
-                (DateTime.Parse( r.StartDate) < requestViewModel.EndDate && requestViewModel.StartDate < DateTime.Parse( r.EndDate))
-                &&r.Status == RequestStatus.Accepted
-                && r.CarId == requestViewModel.CarId);
+                var ReservationReauest = await _ReqServes.GetAllAsync(r =>
+                    (r.StartDate.CompareTo(requestViewModel.EndDate.ToString("yyyy-MM-dd")) < 0 &&
+                     requestViewModel.StartDate.ToString("yyyy-MM-dd").CompareTo(r.EndDate) < 0)
+                    && r.Status == RequestStatus.Accepted
+                    && r.CarId == requestViewModel.CarId);
+
+                // Fix: Access the EndDate property of individual requests in the collection
                 if (ReservationReauest.Any())
                 {
-                    TempData["HasReq"] = "This Car is not avilabl in the Period";
-                    return RedirectToAction("Details", "Car", new { id = requestViewModel.CarId });
+                    var firstConflictingRequest = ReservationReauest.First();
+                    TempData["ErrorMessage"] = $"This car is not available until {firstConflictingRequest.EndDate:yyyy-MM-dd}";
+                    return RedirectToAction("AddRequest", "Request", new { id = requestViewModel.CarId });
                 }
+
                 // Save the request to the database
                 var request = new Request
                 {
@@ -78,7 +83,8 @@ namespace Rentoo.Web.Controllers
                 await _ReqServes.AddAsync(request);
             }
             ViewBag.CarId = requestViewModel.CarId;
-            return View("AddRequest", requestViewModel);
+            TempData["SuccessMessage"] = "Request has been sent successfully";
+            return RedirectToAction("Index", "Home");
         }
 
 
