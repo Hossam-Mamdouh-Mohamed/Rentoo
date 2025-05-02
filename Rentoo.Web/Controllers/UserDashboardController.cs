@@ -763,9 +763,19 @@ namespace Rentoo.Web.Controllers
             try
             {
                 var car = await _carService.GetByIdAsync(model.CarId);
+                var cardoucoment= await _carDocumentService.GetByIdAsync(car.CarDocumentId);
                 if (car == null)
                 {
                     return Json(new { success = false, message = "Car not found" });
+                }
+                if (cardoucoment == null)
+                {
+                    return Json(new { success = false, message = "Car document not found" });
+                }
+                if (cardoucoment.status == DocumentStatus.Accepted)
+                {
+                    car.IsAvailable = true;
+                    await _carService.UpdateAsync(car);
                 }
 
                 car.RateCodeId = model.RateCodeId;
