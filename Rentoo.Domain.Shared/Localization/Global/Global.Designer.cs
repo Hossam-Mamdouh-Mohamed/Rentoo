@@ -322,6 +322,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accept.
+        /// </summary>
+        public static string lbAccept {
+            get {
+                return ResourceManager.GetString("lbAccept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actions.
         /// </summary>
         public static string lbActions {
@@ -336,6 +345,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string lbAddress {
             get {
                 return ResourceManager.GetString("lbAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Air Condition.
+        /// </summary>
+        public static string lbAirCondition {
+            get {
+                return ResourceManager.GetString("lbAirCondition", resourceCulture);
             }
         }
         
@@ -358,6 +376,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Car ID.
+        /// </summary>
+        public static string lbCarID {
+            get {
+                return ResourceManager.GetString("lbCarID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cars.
         /// </summary>
         public static string lbCars {
@@ -372,6 +399,24 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string lbCarsCount {
             get {
                 return ResourceManager.GetString("lbCarsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cars Documents.
+        /// </summary>
+        public static string lbCarsDocuments {
+            get {
+                return ResourceManager.GetString("lbCarsDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        public static string lbColor {
+            get {
+                return ResourceManager.GetString("lbColor", resourceCulture);
             }
         }
         
@@ -421,11 +466,56 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delivery Address.
+        /// </summary>
+        public static string lbDeliveryAddress {
+            get {
+                return ResourceManager.GetString("lbDeliveryAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        public static string lbDetails {
+            get {
+                return ResourceManager.GetString("lbDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Date.
+        /// </summary>
+        public static string lbEndDate {
+            get {
+                return ResourceManager.GetString("lbEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Factory Year.
+        /// </summary>
+        public static string lbFactoryYear {
+            get {
+                return ResourceManager.GetString("lbFactoryYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string lbFirstName {
             get {
                 return ResourceManager.GetString("lbFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fuel.
+        /// </summary>
+        public static string lbFuel {
+            get {
+                return ResourceManager.GetString("lbFuel", resourceCulture);
             }
         }
         
@@ -439,11 +529,74 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to License Image.
+        /// </summary>
+        public static string lbLicenseImage {
+            get {
+                return ResourceManager.GetString("lbLicenseImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License Number.
+        /// </summary>
+        public static string lbLicenseNumber {
+            get {
+                return ResourceManager.GetString("lbLicenseNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logout.
         /// </summary>
         public static string lbLogout {
             get {
                 return ResourceManager.GetString("lbLogout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mileage.
+        /// </summary>
+        public static string lbMileage {
+            get {
+                return ResourceManager.GetString("lbMileage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string lbModel {
+            get {
+                return ResourceManager.GetString("lbModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to National ID.
+        /// </summary>
+        public static string lbNationalID {
+            get {
+                return ResourceManager.GetString("lbNationalID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to National ID Image.
+        /// </summary>
+        public static string lbNationalIDImage {
+            get {
+                return ResourceManager.GetString("lbNationalIDImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owner Name.
+        /// </summary>
+        public static string lbOwnerName {
+            get {
+                return ResourceManager.GetString("lbOwnerName", resourceCulture);
             }
         }
         
@@ -502,11 +655,29 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pickup Address.
+        /// </summary>
+        public static string lbPickupAddress {
+            get {
+                return ResourceManager.GetString("lbPickupAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
         public static string lbProfile {
             get {
                 return ResourceManager.GetString("lbProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reject.
+        /// </summary>
+        public static string lbReject {
+            get {
+                return ResourceManager.GetString("lbReject", resourceCulture);
             }
         }
         
@@ -529,6 +700,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Renter.
+        /// </summary>
+        public static string lbRenter {
+            get {
+                return ResourceManager.GetString("lbRenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Renters.
         /// </summary>
         public static string lbRenters {
@@ -547,11 +727,119 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Review Car Document.
+        /// </summary>
+        public static string lbReviewCarDocument {
+            get {
+                return ResourceManager.GetString("lbReviewCarDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reviewed At.
+        /// </summary>
+        public static string lbReviewedAt {
+            get {
+                return ResourceManager.GetString("lbReviewedAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Review Renter Document.
+        /// </summary>
+        public static string lbReviewRenterDocument {
+            get {
+                return ResourceManager.GetString("lbReviewRenterDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seats.
+        /// </summary>
+        public static string lbSeats {
+            get {
+                return ResourceManager.GetString("lbSeats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show.
+        /// </summary>
+        public static string lbShow {
+            get {
+                return ResourceManager.GetString("lbShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Car Documents.
+        /// </summary>
+        public static string lbShowCarDocuments {
+            get {
+                return ResourceManager.GetString("lbShowCarDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show User Documents.
+        /// </summary>
+        public static string lbShowUserDocuments {
+            get {
+                return ResourceManager.GetString("lbShowUserDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Date.
+        /// </summary>
+        public static string lbStartDate {
+            get {
+                return ResourceManager.GetString("lbStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string lbStatus {
+            get {
+                return ResourceManager.GetString("lbStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System Admins.
         /// </summary>
         public static string lbSystemAdmin {
             get {
                 return ResourceManager.GetString("lbSystemAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Price.
+        /// </summary>
+        public static string lbTotalPrice {
+            get {
+                return ResourceManager.GetString("lbTotalPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Documents.
+        /// </summary>
+        public static string lbUserDocuments {
+            get {
+                return ResourceManager.GetString("lbUserDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to With Driver.
+        /// </summary>
+        public static string lbWithDriver {
+            get {
+                return ResourceManager.GetString("lbWithDriver", resourceCulture);
             }
         }
         

@@ -1,13 +1,13 @@
 ﻿@model IPagedList<Rentoo.Domain.Entities.Request>
 @using X.PagedList.Mvc.Core
-
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 @{
     ViewData["Title"] = "Completed Retals";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container mt-4">
-    <h2 class="text-primary">Completed Rentals</h2>
+    <h2 class="text-primary">@RM.Global.lbCompletedRent</h2>
 
     <div class="card shadow-sm">
         <div class="card-body p-0">
@@ -15,16 +15,15 @@
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
-                        <th>User</th>
-                        <th>Car</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Total Price</th>
-                        <th>With Driver</th>
-                        <th>Delivery Address</th>
-                        <th>Pickup Address</th>
-                        <th>Status</th>
-                        @* <th>Actions</th> *@
+                        <th>@RM.Global.lbRenter</th>
+						<th>@RM.Global.lbCarID</th>
+                        <th>@RM.Global.lbStartDate</th>
+                        <th>@RM.Global.lbEndDate</th>
+                        <th>@RM.Global.lbTotalPrice</th>
+                        <th>@RM.Global.lbWithDriver</th>
+                        <th>@RM.Global.lbDeliveryAddress</th>
+                        <th>@RM.Global.lbPickupAddress</th>
+                        <th>@RM.Global.lbStatus</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,7 +37,7 @@
                         <tr>
                             <td>@rowIndex</td>
                             <td>@request.User?.FirstName @request.User?.LastName</td>
-                            <td>@request.Car?.ID</td>
+                            <td>@request.CarId</td>
                             <td>@request.StartDate</td>
                             <td>@request.EndDate</td>
                             <td>@request.TotalPrice.ToString("C")</td>
