@@ -20,11 +20,7 @@ public class CarController : Controller
     //[Route("Car/Details/{carId}")]
     public async Task<IActionResult> Details(int id)
     {
-        var car = await _context.Cars
-            .Include(c => c.Images)
-            .Include(c => c.User)
-            .Include(c => c.Requests.Where(r => r.Status == RequestStatus.Completed && r.Review != null))
-                .ThenInclude(r => r.Review)
+        var car = await _context.Cars.Include(c => c.Images).Include(c => c.User).Include(c => c.Requests.Where(r => r.Status == RequestStatus.Completed && r.Review != null)).ThenInclude(r => r.Review)
             .Include(c => c.Requests)
                 .ThenInclude(r => r.User)
             .FirstOrDefaultAsync(c => c.ID == id);

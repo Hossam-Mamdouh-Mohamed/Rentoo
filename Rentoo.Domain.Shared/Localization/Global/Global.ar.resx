@@ -501,4 +501,43 @@
   <data name="lbNationalIDImage" xml:space="preserve">
     <value>صورة بطاقة الرقم القومي</value>
   </data>
+  <data name="lbUserName" xml:space="preserve">
+    <value>اسم المستخدم</value>
+  </data>
+  <data name="lbPassword" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="lbConfirmPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور</value>
+  </data>
+  <data name="lbCreate" xml:space="preserve">
+    <value>أضافة</value>
+  </data>
+  <data name="lbChangePassword" xml:space="preserve">
+    <value>تغيير كلمة المرور</value>
+  </data>
+  <data name="lbSaveChanges" xml:space="preserve">
+    <value>حفظ التغييرات</value>
+  </data>
+  <data name="lbNewPassword" xml:space="preserve">
+    <value>كلمة المرور الجديدة</value>
+  </data>
+  <data name="lbConfirmNewPassword" xml:space="preserve">
+    <value>تأكيد كلمة المرور الجديدة</value>
+  </data>
+  <data name="lbPass" xml:space="preserve">
+    <value>سيبه فاضي لو مش عاوز تغير كلمة المرور بتاعتك.</value>
+  </data>
+  <data name="lbProfilePicture" xml:space="preserve">
+    <value>صورة الملف الشخصي</value>
+  </data>
+  <data name="lbChangePhoto" xml:space="preserve">
+    <value>تغيير الصورة</value>
+  </data>
+  <data name="lbNext" xml:space="preserve">
+    <value>التالي</value>
+  </data>
+  <data name="lbPrev" xml:space="preserve">
+    <value>السابق</value>
+  </data>
 </root>

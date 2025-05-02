@@ -9,7 +9,7 @@ namespace Rentoo.Domain.Entities
         public int ID { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(100)]
         public string Transmission { get; set; }
 
         [Required]
@@ -38,7 +38,7 @@ namespace Rentoo.Domain.Entities
         public WithDriverEnum WithDriver { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(100)]
         public string Fuel { get; set; }
 
         [Required]
