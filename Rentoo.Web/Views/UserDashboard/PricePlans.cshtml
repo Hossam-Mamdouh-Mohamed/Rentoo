@@ -43,9 +43,9 @@
             padding: 0 20px;
         }
 
-        .sidebar-brand img {
-            max-width: 120px;
-        }
+            .sidebar-brand img {
+                max-width: 120px;
+            }
 
         .sidebar-item {
             padding: 15px 25px;
@@ -56,15 +56,15 @@
             transition: background-color 0.3s;
         }
 
-        .sidebar-item:hover {
-            background-color: #16213e;
-        }
+            .sidebar-item:hover {
+                background-color: #16213e;
+            }
 
-        .sidebar-item i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
+            .sidebar-item i {
+                margin-right: 10px;
+                width: 20px;
+                text-align: center;
+            }
 
         .dashboard-content {
             flex: 1;
@@ -96,23 +96,23 @@
             margin-bottom: 0;
         }
 
-        .table th,
-        .table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-            vertical-align: middle;
-        }
+            .table th,
+            .table td {
+                padding: 15px;
+                text-align: left;
+                border-bottom: 1px solid #eee;
+                vertical-align: middle;
+            }
 
-        .table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #333;
-        }
+            .table th {
+                background-color: #f8f9fa;
+                font-weight: 600;
+                color: #333;
+            }
 
-        .table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
+            .table tbody tr:hover {
+                background-color: #f8f9fa;
+            }
 
         .btn-group {
             display: flex;
@@ -142,36 +142,36 @@
             color: white;
         }
 
-        .btn-info:hover {
-            background-color: #138496;
-        }
+            .btn-info:hover {
+                background-color: #138496;
+            }
 
         .btn-warning {
             background-color: #ffc107;
             color: #333;
         }
 
-        .btn-warning:hover {
-            background-color: #e0a800;
-        }
+            .btn-warning:hover {
+                background-color: #e0a800;
+            }
 
         .btn-success {
             background-color: #28a745;
             color: white;
         }
 
-        .btn-success:hover {
-            background-color: #218838;
-        }
+            .btn-success:hover {
+                background-color: #218838;
+            }
 
         .btn-danger {
             background-color: #dc3545;
             color: white;
         }
 
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
+            .btn-danger:hover {
+                background-color: #c82333;
+            }
 
         .btn i {
             font-size: 0.9em;
@@ -204,11 +204,11 @@
             padding: 8px 12px;
         }
 
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #1a1a2e;
-            box-shadow: 0 0 0 0.2rem rgba(26, 26, 46, 0.25);
-        }
+            .form-control:focus,
+            .form-select:focus {
+                border-color: #1a1a2e;
+                box-shadow: 0 0 0 0.2rem rgba(26, 26, 46, 0.25);
+            }
 
         .nav-tabs {
             display: flex;
@@ -230,18 +230,18 @@
             transition: 0.3s;
         }
 
-        .nav-tab:hover {
-            color: #ea001e;
-        }
+            .nav-tab:hover {
+                color: #ea001e;
+            }
 
-        .nav-tab.active {
-            background-color: #ea001e;
-            color: #fff;
-        }
+            .nav-tab.active {
+                background-color: #ea001e;
+                color: #fff;
+            }
 
-        .nav-tab i {
-            margin-right: 8px;
-        }
+            .nav-tab i {
+                margin-right: 8px;
+            }
 
         .page-header {
             display: flex;
@@ -250,11 +250,11 @@
             margin-bottom: 30px;
         }
 
-        .page-header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #333;
-        }
+            .page-header h1 {
+                font-size: 24px;
+                font-weight: 700;
+                color: #333;
+            }
     </style>
 </head>
 <body>
@@ -276,7 +276,7 @@
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRateCodeModal">
                         <i class="fas fa-plus"></i> Add New Price Plan
                     </button>
- 
+
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -333,19 +333,122 @@
                             <input type="text" class="form-control" name="Name" required>
                         </div>
                         <div id="rateCodeDaysContainer">
+                            <!-- All 7 days will be pre-populated here -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Daily Prices</label>
+                            </div>
+
+                            <!-- Saturday -->
                             <div class="rate-code-day mb-3">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label class="form-label">Day</label>
-                                        <select class="form-select" name="DayId" required>
-                                            <option value="1">Monday</option>
-                                            <option value="2">Tuesday</option>
-                                            <option value="3">Wednesday</option>
-                                            <option value="4">Thursday</option>
-                                            <option value="5">Friday</option>
-                                            <option value="6">Saturday</option>
-                                            <option value="7">Sunday</option>
+                                        <select class="form-select" name="DayId" required disabled>
+                                            <option value="1" selected>Saturday</option>
                                         </select>
+                                        <input type="hidden" name="DayId" value="1">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Price</label>
+                                        <input type="number" class="form-control" name="Price" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sunday -->
+                            <div class="rate-code-day mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Day</label>
+                                        <select class="form-select" name="DayId" required disabled>
+                                            <option value="2" selected>Sunday</option>
+                                        </select>
+                                        <input type="hidden" name="DayId" value="2">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Price</label>
+                                        <input type="number" class="form-control" name="Price" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Monday -->
+                            <div class="rate-code-day mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Day</label>
+                                        <select class="form-select" name="DayId" required disabled>
+                                            <option value="3" selected>Monday</option>
+                                        </select>
+                                        <input type="hidden" name="DayId" value="3">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Price</label>
+                                        <input type="number" class="form-control" name="Price" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tuesday -->
+                            <div class="rate-code-day mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Day</label>
+                                        <select class="form-select" name="DayId" required disabled>
+                                            <option value="4" selected>Tuesday</option>
+                                        </select>
+                                        <input type="hidden" name="DayId" value="4">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Price</label>
+                                        <input type="number" class="form-control" name="Price" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Wednesday -->
+                            <div class="rate-code-day mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Day</label>
+                                        <select class="form-select" name="DayId" required disabled>
+                                            <option value="5" selected>Wednesday</option>
+                                        </select>
+                                        <input type="hidden" name="DayId" value="5">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Price</label>
+                                        <input type="number" class="form-control" name="Price" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Thursday -->
+                            <div class="rate-code-day mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Day</label>
+                                        <select class="form-select" name="DayId" required disabled>
+                                            <option value="6" selected>Thursday</option>
+                                        </select>
+                                        <input type="hidden" name="DayId" value="6">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Price</label>
+                                        <input type="number" class="form-control" name="Price" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Friday -->
+                            <div class="rate-code-day mb-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Day</label>
+                                        <select class="form-select" name="DayId" required disabled>
+                                            <option value="7" selected>Friday</option>
+                                        </select>
+                                        <input type="hidden" name="DayId" value="7">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Price</label>
@@ -354,9 +457,6 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-secondary" onclick="addRateCodeDay()">
-                            <i class="fas fa-plus"></i> Add Another Day
-                        </button>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -453,122 +553,14 @@
         <script>
             let currentRateCodeId = null;
 
-            function addRateCodeDay() {
-                const container = document.getElementById('rateCodeDaysContainer');
-                const existingDays = new Set();
-                
-                // Get all existing day values
-                container.querySelectorAll('.rate-code-day select[name="DayId"]').forEach(select => {
-                    existingDays.add(parseInt(select.value));
-                });
-
-                // Check if we already have 7 days
-                if (existingDays.size >= 7) {
-                    alert('You can only add up to 7 days (one for each day of the week)');
-                    return;
-                }
-
-                // Find the first available day starting from Saturday (1)
-                let newDayId = 1;
-                while (existingDays.has(newDayId)) {
-                    newDayId++;
-                    if (newDayId > 7) newDayId = 1; // Wrap around to Saturday
-                }
-
-                const newDay = container.firstElementChild.cloneNode(true);
-                const select = newDay.querySelector('select[name="DayId"]');
-                
-                // Update the select options to start from Saturday and hide selected days
-                select.innerHTML = '';
-                for (let i = 1; i <= 7; i++) {
-                    if (!existingDays.has(i)) {
-                        const option = document.createElement('option');
-                        option.value = i;
-                        option.textContent = getDayName(i);
-                        if (i === newDayId) {
-                            option.selected = true;
-                        }
-                        select.appendChild(option);
-                    }
-                }
-                
-                container.appendChild(newDay);
-                
-                // Update the add button visibility
-                updateAddButtonVisibility();
-            }
-
-            function updateAddButtonVisibility() {
-                const container = document.getElementById('rateCodeDaysContainer');
-                const addButton = document.querySelector('button[onclick="addRateCodeDay()"]');
-                const existingDays = new Set();
-                
-                // Get all existing day values
-                container.querySelectorAll('.rate-code-day select[name="DayId"]').forEach(select => {
-                    existingDays.add(parseInt(select.value));
-                });
-
-                // Hide the add button if we have all 7 days
-                if (existingDays.size >= 7) {
-                    addButton.style.display = 'none';
-                } else {
-                    addButton.style.display = 'inline-flex';
-                }
-            }
-
-            function validateDaySelection(select) {
-                const container = select.closest('#rateCodeDaysContainer');
-                const selectedValue = parseInt(select.value);
-                const allSelects = container.querySelectorAll('.rate-code-day select[name="DayId"]');
-                
-                // Update all select options to hide selected days
-                allSelects.forEach(currentSelect => {
-                    if (currentSelect !== select) {
-                        const currentValue = parseInt(currentSelect.value);
-                        const options = currentSelect.querySelectorAll('option');
-                        
-                        options.forEach(option => {
-                            const optionValue = parseInt(option.value);
-                            if (optionValue === selectedValue) {
-                                option.style.display = 'none';
-                            } else if (optionValue === currentValue) {
-                                option.style.display = '';
-                            }
-                        });
-                    }
-                });
-                
-                // Update the add button visibility
-                updateAddButtonVisibility();
-            }
-
-            // Update the initial day select options
-            document.addEventListener('DOMContentLoaded', function() {
-                const initialSelect = document.querySelector('#rateCodeDaysContainer .rate-code-day select[name="DayId"]');
-                if (initialSelect) {
-                    initialSelect.innerHTML = `
-                        <option value="1">Saturday</option>
-                        <option value="2">Sunday</option>
-                        <option value="3">Monday</option>
-                        <option value="4">Tuesday</option>
-                        <option value="5">Wednesday</option>
-                        <option value="6">Thursday</option>
-                        <option value="7">Friday</option>
-                    `;
-                }
-                
-                // Update add button visibility on page load
-                updateAddButtonVisibility();
-            });
-
             function showDetails(id) {
                 const rateCode = @Html.Raw(Json.Serialize(Model));
                 const selectedRateCode = rateCode.find(rc => rc.id === id);
-                
+
                 document.getElementById('rateCodeName').textContent = selectedRateCode.name;
                 const daysTable = document.getElementById('rateCodeDaysTable');
                 daysTable.innerHTML = '';
-                
+
                 selectedRateCode.days.forEach(day => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -577,7 +569,7 @@
                     `;
                     daysTable.appendChild(row);
                 });
-                
+
                 new bootstrap.Modal(document.getElementById('detailsModal')).show();
             }
 
@@ -599,10 +591,10 @@
                 try {
                     const response = await fetch('/UserDashboard/GetUserCars');
                     const cars = await response.json();
-                    
+
                     const carSelect = document.getElementById('carSelect');
                     carSelect.innerHTML = '<option value="">Select a car</option>';
-                    
+
                     cars.forEach(car => {
                         const option = document.createElement('option');
                         option.value = car.id;
@@ -612,7 +604,7 @@
                         }
                         carSelect.appendChild(option);
                     });
-                    
+
                     new bootstrap.Modal(document.getElementById('assignToCarModal')).show();
                 } catch (error) {
                     console.error('Error:', error);
@@ -659,7 +651,7 @@
                         });
 
                         const result = await response.json();
-                        
+
                         if (result.success) {
                             location.reload();
                         } else {
@@ -676,20 +668,20 @@
                 try {
                     const response = await fetch(`/UserDashboard/GetPricePlan/${id}`);
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         const rateCode = result.data;
                         document.getElementById('editRateCodeId').value = rateCode.id;
                         document.getElementById('editRateCodeName').value = rateCode.name;
-                        
+
                         const container = document.getElementById('editRateCodeDaysContainer');
                         container.innerHTML = '';
-                        
+
                         // Add all days at once
                         rateCode.days.forEach(day => {
                             addEditRateCodeDay(day.dayId, day.price);
                         });
-                        
+
                         new bootstrap.Modal(document.getElementById('editRateCodeModal')).show();
                     } else {
                         alert('Failed to load price plan: ' + (result.message || 'Unknown error'));
@@ -718,7 +710,7 @@
                         </div>
                     </div>
                 `;
-                
+
                 container.appendChild(dayDiv);
             }
 
@@ -726,7 +718,7 @@
                 e.preventDefault();
                 const formData = new FormData(this);
                 const rateCodeDays = [];
-                
+
                 document.querySelectorAll('#editRateCodeDaysContainer .rate-code-day').forEach(day => {
                     rateCodeDays.push({
                         DayId: parseInt(day.querySelector('[name="DayId"]').value),
@@ -750,7 +742,7 @@
                     });
 
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         location.reload();
                     } else {
@@ -765,17 +757,25 @@
             document.getElementById('addRateCodeForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const formData = new FormData(this);
+                const name = formData.get('Name');
+
+                // Get all the day inputs
+                const dayInputs = Array.from(this.querySelectorAll('.rate-code-day'));
                 const rateCodeDays = [];
-                
-                document.querySelectorAll('.rate-code-day').forEach(day => {
+
+                // Process each day
+                dayInputs.forEach(dayDiv => {
+                    const hiddenDayId = dayDiv.querySelector('input[type="hidden"]').value;
+                    const price = dayDiv.querySelector('input[name="Price"]').value;
+
                     rateCodeDays.push({
-                        DayId: parseInt(day.querySelector('[name="DayId"]').value),
-                        Price: parseFloat(day.querySelector('[name="Price"]').value)
+                        DayId: parseInt(hiddenDayId),
+                        Price: parseFloat(price)
                     });
                 });
 
                 const data = {
-                    Name: formData.get('Name'),
+                    Name: name,
                     Days: rateCodeDays
                 };
 
@@ -789,7 +789,7 @@
                     });
 
                     const result = await response.json();
-                    
+
                     if (result.success) {
                         location.reload();
                     } else {
@@ -803,4 +803,4 @@
         </script>
     }
 </body>
-</html> 
+</html>
