@@ -189,8 +189,8 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.Property<string>("Fuel")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
@@ -211,8 +211,8 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.Property<string>("Transmission")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -223,9 +223,9 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("IsAvailable");
-
-                    b.HasIndex("Model");
+                    b.HasIndex("CarDocumentId")
+                        .IsUnique()
+                        .HasFilter("[CarDocumentId] IS NOT NULL");
 
                     b.HasIndex("RateCodeId");
 
@@ -247,7 +247,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.Property<string>("LicenseNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LicenseUrl")
                         .IsRequired()
@@ -269,15 +269,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CarId")
-                        .IsUnique();
-
-                    b.HasIndex("LicenseNumber")
-                        .IsUnique();
-
                     b.HasIndex("UserId");
-
-                    b.HasIndex("status");
 
                     b.ToTable("CarDocuments");
                 });
@@ -302,8 +294,6 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.HasIndex("ID", "CarId");
-
                     b.ToTable("CarImages");
                 });
 
@@ -324,8 +314,6 @@ namespace Rentoo.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("ID");
 
                     b.HasIndex("UserId");
 
@@ -406,11 +394,9 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.HasIndex("Status");
+                    b.HasIndex("UserID");
 
                     b.HasIndex("reviewId");
-
-                    b.HasIndex("UserID", "CarId");
 
                     b.ToTable("Requests");
                 });
@@ -441,9 +427,7 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("RequestId")
-                        .IsUnique()
-                        .HasFilter("[RequestId] IS NOT NULL");
+                    b.HasIndex("RequestId");
 
                     b.HasIndex("UserId");
 
@@ -525,10 +509,6 @@ namespace Rentoo.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -536,9 +516,6 @@ namespace Rentoo.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PhoneNumber")
-                        .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -641,6 +618,10 @@ namespace Rentoo.Infrastructure.Migrations
 
             modelBuilder.Entity("Rentoo.Domain.Entities.Car", b =>
                 {
+                    b.HasOne("Rentoo.Domain.Entities.CarDocument", "CarDocument")
+                        .WithOne("Car")
+                        .HasForeignKey("Rentoo.Domain.Entities.Car", "CarDocumentId");
+
                     b.HasOne("Rentoo.Domain.Entities.RateCode", "rateCode")
                         .WithMany()
                         .HasForeignKey("RateCodeId");
@@ -648,8 +629,10 @@ namespace Rentoo.Infrastructure.Migrations
                     b.HasOne("Rentoo.Domain.Entities.User", "User")
                         .WithMany("Cars")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CarDocument");
 
                     b.Navigation("User");
 
@@ -658,18 +641,9 @@ namespace Rentoo.Infrastructure.Migrations
 
             modelBuilder.Entity("Rentoo.Domain.Entities.CarDocument", b =>
                 {
-                    b.HasOne("Rentoo.Domain.Entities.Car", "Car")
-                        .WithOne("CarDocument")
-                        .HasForeignKey("Rentoo.Domain.Entities.CarDocument", "CarId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Rentoo.Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Car");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -709,13 +683,12 @@ namespace Rentoo.Infrastructure.Migrations
                 {
                     b.HasOne("Rentoo.Domain.Entities.Car", "Car")
                         .WithMany("Requests")
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("CarId");
 
                     b.HasOne("Rentoo.Domain.Entities.User", "User")
                         .WithMany("Requests")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Rentoo.Domain.Entities.RequestReview", "Review")
@@ -753,11 +726,14 @@ namespace Rentoo.Infrastructure.Migrations
 
             modelBuilder.Entity("Rentoo.Domain.Entities.Car", b =>
                 {
-                    b.Navigation("CarDocument");
-
                     b.Navigation("Images");
 
                     b.Navigation("Requests");
+                });
+
+            modelBuilder.Entity("Rentoo.Domain.Entities.CarDocument", b =>
+                {
+                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("Rentoo.Domain.Entities.RateCode", b =>

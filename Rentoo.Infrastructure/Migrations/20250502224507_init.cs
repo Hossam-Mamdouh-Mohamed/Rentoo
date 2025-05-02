@@ -56,20 +56,6 @@ namespace Rentoo.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RateCodes",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RateCodes", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -176,98 +162,13 @@ namespace Rentoo.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserDocuments",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LicenseUrl = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    NationalIDNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    NationalIDUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    ReviewdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ReviewNotes = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserDocuments", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_UserDocuments_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cars",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Transmission = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Model = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Seats = table.Column<int>(type: "int", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    AirCondition = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    FactoryYear = table.Column<int>(type: "int", nullable: false),
-                    WithDriver = table.Column<int>(type: "int", nullable: false),
-                    Fuel = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Mileage = table.Column<float>(type: "real", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
-                    RateCodeId = table.Column<int>(type: "int", nullable: false),
-                    CarDocumentId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cars", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Cars_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Cars_RateCodes_RateCodeId",
-                        column: x => x.RateCodeId,
-                        principalTable: "RateCodes",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RateCodeDays",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RateCodeId = table.Column<int>(type: "int", nullable: false),
-                    Day = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RateCodeDays", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_RateCodeDays_RateCodes_RateCodeId",
-                        column: x => x.RateCodeId,
-                        principalTable: "RateCodes",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CarDocuments",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LicenseUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    LicenseNumber = table.Column<int>(type: "int", nullable: false),
+                    LicenseNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     status = table.Column<int>(type: "int", nullable: false),
                     ReviewdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
@@ -281,14 +182,115 @@ namespace Rentoo.Infrastructure.Migrations
                         name: "FK_CarDocuments_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RateCodes",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RateCodes", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_CarDocuments_Cars_CarId",
-                        column: x => x.CarId,
-                        principalTable: "Cars",
+                        name: "FK_RateCodes_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserDocuments",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LicenseUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NationalIDNumber = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    NationalIDUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ReviewdAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ReviewNotes = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserDocuments", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_UserDocuments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cars",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Transmission = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Seats = table.Column<int>(type: "int", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    AirCondition = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    FactoryYear = table.Column<int>(type: "int", nullable: false),
+                    WithDriver = table.Column<int>(type: "int", nullable: false),
+                    Fuel = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Mileage = table.Column<float>(type: "real", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    RateCodeId = table.Column<int>(type: "int", nullable: true),
+                    CarDocumentId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Cars_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Cars_CarDocuments_CarDocumentId",
+                        column: x => x.CarDocumentId,
+                        principalTable: "CarDocuments",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Cars_RateCodes_RateCodeId",
+                        column: x => x.RateCodeId,
+                        principalTable: "RateCodes",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RateCodeDays",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RateCodeId = table.Column<int>(type: "int", nullable: false),
+                    DayId = table.Column<int>(type: "int", maxLength: 20, nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RateCodeDays", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_RateCodeDays_RateCodes_RateCodeId",
+                        column: x => x.RateCodeId,
+                        principalTable: "RateCodes",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -317,7 +319,7 @@ namespace Rentoo.Infrastructure.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RequestId = table.Column<int>(type: "int", nullable: false),
+                    RequestId = table.Column<int>(type: "int", nullable: true),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ReviewDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -347,7 +349,7 @@ namespace Rentoo.Infrastructure.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     WithDriver = table.Column<bool>(type: "bit", nullable: false),
                     UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CarId = table.Column<int>(type: "int", nullable: false),
+                    CarId = table.Column<int>(type: "int", nullable: true),
                     reviewId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -358,13 +360,12 @@ namespace Rentoo.Infrastructure.Migrations
                         column: x => x.UserID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Requests_Cars_CarId",
                         column: x => x.CarId,
                         principalTable: "Cars",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Requests_RequestReviews_reviewId",
                         column: x => x.reviewId,
@@ -405,41 +406,11 @@ namespace Rentoo.Infrastructure.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_Email",
-                table: "AspNetUsers",
-                column: "Email",
-                unique: true,
-                filter: "[Email] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_PhoneNumber",
-                table: "AspNetUsers",
-                column: "PhoneNumber",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CarDocuments_CarId",
-                table: "CarDocuments",
-                column: "CarId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CarDocuments_LicenseNumber",
-                table: "CarDocuments",
-                column: "LicenseNumber",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CarDocuments_status",
-                table: "CarDocuments",
-                column: "status");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CarDocuments_UserId",
@@ -452,19 +423,11 @@ namespace Rentoo.Infrastructure.Migrations
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CarImages_ID_CarId",
-                table: "CarImages",
-                columns: new[] { "ID", "CarId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Cars_IsAvailable",
+                name: "IX_Cars_CarDocumentId",
                 table: "Cars",
-                column: "IsAvailable");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Cars_Model",
-                table: "Cars",
-                column: "Model");
+                column: "CarDocumentId",
+                unique: true,
+                filter: "[CarDocumentId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cars_RateCodeId",
@@ -477,20 +440,19 @@ namespace Rentoo.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RateCodeDays_RateCodeId_Day",
+                name: "IX_RateCodeDays_RateCodeId",
                 table: "RateCodeDays",
-                columns: new[] { "RateCodeId", "Day" });
+                column: "RateCodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RateCodes_ID",
+                name: "IX_RateCodes_UserId",
                 table: "RateCodes",
-                column: "ID");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RequestReviews_RequestId",
                 table: "RequestReviews",
-                column: "RequestId",
-                unique: true);
+                column: "RequestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RequestReviews_UserId",
@@ -508,14 +470,9 @@ namespace Rentoo.Infrastructure.Migrations
                 column: "reviewId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Requests_Status",
+                name: "IX_Requests_UserID",
                 table: "Requests",
-                column: "Status");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Requests_UserID_CarId",
-                table: "Requests",
-                columns: new[] { "UserID", "CarId" });
+                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserDocuments_UserId",
@@ -527,16 +484,23 @@ namespace Rentoo.Infrastructure.Migrations
                 table: "RequestReviews",
                 column: "RequestId",
                 principalTable: "Requests",
-                principalColumn: "ID",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "ID");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_CarDocuments_AspNetUsers_UserId",
+                table: "CarDocuments");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Cars_AspNetUsers_UserId",
                 table: "Cars");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_RateCodes_AspNetUsers_UserId",
+                table: "RateCodes");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_RequestReviews_AspNetUsers_UserId",
@@ -570,9 +534,6 @@ namespace Rentoo.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CarDocuments");
-
-            migrationBuilder.DropTable(
                 name: "CarImages");
 
             migrationBuilder.DropTable(
@@ -589,6 +550,9 @@ namespace Rentoo.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cars");
+
+            migrationBuilder.DropTable(
+                name: "CarDocuments");
 
             migrationBuilder.DropTable(
                 name: "RateCodes");
