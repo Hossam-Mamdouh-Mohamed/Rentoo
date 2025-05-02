@@ -99,15 +99,16 @@
 
                 <div class="mb-3">
                     <label asp-for="CarImages" class="form-label">Car Images</label>
-                    <input asp-for="CarImages" class="form-control" multiple accept="image/*" />
+                    <input asp-for="CarImages" class="form-control" multiple accept="image/png, image/jpeg, image/jpg" onchange="validateCarImages(this)" />
                     <span asp-validation-for="CarImages" class="text-danger"></span>
-                    <small class="form-text text-muted">Please upload at least one image of the car</small>
+                    <small class="form-text text-muted">Please upload at least one image of the car (Max 5MB per image)</small>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="LicenseUrl" class="form-label">License Document</label>
-                    <input asp-for="LicenseUrl" class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                    <input asp-for="LicenseUrl" class="form-control" accept="image/png, image/jpeg, image/jpg" onchange="validateImageFile(this)" />
                     <span asp-validation-for="LicenseUrl" class="text-danger"></span>
+                    <small class="form-text text-muted">Upload a clear image of your license document (Max 5MB)</small>
                 </div>
 
                 <div class="mb-3">
@@ -127,5 +128,47 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateImageFile(input) {
+            const file = input.files[0];
+            if (file) {
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Please select a valid image file (JPG, JPEG, or PNG)');
+                    input.value = '';
+                    return false;
+                }
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                if (file.size > maxSize) {
+                    alert('File size must be less than 5MB');
+                    input.value = '';
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        function validateCarImages(input) {
+            const files = input.files;
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!validTypes.includes(file.type)) {
+                    alert('Please select only valid image files (JPG, JPEG, or PNG)');
+                    input.value = '';
+                    return false;
+                }
+                if (file.size > maxSize) {
+                    alert('Each image must be less than 5MB');
+                    input.value = '';
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
 }
 

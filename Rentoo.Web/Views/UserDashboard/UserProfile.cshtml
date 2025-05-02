@@ -68,7 +68,7 @@
 
             .sidebar-item:hover,
             .sidebar-item.active {
-                background: #e91e63;
+                background: #ea001e;
                 color: #fff;
             }
 
@@ -111,11 +111,11 @@
         }
 
             .nav-tab:hover {
-                color: #e91e63;
+                color: #ea001e;
             }
 
             .nav-tab.active {
-                background-color: #e91e63;
+                background-color: #ea001e;
                 color: #fff;
             }
 
@@ -151,7 +151,7 @@
             height: 150px;
             border-radius: 50%;
             overflow: hidden;
-            border: 3px solid #e91e63;
+            border: 3px solid #ea001e;
             position: relative;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(233, 30, 99, 0.2);
@@ -167,7 +167,7 @@
             position: absolute;
             bottom: 10px;
             right: 10px;
-            background: #e91e63;
+            background: #ea001e;
             color: white;
             width: 36px;
             height: 36px;
@@ -209,7 +209,7 @@
         }
 
             .form-control:focus {
-                border-color: #e91e63;
+                border-color: #ea001e;
                 outline: none;
                 box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
                 background-color: #fff;
@@ -239,7 +239,7 @@
 
         .text-danger {
             font-size: 13px;
-            color: #e91e63;
+            color: #ea001e;
             margin-top: 5px;
         }
 
@@ -251,7 +251,7 @@
         }
 
         .save-changes-btn {
-            background-color: #e91e63;
+            background-color: #ea001e;
             color: white;
             padding: 14px 30px;
             border: none;
@@ -264,7 +264,7 @@
         }
 
             .save-changes-btn:hover {
-                background-color: #d81b60;
+                background-color: #212529;
                 transform: translateY(-2px);
                 box-shadow: 0 6px 15px rgba(233, 30, 99, 0.3);
             }
@@ -368,7 +368,7 @@
                             }
                             <span class="edit-icon"><i class="fas fa-camera"></i></span>
                         </div>
-                        <input type="file" id="profile-image-input" name="ProfileImage" accept="image/*" style="display: none;" />
+                        <input type="file" id="profile-image-input" name="ProfileImage" accept="image/png, image/jpeg, image/jpg, image/gif" style="display: none;" onchange="validateImageFile(this)" />
                     </div>
                 </div>
                 <div class="profile-section">
@@ -411,7 +411,6 @@
                         </div>
                     </div>
                     <div class="btn-actions">
-                        <button type="button" class="cancel-btn">Cancel</button>
                         <button type="submit" class="save-changes-btn">Save Changes</button>
                     </div>
                 </div>
@@ -430,7 +429,7 @@
             });
 
             profileImageInput.addEventListener('change', function () {
-                if (this.files && this.files[0]) {
+                if (validateImageFile(this)) {
                     const reader = new FileReader();
                     reader.onload = function (e) {
                         profileImgPreview.src = e.target.result;
@@ -439,6 +438,26 @@
                 }
             });
         });
+
+        function validateImageFile(input) {
+            const file = input.files[0];
+            if (file) {
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Please select a valid image file (JPG, JPEG, PNG, or GIF)');
+                    input.value = '';
+                    return false;
+                }
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                if (file.size > maxSize) {
+                    alert('File size must be less than 5MB');
+                    input.value = '';
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
     </script>
 </body>
 </html>
