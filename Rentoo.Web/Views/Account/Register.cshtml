@@ -1,9 +1,10 @@
 ﻿@model web.ViewModels.RegisterViewModel
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 @{
     ViewData["Title"] = "Register";
 }
 
-<h1 class="text-center">Register</h1>
+<h1 class="text-center">@RM.Global.lbRegister</h1>
 
 <div class="container">
     <form asp-action="Register" method="post">
@@ -11,13 +12,13 @@
 
         <div class="row">
             <div class="form-group col-md-6">
-                <label asp-for="FirstName" class="control-label"></label>
+                <label asp-for="FirstName" class="control-label">@RM.Global.FirstName</label>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
 
             <div class="form-group col-md-6">
-                <label asp-for="LastName" class="control-label"></label>
+                <label asp-for="LastName" class="control-label">@RM.Global.LastName</label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
@@ -25,13 +26,13 @@
 
         <div class="row">
             <div class="form-group col-md-6">
-                <label asp-for="BirthDate" class="control-label"></label>
+                <label asp-for="BirthDate" class="control-label">@RM.Global.BirthDate</label>
                 <input asp-for="BirthDate" type="date" class="form-control" />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
 
             <div class="form-group col-md-6">
-                <label asp-for="PhoneNumber" class="control-label"></label>
+                <label asp-for="PhoneNumber" class="control-label">@RM.Global.lbPhoneNumber</label>
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
@@ -39,13 +40,13 @@
 
         <div class="row">
             <div class="form-group col-md-6">
-                <label asp-for="UserName" class="control-label"></label>
+                <label asp-for="UserName" class="control-label">@RM.Global.lbUserName</label>
                 <input asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
 
             <div class="form-group col-md-6">
-                <label asp-for="Email" class="control-label"></label>
+                <label asp-for="Email" class="control-label">@RM.Global.Email</label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
@@ -53,13 +54,13 @@
 
         <div class="row">
             <div class="form-group col-md-6">
-                <label asp-for="Password" class="control-label"></label>
+                <label asp-for="Password" class="control-label">@RM.Global.lbPassword</label>
                 <input asp-for="Password" type="password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <div class="form-group col-md-6">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <label asp-for="ConfirmPassword" class="control-label">@RM.Global.lbConfirmPassword</label>
                 <input asp-for="ConfirmPassword" type="password" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
@@ -67,7 +68,7 @@
 
         <div class="row">
             <div class="form-group col-md-6">
-                <label asp-for="Role" class="control-label"></label>
+                <label asp-for="Role" class="control-label">@RM.Global.lbRole</label>
                 <select asp-for="Role" class="form-control" asp-items="ViewBag.RoleList">
                     <option value="">-- Select Role --</option>
                 </select>
@@ -75,14 +76,14 @@
             </div>
 
             <div class="form-group col-md-6">
-                <label asp-for="Address" class="control-label"></label>
+                <label asp-for="Address" class="control-label">@RM.Global.lbAddress</label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
         </div>
 
         <div class="form-group mt-3 text-center">
-            <input type="submit" value="Create" class="btn btn-primary px-5 mb-5" />
+            <input type="submit" value="@RM.Global.lbCreate" class="btn btn-primary px-5 mb-5" />
         </div>
     </form>
 </div>

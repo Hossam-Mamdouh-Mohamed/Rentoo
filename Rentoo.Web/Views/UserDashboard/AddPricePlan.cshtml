@@ -1,0 +1,100 @@
+@model Rentoo.Web.ViewModels.PricePlanViewModel
+
+@{
+    ViewData["Title"] = "Add Price Plan";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Add New Price Plan</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreatePricePlan" method="post" id="pricePlanForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Name" class="control-label">Plan Name</label>
+                            <input asp-for="Name" class="form-control" placeholder="Enter plan name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40%">Day</th>
+                                        <th style="width: 60%">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Days.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="form-control-plaintext">
+                                                    @Model.Days[i].DayName
+                                                </div>
+                                                <input type="hidden" asp-for="@Model.Days[i].DayId" />
+                                                <input type="hidden" asp-for="@Model.Days[i].DayName" />
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">$</span>
+                                                    <input asp-for="@Model.Days[i].Price" 
+                                                           class="form-control @(ViewData.ModelState[$"Days[{i}].Price"]?.Errors.Count > 0 ? "is-invalid" : "")" 
+                                                           type="number" 
+                                                           step="0.01" 
+                                                           min="0.01" 
+                                                           placeholder="Enter price for @Model.Days[i].DayName" />
+                                                </div>
+                                                <span asp-validation-for="@Model.Days[i].Price" class="text-danger"></span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary">Create Price Plan</button>
+                            <a asp-action="PricePlans" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+            // Add client-side validation for price inputs
+            $('input[type="number"]').on('input', function() {
+                var value = parseFloat($(this).val());
+                if (isNaN(value) || value < 0.01) {
+                    $(this).val(0.01);
+                }
+            });
+
+            // Validate form on submit
+            $('#pricePlanForm').on('submit', function() {
+                var isValid = true;
+                $('input[type="number"]').each(function() {
+                    var value = parseFloat($(this).val());
+                    if (isNaN(value) || value < 0.01) {
+                        isValid = false;
+                        $(this).addClass('is-invalid');
+                    } else {
+                        $(this).removeClass('is-invalid');
+                    }
+                });
+                return isValid;
+            });
+        });
+    </script>
+} 

@@ -293,30 +293,33 @@ namespace Rentoo.Web.Controllers
                 // Handle car images update
                 if (editCarViewModel.CarImages != null && editCarViewModel.CarImages.Count > 0)
                 {
-                    // First, delete all existing images
-                    if (existingCar.Images != null && existingCar.Images.Any())
+                    // If KeepExistingImages is false, delete all existing images
+                    if (!editCarViewModel.KeepExistingImages)
                     {
-                        foreach (var existingImage in existingCar.Images.ToList())
+                        if (existingCar.Images != null && existingCar.Images.Any())
                         {
-                            // Optionally delete the physical file
-                            var physicalPath = Path.Combine("wwwroot", existingImage.ImageUrl);
-                            if (System.IO.File.Exists(physicalPath))
+                            foreach (var existingImage in existingCar.Images.ToList())
                             {
-                                System.IO.File.Delete(physicalPath);
-                            }
+                                // Delete the physical file
+                                var physicalPath = Path.Combine("wwwroot", existingImage.ImageUrl);
+                                if (System.IO.File.Exists(physicalPath))
+                                {
+                                    System.IO.File.Delete(physicalPath);
+                                }
 
-                            // Remove from database
-                            await _carImageService.DeleteAsync(existingImage);
+                                // Remove from database
+                                await _carImageService.DeleteAsync(existingImage);
+                            }
                         }
                     }
 
-                    // Then add the new images
+                    // Add the new images
                     var imageUploadPath = Path.Combine("wwwroot", "uploads", "cars");
                     Directory.CreateDirectory(imageUploadPath);
 
                     foreach (var image in editCarViewModel.CarImages)
                     {
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName); // Generate unique filename
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
                         var filePath = Path.Combine(imageUploadPath, fileName);
                         await image.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
@@ -327,6 +330,25 @@ namespace Rentoo.Web.Controllers
                         };
 
                         await _carImageService.AddAsync(carImage);
+                    }
+                }
+                // If no new images are uploaded and KeepExistingImages is false, delete all existing images
+                else if (!editCarViewModel.KeepExistingImages)
+                {
+                    if (existingCar.Images != null && existingCar.Images.Any())
+                    {
+                        foreach (var existingImage in existingCar.Images.ToList())
+                        {
+                            // Delete the physical file
+                            var physicalPath = Path.Combine("wwwroot", existingImage.ImageUrl);
+                            if (System.IO.File.Exists(physicalPath))
+                            {
+                                System.IO.File.Delete(physicalPath);
+                            }
+
+                            // Remove from database
+                            await _carImageService.DeleteAsync(existingImage);
+                        }
                     }
                 }
 
@@ -528,23 +550,39 @@ namespace Rentoo.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> PricePlans()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var rateCodes = await _rateCodeService.GetAllAsync(c => c.UserId == userId, "RateCodeDays");
-            
-            var viewModels = rateCodes.Select(rc => new PricePlanViewModel
+            try
             {
-                ID = rc.ID,
-                Name = rc.Name,
-                Days = rc.RateCodeDays?.Select(rcd => new PricePlanDayViewModel
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var rateCodes = await _rateCodeService.GetAllAsync(c => c.UserId == userId, "RateCodeDays");
+                
+                var viewModels = rateCodes.Select(rc => new PricePlanViewModel
                 {
-                    ID = rcd.ID,
-                    DayId = rcd.DayId,
-                    Price = rcd.Price
-                }).ToList() ?? new List<PricePlanDayViewModel>()
-            }).ToList();
+                    ID = rc.ID,
+                    Name = rc.Name,
+                    Days = rc.RateCodeDays?.Select(rcd => new PricePlanDayViewModel
+                    {
+                        ID = rcd.ID,
+                        DayId = rcd.DayId,
+                        DayName = GetDayName(rcd.DayId),
+                        Price = rcd.Price
+                    }).ToList() ?? new List<PricePlanDayViewModel>()
+                }).ToList();
 
-            return View(viewModels);
+                return View(viewModels);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while loading price plans. Please try again.";
+                return View(new List<PricePlanViewModel>());
+            }
         }
+
+        [HttpGet]
+        public IActionResult AddPricePlan()
+        {
+            return View(new PricePlanViewModel());
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreatePricePlan([FromBody] PricePlanViewModel model)
         {
@@ -559,26 +597,38 @@ namespace Rentoo.Web.Controllers
 
                 await _rateCodeService.AddAsync(rateCode);
                 
-                if (model.Days != null && model.Days.Any())
+                foreach (var day in model.Days)
                 {
-                    foreach (var day in model.Days)
+                    var rateCodeDay = new RateCodeDay
                     {
-                        var rateCodeDay = new RateCodeDay
-                        {
-                            RateCodeId = rateCode.ID,
-                            DayId = day.DayId,
-                            Price = day.Price
-                        };
-                        await _rateCodeDayService.AddAsync(rateCodeDay);
-                    }
+                        RateCodeId = rateCode.ID,
+                        DayId = day.DayId,
+                        Price = day.Price
+                    };
+                    await _rateCodeDayService.AddAsync(rateCodeDay);
                 }
                 
                 return Json(new { success = true });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+                return Json(new { success = false, message = "An error occurred while creating the price plan." });
             }
+        }
+
+        private string GetDayName(int dayId)
+        {
+            return dayId switch
+            {
+                1 => "Saturday",
+                2 => "Sunday",
+                3 => "Monday",
+                4 => "Tuesday",
+                5 => "Wednesday",
+                6 => "Thursday",
+                7 => "Friday",
+                _ => "Unknown"
+            };
         }
 
         [HttpDelete]
@@ -623,9 +673,7 @@ namespace Rentoo.Web.Controllers
         {
             try
             {
-                var rateCodes = await _rateCodeService.GetAllAsync(rc => rc.ID == id, "RateCodeDays");
-                var rateCode = rateCodes.FirstOrDefault();
-                
+                var rateCode = await _rateCodeService.GetByIdAsync(id, "RateCodeDays");
                 if (rateCode == null)
                 {
                     return Json(new { success = false, message = "Price plan not found" });
@@ -673,18 +721,15 @@ namespace Rentoo.Web.Controllers
                 }
 
                 // Add new days
-                if (model.Days != null && model.Days.Any())
+                foreach (var day in model.Days)
                 {
-                    foreach (var day in model.Days)
+                    var rateCodeDay = new RateCodeDay
                     {
-                        var rateCodeDay = new RateCodeDay
-                        {
-                            RateCodeId = rateCode.ID,
-                            DayId = day.DayId,
-                            Price = day.Price
-                        };
-                        await _rateCodeDayService.AddAsync(rateCodeDay);
-                    }
+                        RateCodeId = rateCode.ID,
+                        DayId = day.DayId,
+                        Price = day.Price
+                    };
+                    await _rateCodeDayService.AddAsync(rateCodeDay);
                 }
 
                 return Json(new { success = true });

@@ -90,7 +90,8 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
-           public async Task<IActionResult> Owners(int page = 1)
+
+        public async Task<IActionResult> Owners(int page = 1)
         {
             try
             {
@@ -115,7 +116,6 @@ namespace Rentoo.Web.Controllers
             }
         }
 
-        
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -258,6 +258,7 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
+
         public async Task<IActionResult> PendingApprovements(int page = 1, string documentType = "Car")
         {
             try
@@ -311,6 +312,7 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("PendingApprovements");
             }
         }
+
         public async Task<IActionResult> PendingUserDetails(int id)
         {
             try
@@ -324,6 +326,7 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("PendingApprovements");
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> UpdateStatus(int id, string status)
         {
@@ -340,11 +343,10 @@ namespace Rentoo.Web.Controllers
                 {
                     document.status = newStatus;
                     var car=await carService.GetByIdAsync(document.CarId);
-                    if (car != null)
+                    if (car != null && car.RateCodeId!=null)
                     {
                         car.IsAvailable = true;
                         await carService.UpdateAsync(car);
-                       
                     }
                     document.ReviewdAt = DateTime.UtcNow;
                     await DocumentService.UpdateAsync(document);
@@ -363,6 +365,7 @@ namespace Rentoo.Web.Controllers
 
             return RedirectToAction("PendingApprovements");
         }
+
         [HttpPost]
         public async Task<IActionResult> UpdateStatus2(int id, string status)
         {
