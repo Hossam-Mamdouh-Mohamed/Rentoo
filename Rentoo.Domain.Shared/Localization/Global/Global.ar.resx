@@ -405,4 +405,100 @@
   <data name="lbCreatenewAdmin" xml:space="preserve">
     <value>اضافة مسئول جديد</value>
   </data>
+  <data name="lbRenter" xml:space="preserve">
+    <value>المستاجر</value>
+  </data>
+  <data name="lbCarID" xml:space="preserve">
+    <value>كود السيارة</value>
+  </data>
+  <data name="lbStartDate" xml:space="preserve">
+    <value>تاريخ البداية</value>
+  </data>
+  <data name="lbEndDate" xml:space="preserve">
+    <value>تاريخ الانتهاء</value>
+  </data>
+  <data name="lbTotalPrice" xml:space="preserve">
+    <value>التكلفة الاجمالية</value>
+  </data>
+  <data name="lbWithDriver" xml:space="preserve">
+    <value>ب سائق</value>
+  </data>
+  <data name="lbDeliveryAddress" xml:space="preserve">
+    <value>مكان الاستلام</value>
+  </data>
+  <data name="lbPickupAddress" xml:space="preserve">
+    <value>مكان التسليم</value>
+  </data>
+  <data name="lbStatus" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="lbModel" xml:space="preserve">
+    <value>الموديل</value>
+  </data>
+  <data name="lbSeats" xml:space="preserve">
+    <value>المقاعد</value>
+  </data>
+  <data name="lbColor" xml:space="preserve">
+    <value>اللون</value>
+  </data>
+  <data name="lbAirCondition" xml:space="preserve">
+    <value>مكيفة</value>
+  </data>
+  <data name="lbFactoryYear" xml:space="preserve">
+    <value>تاريخ الصنع</value>
+  </data>
+  <data name="lbFuel" xml:space="preserve">
+    <value>الوقود</value>
+  </data>
+  <data name="lbMileage" xml:space="preserve">
+    <value>عدد كم</value>
+  </data>
+  <data name="lbOwnerName" xml:space="preserve">
+    <value>اسم المالك</value>
+  </data>
+  <data name="lbShowCarDocuments" xml:space="preserve">
+    <value>عرض مستندات السيارات</value>
+  </data>
+  <data name="lbShowUserDocuments" xml:space="preserve">
+    <value>عرض مستندات المستأجر</value>
+  </data>
+  <data name="lbDetails" xml:space="preserve">
+    <value>التفاصيل</value>
+  </data>
+  <data name="lbLicenseNumber" xml:space="preserve">
+    <value>رقم الرخصة</value>
+  </data>
+  <data name="lbShow" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="lbUserDocuments" xml:space="preserve">
+    <value>مستندات المستاجرين</value>
+  </data>
+  <data name="lbCarsDocuments" xml:space="preserve">
+    <value>مستندات السيارات</value>
+  </data>
+  <data name="lbReviewCarDocument" xml:space="preserve">
+    <value>مراجعة مستندات السيارة</value>
+  </data>
+  <data name="lbReviewedAt" xml:space="preserve">
+    <value>تم المراجعة بتاريخ</value>
+  </data>
+  <data name="lbLicenseImage" xml:space="preserve">
+    <value>صورة الرخصة</value>
+  </data>
+  <data name="lbAccept" xml:space="preserve">
+    <value>قبول</value>
+  </data>
+  <data name="lbReject" xml:space="preserve">
+    <value>رفض</value>
+  </data>
+  <data name="lbReviewRenterDocument" xml:space="preserve">
+    <value>مراجعة مستندات المستأجر</value>
+  </data>
+  <data name="lbNationalID" xml:space="preserve">
+    <value>الرقم القومي</value>
+  </data>
+  <data name="lbNationalIDImage" xml:space="preserve">
+    <value>صورة بطاقة الرقم القومي</value>
+  </data>
 </root>

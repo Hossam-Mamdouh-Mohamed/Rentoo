@@ -1,7 +1,7 @@
 ﻿@model object // General model to handle either Car or User document lists
 @using X.PagedList
 @using X.PagedList.Mvc.Core
-
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 @{
     ViewData["Title"] = "Documents";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -12,7 +12,7 @@
 
 <div class="container mt-4">
     <h2 class="text-primary">
-        @(documentType == "User" ? "User Documents" : "Car Documents")
+        @(documentType == "User" ? RM.Global.lbUserDocuments : RM.Global.lbCarsDocuments)
     </h2>
 
     <!-- Toggle Button -->
@@ -20,13 +20,13 @@
         @if (documentType == "User")
         {
             <a asp-action="PendingApprovements" asp-route-documentType="Car" class="btn btn-outline-secondary">
-                Show Car Documents
+                @RM.Global.lbShowCarDocuments
             </a>
         }
         else
         {
             <a asp-action="PendingApprovements" asp-route-documentType="User" class="btn btn-outline-primary">
-                Show User Documents
+                @RM.Global.lbShowUserDocuments
             </a>
         }
     </div>
@@ -41,10 +41,10 @@
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
-                            <th>License Number</th>
-                            <th>Car ID</th>
-                            <th>Owner Name</th>
-                            <th>Details</th>
+                            <th>@RM.Global.lbLicenseNumber</th>
+                            <th>@RM.Global.lbCarID</th>
+                            <th>@RM.Global.lbOwnerName</th>
+                            <th>@RM.Global.lbDetails</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,7 +61,7 @@
                                 <td>@carDoc.CarId</td>
                                 <td>@carDoc.User?.FirstName @carDoc.User?.LastName</td>
                                 <td>
-                                    <a asp-action="PendingCarDetails" asp-route-id="@carDoc.ID" class="btn btn-sm btn-info">Details</a>
+                                    <a asp-action="PendingCarDetails" asp-route-id="@carDoc.ID" class="btn btn-sm btn-info">@RM.Global.lbShow</a>
                                 </td>
                             </tr>
                         }
@@ -79,10 +79,10 @@
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
-                            <th>Renter Name</th>
-                            <th>Phone Number</th>
-                            <th>Birth Date</th>
-                            <th>Details</th>
+                            <th>@RM.Global.lbRenter</th>
+                            <th>@RM.Global.lbPhoneNumber</th>
+                            <th>@RM.Global.lbBirthDate</th>
+                            <th>@RM.Global.lbDetails</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -99,7 +99,7 @@
                                 <td>@userDoc.User.PhoneNumber</td>
                                 <td>@userDoc.User.BirthDate</td>
                                 <td>
-                                    <a asp-action="PendingUserDetails" asp-route-id="@userDoc.ID" class="btn btn-sm btn-info">Details</a>
+                                    <a asp-action="PendingUserDetails" asp-route-id="@userDoc.ID" class="btn btn-sm btn-info">@RM.Global.lbShow</a>
                                 </td>
                             </tr>
                         }

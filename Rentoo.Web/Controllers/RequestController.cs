@@ -53,6 +53,15 @@ namespace Rentoo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                var ReservationReauest=await _ReqServes.GetAllAsync(r =>
+                (DateTime.Parse( r.StartDate) < requestViewModel.EndDate && requestViewModel.StartDate < DateTime.Parse( r.EndDate))
+                &&r.Status == RequestStatus.Accepted
+                && r.CarId == requestViewModel.CarId);
+                if (ReservationReauest.Any())
+                {
+                    TempData["HasReq"] = "This Car is not avilabl in the Period";
+                    return RedirectToAction("Details", "Car", new { id = requestViewModel.CarId });
+                }
                 // Save the request to the database
                 var request = new Request
                 {

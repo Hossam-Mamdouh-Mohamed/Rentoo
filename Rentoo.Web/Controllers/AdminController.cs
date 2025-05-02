@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Rentoo.Application.Interfaces;
 using Rentoo.Domain.Entities;
+using Rentoo.Infrastructure.Data;
 using Rentoo.Web.ViewModels;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -24,8 +25,8 @@ namespace Rentoo.Web.Controllers
         private readonly IService<Car> _carService;
         private readonly IService<CarDocument> DocumentService;
         private IService<UserDocument> UserDocumentService;
-
-        public AdminController(IService<UserDocument> userdoc,IService<CarDocument> _document, IService<User> _service, IService<Request> Rental, IService<Car> carService, Microsoft.AspNetCore.Identity.UserManager<User> _userManager, IService<Car> carservice)
+        private readonly RentooDbContext rentooDbContext;
+        public AdminController(RentooDbContext rentooDbContext,IService<UserDocument> userdoc,IService<CarDocument> _document, IService<User> _service, IService<Request> Rental, IService<Car> carService, Microsoft.AspNetCore.Identity.UserManager<User> _userManager, IService<Car> carservice)
         {
             service = _service;
             this.carService = carService;
@@ -34,6 +35,7 @@ namespace Rentoo.Web.Controllers
             RentalService = Rental;
             DocumentService = _document;
             UserDocumentService = userdoc;
+            this.rentooDbContext=rentooDbContext;
         }
 
         public IActionResult Index()
@@ -88,13 +90,22 @@ namespace Rentoo.Web.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-        public async Task<IActionResult> Owners(int page = 1)
+           public async Task<IActionResult> Owners(int page = 1)
         {
             try
             {
-                var users = await userManager.GetUsersInRoleAsync("Owner");
-                var pagedUsers = users.ToPagedList(page, 10);
+                var owners = await userManager.GetUsersInRoleAsync("Owner");
+
+                var userIds = owners.Select(u => u.Id).ToList();
+
+                // Assuming you have access to the DbContext
+                var usersWithCars = await rentooDbContext.Users
+                    .Where(u => userIds.Contains(u.Id))
+                    .Include(u => u.Cars)
+                    .ToListAsync();
+
+                var pagedUsers = usersWithCars.ToPagedList(page, 10);
+
                 return View("Owners", pagedUsers);
             }
             catch (Exception ex)
@@ -104,6 +115,7 @@ namespace Rentoo.Web.Controllers
             }
         }
 
+        
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -235,7 +247,7 @@ namespace Rentoo.Web.Controllers
 
             try
             {
-                var acceptedRequests = await RentalService.GetAllAsync(x => x.Status == RequestStatus.Completed);
+                var acceptedRequests = await RentalService.GetAllAsync(x => x.Status == RequestStatus.Completed, ["User","Car"]);
                 var paginatedRequests = acceptedRequests.ToPagedList(page, PageSize);
 
                 return View(paginatedRequests);
