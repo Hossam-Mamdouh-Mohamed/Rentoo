@@ -12,33 +12,33 @@
 }
 <style>
 	/* .card {
-				display: inline-block;
-				width: 200px;
-				height: 100px;
-				margin: 5px;
-				background-color: #f3f3f3;
-				text-align: center;
-				line-height: 100px;
-				border: 1px solid #ccc;
-			} */
+	display: inline-block;
+	width: 200px;
+	height: 100px;
+	margin: 5px;
+	background-color: #f3f3f3;
+	text-align: center;
+	line-height: 100px;
+	border: 1px solid #ccc;
+	} */
 
 	#pagination button {
-		margin: 3px;
-		padding: 5px 10px;
-		cursor: pointer;
+	margin: 3px;
+	padding: 5px 10px;
+	cursor: pointer;
 	}
 
 	#about h3 {
-		color: #dc3545;
+	color: #dc3545;
 	}
-		#pagination button.active {
-			background-color: #dc3545;
-			color: white;
-		}
+	#pagination button.active {
+	background-color: #dc3545;
+	color: white;
+	}
 
-		#pagination button.arrow {
-			font-weight: bold;
-		}
+	#pagination button.arrow {
+	font-weight: bold;
+	}
 </style>
 
 <!-- Carousel Start -->
@@ -48,10 +48,10 @@
 			<div class="carousel-item active">
 				<img src="~/assets/img/carousel-2.jpg" class="img-fluid w-100" alt="First slide" />
 				<div class="carousel-caption " style="inset-inline-start: 0;inset-inline-end: auto;">
-					<div class="container py-2">
+					<div class="container py-5">
 						<div class="row g-5">
 							<div class="col-12 fadeInRight animated" data-animation="fadeInRight" data-delay="1s" style="animation-delay: 1s;">
-								<div class="bg-secondary rounded p-2">
+								<div class="bg-secondary rounded p-5">
 									<h4 class="text-white mb-4">@RM.Global.SearchAboutCar</h4>
 									<form action="home/Search" method="get">
 										<div class="row g-3">
@@ -110,104 +110,187 @@
 				@foreach (var item in Cars) 
 				{ 
 
-                  <div class="col Carcard"> 
-                       <div class="card h-100"> 
-                         <img src="/@item.Images.First().ImageUrl" class="card-img-top" alt="..." style="height: 200px; object-fit: cover;"> 
-                          <div class="card-body"> 
-                                 <h5 class="card-title">@item.Model <span style="font-size: 14px; color: red;">@item.FactoryYear</span> </h5> 
-                                 <ul class="list-unstyled small-text mb-2"> 
-                                     <li class="icon-text"><i class="bi bi-people-fill"></i> @item.Seats @RM.Global.Seats | <i class="bi bi-gear-fill"></i> @item.Transmission</li> 
-                                     <li class="icon-text"><i class="bi bi-geo-alt-fill"></i> <a href="#" class="text-decoration-none">@item.Address</a></li> 
-                                 </ul> 
-                                 <a asp-controller="Car" asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary rounded-pill py-2 px-4">View Details</a> 
-                             </div> 
-                         </div> 
-                     </div> 
-                 }
-            </div>
-            <nav class="mt-3">
-                <ul id="pagination" class="pagination justify-content-center"></ul>
-            </nav>
-        }
-	 </div>
+					<div class="col Carcard">
+						<div class="card h-100 shadow ">
+							<img src="/@item.Images.First().ImageUrl" class="card-img-top" alt="..." style="height: 200px;width:200px object-fit: cover;"> 
+							<div class="card-body"> 
+								<h5 class="card-title">@item.Model <span style="font-size: 14px; color: red;">@item.FactoryYear</span> </h5> 
+								<ul class="list-unstyled small-text mb-2"> 
+									<li class="icon-text"><i class="bi bi-people-fill"></i> @item.Seats @RM.Global.Seats | <i class="bi bi-gear-fill"></i> @item.Transmission</li> 
+									<li class="icon-text"><i class="bi bi-geo-alt-fill"></i> <a href="#" class="text-decoration-none">@item.Address</a></li> 
+								</ul> 
+								<a asp-controller="Car" asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary rounded-pill py-2 px-4">View Details</a> 
+							</div> 
+						</div> 
+					</div> 
+				}
+			</div>
+			<nav class="mt-3">
+				<ul id="pagination" class="pagination justify-content-center"></ul>
+			</nav>
+		}
+	</div>
 </div>
 <!-- Car categories End -->
-@if (CultureConfiguration.IsArabic)
-{
-	<div class="m-5" id="about">
 
-	<h3>مميزات تاجير سيارات في مصر :</h3><p>الحاجة إلى سيارة للإيجار تكون تحت تصرفك طوال اليوم أو الأسبوع أو الشهر صار أمرًا في غاية الأهمية لدى الكثير من</p><p>الاشخاص ، وهو من أولى الأوليات.</p><p>إذ إنه إذا قمت بحساب المصاريف التي قد تدفعها في المواصلات اليومية سواء المواصلات العامة أو الشركات الخاصة</p><p>ستجد أنك تدفع الكثير، بجانب الأوقات التي تهدرها في انتظار الحصول على وسيلة المواصلات المناسبة، والمتوجهة</p><p>إلى المكان الذي ترغب في الذهاب إليه.</p><p>&nbsp;</p><p>ولكن ما هو الحل الامثل لكي تتمكن من الحصول على سيارة للإيجار تقوم لك بهذه المهمة إذا لم يكن لديك الأموال</p><p>الكافية أو القدرة على شراء سيارة؟</p><p>&nbsp;</p><p>خدمة فرندي كار لـ تأجير سيارات مصر تقدم لك الحل الأمثل لهذه المعضلة.. يمكنك الآن الحصول على ايجار سيارات</p><p>مصر بالنظام الشهري أو السنوي أو الأسبوعي بأفضل اسعار ايجار السيارات في مصر، وأعلى الضمانات للمؤجر</p><p>والمستأجر دون الحاجة إلى إيصال أمانة بثمن السيارة كما هو المعتاد لدى أي شركة تأجير سيارات .</p><p>&nbsp;</p>
-<h3>مميزات تاجير سيارات في مصر عن</h3><p><strong>هناك العديد من المميزات التي تحصل عليها من خلال تأجير سيارات مصر لفترات طويلة المدى، ومن أهم هذه المميزات:</strong></p>
-<ol><li>توفير تكاليف الصيانة التي يمكن ان تتحملها اذا كنت تمتلك سيارة .</li><li>عدم القلق من الخبطات و الحوادث و الخدوش لان سيارات فريندي كار مؤمن عليها بالكامل.</li><li>اختيار السيارة التي تناسب طبيعة عملك، وطبيعة المشاوير والأماكن التي ترغب في الذهاب إليها.</li><li>تنوع في السيارات المتاحة من حيث الحجم والقوة والأداء والأسعار.</li><li>إمكانية التصرف في السيارة والذهاب بها إلى أي مكان خلال فترة الايجار.</li><li>توفير الوقت الذي قد تحتاجه.</li><li>كلما طالت مدة الإيجار كلما حصلت على خصم أكبر لليوم الواحد ، فمثلاً إذا اخترت تأجير سيارات يومي فإن أسعار<br>تأجير السيارات في مصر سوف يقارب الـ 400 جنيه في اليوم، أم إذا اخترت النظام الشهري لـ ايجار سيارات مصر<br>فسوف تقل هذه التكلفة، حتى إن اليوم قد تكون تكلفته بما يقارب الـ 300 أو 320 جنيه مصري.<hr></li></ol>
-<h3>شرح انظمة الايجار و مميزاتها</h3><p>تقدم فريندي كار أنظمة للإيجار متعددة، يومي او شهري او النصف سنوي أو السنوي، وفيه يحصل المستأجر على خصومات</p><p>من المؤجر على يوم الإيجار، وخصومات من شركة فرندي كار أيضًا.</p><p>&nbsp;</p>
-<ul><li>تأمين تجاري على السيارة يضمن للمؤجر حقه، ويحمي المستأجر من دفع أثمان باهظة لإصلاح أو استبدال السيارة.</li><li>إمكانية عمل إيقاف (فريز) للإيجار في حالة أنظمة الإيجار متعدد الأشهر.</li><li>أسعار ايجار السيارات في مصر من فريندي كار هي الأفضل مقارنة بالعديد من الشركات الأخرى.</li><li>تضمن شركة فرندي كار - أفضل شركة تاجير سيارات في مصر – حقوق المؤجر والمستأجر، وتتصدر الشركة حال وجود أي مشكلة في السيارة.</li></ul><p>وإضافة إلى كل هذه المميزات، فإن طريقة الدفع عند اختيارك لـ ايجار سيارات في مصر بدون سائق تتم إلكترونيًا، كما يتم</p><p>تحويل مستحقات مالك السيارة&nbsp; على حسابه البنكي مباشرة.</p><p>&nbsp;</p>
-<h3>مميزات نظام التأجير للسيارات اليومي</h3><p>يمكنك من خلال اختيارك لنظام تأجير سيارات يومي من فريندي كار أن تحصل على ميزة يعدها البعض واحدة من الأمور</p><p>الممتعة، وهي إمكانية تجربة أكثر من سيارة في مدد قصيرة فيمكنك اختيار ايجار سيارات في مصر بدون سائق لمدة ثلاثة</p><p>أيام كحد أدنى.</p><p>&nbsp;</p><p>ولا تعتبر ميزة ايجار سيارات مصر بشكل يومي متاحة لدى العديد من الشركات إلا بعد تقديم العديد من الضمانات بالنسبة</p><p>لمن يرغب في سيارة للإيجار، وهو ما يجعله يعيد التفكير مرات ومرات.</p><p>&nbsp;</p><p>ولكن من خلال شركة فريندي كار لـ تأجير سيارات مصر لن يحمل العميل هم التوقيع على إيصال أمانة بثمن السيارة بالكامل،</p><p>بل يكفي بطاقة الرقم القومي ورخصة القيادة.</p><p>&nbsp;</p><p>ويعتبر خيار تأجير سيارات يومي من فريندي كار هو الأفضل من ناحية أسعار تأجير السيارات في مصر.</p><p>&nbsp;</p>
-<hr>
-<h3>من هم أكثر المستفيدين من تأجير سيارات مصر ؟</h3><p>يستفيد العديد من الأفراد والشركات من أفضل عروض تأجير سيارات في مصر المقدمة من شركة فرندي كار، ومن أهم</p><p>التي قد تستفيد من هذه العروض :</p>
-<ul><li>الافراد الذين يعملون في مجال المبيعات، وذلك لحاجتهم المتكررة في التنقل من مكان إلى مكان وفي وقت أوقات<br>مختلفة من اليوم.</li><li>الأفراد الذين يعملون في المناطق البعيدة عن العمران والمواصلات، وذلك ليتمكنوا من الحصول على حاجاتهم اليومية<br>بسهولة من خلال ايجار سيارات في مصر بدون سائق.</li><li>السيدات اللاتي يرغبن في توصيل أولادهن بشكل يومي إلى المدرسة في حالة عدم وجود مواصلات في المنطقة<br>السكنية الخاصة بهن، فإذا كان معهن سيارة للإيجار فلن يكن بحاجة إلى الاشتراك في المواصلات عالية التكلفة.</li><li>الأشخاص الذين يحبون السفر والتنقل داخل البلاد بكثرة.</li><li>الشركات، وخصوصًا الشركات التي ترغب في الحصول على عدد كبير من السيارات لنقل الموظفين دون دفع تكلفة كبيرة<br>لشراء مثل هذا العدد من السيارات، إذ ن أسعار تأجير السيارات في مصر أقل من الحافلات الكبيرة.</li><li>ايجار سيارات مصر مناسب لشركات السياحة التي تعمل على نقل السياح والزوار من وإلى المطار والأماكن السياحية<br>المختلفة في مصر.</li><li>الأشخاص الذين يأتون إلى مصر لزيارات طويلة تصل إلى عدة أشهر، وبالطبع لن يشتروا سيارة لمدة 3 أو 6 أشهر مثلا،<br>ويكون الحل إذًا هو تأجير سيارات في مصر.</li><li>بالإضافة إلى تحقيق رغبة تجربة سيارات مختلفة وعدم التقيّد بسيارة واحدة لمدة طويلة، وأيضًا ركوب أحدث أنواع<br>السيارات في كل مرة تختار فيها إحدى الـ سيارات للايجار اليومي.</li><li>أفضل الأماكن التي يمكن زيارتها في مصر</li></ul><p>والآن وبعد أن عرفت مميزات تاجير سيارات في مصر .. يمكنك من خلال هذه السطور القادمة أن تطلع على أهم الأماكن</p><p>التي يمكن زيارتها داخل مصر بواسطة السيارة الجديدة التي قمت باستئجارها.</p>
-<hr>
-<h3>شروط ايجار سيارات في مصر بدون سائق</h3><p>إذا كنت ترغب في حجز سيارة للإيجار فكل ما عليك فعله هو التسجيل في موقع فرندي كار، وملئ البيانات اللازمة، ومن ثم</p><p>اختيار السيارة التي تناسبك وتناسب احتياجاتك من خلال قوائم السيارات الموجودة على الموقع.</p><p>&nbsp;</p><p>وبعدها يتم تحديد مدة تأجير سيارات مصر والموعد الذي ترغب فيه لاستلام السيارة، سواء كنت ترغب في تأجير سيارات</p><p>يومي، أو اختيار النظام الشهري لـ ايجار سيارات مصر..</p><p>&nbsp;</p><p>ومن ثم يتم توجيهك إلى وسائل الدفع الموضحة على الموقع، وسيقوم القسم المختص بالتواصل معك لتزويدك</p><p>بالمعلومات اللازمة والرد على استفساراتك.</p><p>&nbsp;</p><p>ولمزيد من التفاصيل حول اسعار ايجار السيارات في مصر، وطريقة الحصول على سيارة للإيجار، أو إذا كنت ترغب</p><p>في ضم سيارتك لقائمتنا لتبدأ في الحصول على أرباحك من خلال تأجير سيارات في مصر، تواصل معنا عبر الوسائل</p><p>الموضحة على الموقع.</p><p>&nbsp;</p>
-<h3><span>هل يستوفي عمري شروط استئجار السيارة؟</span></h3><p><span>يصلح استئجار سيارات فريندي كار لكل من بلغت أعمارهم الـ 25 سنة، فإذا كان عمرك 25 سنة أو أكثر، وكنت تمتلك رخصة</span></p><p><span> قيادة، فتأكد من أنه سيتم قبول أوراقك المقدمة لاستئجار أي سيارة ترغب فيها من شركة فريندي كار.</span></p><p>&nbsp;</p>
-<h3><span>هل يمكنني حجز سيارة لصديقي أو أي شخص آخر؟</span></h3><p><span>بالطبع يمكنك حجز سيارة للإيجار لشريكك أو صديقك أو أي شخص آخر، وذلك لأن جميع الإجراءات تتم من خلال موقعنا </span></p><p><span>الإلكتروني، فبإمكان أي شخص اختيار السيارة، ومن ثم يقوم برفع الأوراق الخاصة على الموقع.</span></p><p><span>ولكن عندما تأتي مرحلة الاستلام.. يُشترط أن تقوم باستلام السيارة بنفسك.</span></p><p>&nbsp;</p>
-<h2><span>هل يشمل سعر الاستئجار جميع الرسوم؟</span></h2><p><span>تشمل الأسعار التي تعرضها فريندي كار جميع الرسوم الخاصة باستئجار السيارات، فلن تضطر إلى دفع أي مصاريف </span></p><p><span>إضافية، كما أنه لا يوجد أي رسوم أو مصاريف خفية.</span></p><p><span>ولكن في حالة تعرضك لإحدى المخالفات المرورية، أو كان هناك نقص في مستوى الوقود عند تسليم السيارة، أو تم تسليم </span></p><p><span>السيارة دون تنظيفها فقد يطلب منك رسوم إضافية لتغطية هذه الأمور.</span></p>
+
+<div class="container-fluid bg-breadcrumb">
+	<div class="container text-center py-5" style="max-width: 900px;">
+		<h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInDown;">Our Services</h4>
+	</div>
 </div>
-}else{
-	<div class="m-5" id="about">
-	<h3>Car Rental Benefits in Egypt:</h3>
-	<p>The need for a rental car available at your service all day, week, or month has become very important for many people, and it is a top priority.</p>
-	<p>If you calculate the expenses you may pay for daily transportation, whether public or private companies, you'll find that you're spending a lot, in addition to the time wasted waiting for the appropriate means of transportation to get to your desired destination.</p>
-	<p>But what is the ideal solution to get a rental car for this task if you don’t have enough money or the ability to buy a car?</p>
-	<p>Frendy Car’s car rental service in Egypt offers the best solution to this dilemma. You can now rent cars in Egypt on a monthly, yearly, or weekly basis at the best rental prices in Egypt, with the highest guarantees for both lessor and lessee, without the need for a promissory note as is common with most rental companies.</p>
+<div class="container-fluid service py-5">
+	<div class="container py-5">
+		@if (CultureConfiguration.IsArabic)
+		{
+			<div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px; visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+				<h1 class="display-5 text-capitalize mb-3">Rentoo <span class="text-primary">Services</span></h1>
+				<p class="mb-0">
+					
+				</p>
+			</div>
+			<div class="row g-4">
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-road fa-2x"></i>
+						</div>
+						<h5 class="mb-3">مميزات تاجير سيارات</h5>
+						<p class="mb-0">
+							الحاجة إلى سيارة للإيجار تكون تحت تصرفك طوال اليوم أو الأسبوع أو الشهر صار أمرًا في غاية الأهمية لدى الكثير من
 
-	<h3>Benefits of Car Rental in Egypt</h3>
-	<p><strong>There are many benefits you can gain from long-term car rental in Egypt, including:</strong></p>
-	<ol>
-		<li>Savings on maintenance costs that you would otherwise bear if you owned a car.</li>
-		<li>No worries about dents, accidents, or scratches as Frendy Car vehicles are fully insured.</li>
-		<li>Choosing a car that suits your work nature and desired destinations.</li>
-		<li>A wide range of available vehicles in terms of size, power, performance, and pricing.</li>
-		<li>The freedom to use the car and travel anywhere during the rental period.</li>
-		<li>Saving valuable time.</li>
-		<li>The longer the rental period, the lower the daily cost. For example, daily rental could cost around 400 EGP, while monthly rental could reduce it to 300 or 320 EGP per day.<hr></li>
-	</ol>
+							الاشخاص ، وهو من أولى الأوليات.
+						</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-money-bill-alt fa-2x"></i>
+						</div>
+						<h5 class="mb-3">اختيار سيارة</h5>
+						<p class="mb-0">اختيار السيارة التي تناسب طبيعة عملك، وطبيعة المشاوير والأماكن التي ترغب في الذهاب إليها.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-car-alt fa-2x"></i>
+						</div>
+						<h5 class="mb-3">تنوع السيارات</h5>
+						<p class="mb-0">تنوع في السيارات المتاحة من حيث الحجم والقوة والأداء والأسعار.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-clock fa-2x"></i>
+						</div>
+						<h5 class="mb-3">توفير الوقت الذي قد تحتاجه</h5>
+						<p class="mb-0">يمكنك تاجير السيارة المناسبة لك فى الوقت الذي تحتاجه مع خدمات اخري يمكن ان يوفرها لك المالك</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-building fa-2x"></i>
+						</div>
+						<h5 class="mb-3">شروط ايجار سيارات</h5>
+						<p class="mb-0">
+							إذا كنت ترغب في حجز سيارة للإيجار فكل ما عليك فعله هو التسجيل في موقع ، وملئ البيانات اللازمة، ومن ثم
 
-	<h3>Rental Plans and Their Benefits</h3>
-	<p>Frendy Car offers various rental plans: daily, monthly, semi-annual, and annual. Renters receive discounts from both the car owner and Frendy Car.</p>
-	<ul>
-		<li>Commercial insurance protects both lessor and lessee from major costs.</li>
-		<li>Ability to freeze rental in multi-month rental plans.</li>
-		<li>Frendy Car offers the best car rental prices in Egypt compared to many other companies.</li>
-		<li>Frendy Car – the best car rental company in Egypt – guarantees rights and steps in case of any issues with the car.</li>
-	</ul>
-	<p>Additionally, when renting cars in Egypt without a driver, payment is made electronically, and the car owner’s dues are directly transferred to their bank account.</p>
+							اختيار السيارة التي تناسبك وتناسب احتياجاتك من خلال قوائم السيارات الموجودة على الموقع
+						</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							
+							<i class="fa fa-money-bill-alt fa-2x"></i>
+						</div>
+						<h5 class="mb-3">توفير المال</h5>
+						<p class="mb-0">طلب السياررة من خلال الموقع يوفر لك الوقت والمال عن طريق ارسال طلب للمالك بتاجير السيارة خلال الموقع عن طريق رفع بياناتك وتحديد الوقت الذي تحتاج فيه السيارة دون اي مجهود كما يمكنك التواصل مع المالك مباشرة</p>
+					</div>
+				</div>
+			</div>
+		}
+		else{
+			<div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px; visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+				<h1 class="display-5 text-capitalize mb-3">Rentoo <span class="text-primary">Services</span></h1>
+				<p class="mb-0">
+					Discover a wide range of car rental services tailored to meet your personal and business needs.
+				</p>
+			</div>
+			<div class="row g-4">
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-road fa-2x"></i>
+						</div>
+						<h5 class="mb-3">Car Rental Benefits</h5>
+						<p class="mb-0">
+							Having a rental car available for a day, week, or month is essential for many people, making it a top priority.
+						</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-money-bill-alt fa-2x"></i>
+						</div>
+						<h5 class="mb-3">Choose Your Car</h5>
+						<p class="mb-0">Select a car that fits your lifestyle, daily activities, and the destinations you plan to visit.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-car-alt fa-2x"></i>
+						</div>
+						<h5 class="mb-3">Variety of Cars</h5>
+						<p class="mb-0">A wide selection of vehicles in different sizes, performance levels, and prices to suit your needs.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-clock fa-2x"></i>
+						</div>
+						<h5 class="mb-3">Save Valuable Time</h5>
+						<p class="mb-0">Rent the right car exactly when you need it, with additional services available from the owner.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-building fa-2x"></i>
+						</div>
+						<h5 class="mb-3">Rental Conditions</h5>
+						<p class="mb-0">
+							To rent a car, simply register on our site, complete the required information, then select a car that suits your needs from our listings.
+						</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
+					<div class="service-item p-4">
+						<div class="service-icon mb-4">
+							<i class="fa fa-money-bill-alt fa-2x"></i>
+						</div>
+						<h5 class="mb-3">Save Money</h5>
+						<p class="mb-0">
+							Renting through our platform saves you time and money. Just submit your details, select your rental time, and communicate directly with the car owner.
+						</p>
+					</div>
+				</div>
+			</div>
 
-	<h3>Benefits of Daily Car Rental</h3>
-	<p>Daily rental from Frendy Car allows you to try different cars over short periods, with a minimum of three days.</p>
-	<p>Daily car rental is not commonly offered by many companies unless multiple guarantees are provided by the renter, which can be discouraging.</p>
-	<p>With Frendy Car, there’s no need to sign a promissory note for the full car value—just your national ID and driving license are enough.</p>
-	<p>Frendy Car offers the best daily car rental prices in Egypt.</p>
-	<hr>
 
-	<h3>Who Benefits Most from Car Rental in Egypt?</h3>
-	<p>Many individuals and companies benefit from Frendy Car's top car rental offers in Egypt, including:</p>
-	<ul>
-		<li>Sales professionals who need frequent daily transportation.</li>
-		<li>People living in remote areas lacking public transport, who need daily access to essentials.</li>
-		<li>Women who drive their children to school and lack local transportation options.</li>
-		<li>People who frequently travel domestically.</li>
-		<li>Companies needing multiple vehicles to transport staff without purchasing large fleets, as rental is cheaper than large buses.</li>
-		<li>Tour companies that transport tourists between the airport and various attractions.</li>
-		<li>Visitors staying for several months who don’t wish to purchase a vehicle.</li>
-		<li>Those wishing to experience different cars and drive the latest models.</li>
-		<li>The best places to visit in Egypt</li>
-	</ul>
-	<p>Now that you know the benefits of renting a car in Egypt, here are some top destinations to visit with your rental car:</p>
-	<p><span>If you are 25 years or older and have a valid driver’s license, your documents will be accepted by Frendy Car for any rental.</span></p>
-
-	<h3><span>Can I Rent a Car for Someone Else?</span></h3>
-	<p><span>Yes, you can rent a car for your friend or partner, as all procedures are handled online. The car must be picked up by you in person.</span></p>
+		}
+	</div>
 </div>
-}
+
+
 <script>
     const yearSelect = document.getElementById('yearSelect');
     const currentYear = new Date().getFullYear();
