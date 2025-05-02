@@ -471,11 +471,6 @@ namespace Rentoo.Web.Controllers
                         newStatus = RequestStatus.Accepted;
                         // Update car availability
                         var car = await _carService.GetByIdAsync(request.CarId.Value);
-                        if (car != null)
-                        {
-                            car.IsAvailable = false;
-                            await _carService.UpdateAsync(car);
-                        }
                         break;
                     case "rejected":
                         newStatus = RequestStatus.Rejected;

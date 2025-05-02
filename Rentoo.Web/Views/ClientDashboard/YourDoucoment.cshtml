@@ -17,12 +17,11 @@
             background-color: #f2f3f5;
             color: #333;
         }
-        /* Document page specific styles - isolated from layout */
-        /* Note: We're not setting a background color at the document level anymore */
-
+        /* Document page specific styles - properly scoped to avoid conflicts with layout */
         .doc-dashboard-container {
             display: flex;
             min-height: 100vh;
+            background-color: #f2f3f5;
         }
 
         .doc-dashboard-content {
@@ -64,11 +63,11 @@
         }
 
             .doc-nav-tab:hover {
-                color: #e91e63;
+                color: #ea001e;
             }
 
             .doc-nav-tab.active {
-                background-color: #e91e63;
+                background-color: #ea001e;
                 color: #fff;
             }
 
@@ -141,14 +140,14 @@
         }
 
         .doc-btn-primary {
-            background-color: #e91e63;
-            color: white;
+            background-color: #ea001e;
+            color: white !important;
             border: none;
             box-shadow: 0 4px 10px rgba(233, 30, 99, 0.2);
         }
 
             .doc-btn-primary:hover {
-                background-color: #d81b60;
+                background-color: #212529;
                 transform: translateY(-2px);
                 box-shadow: 0 6px 15px rgba(233, 30, 99, 0.3);
             }
@@ -167,6 +166,7 @@
             }
 
         .doc-document-preview {
+            display: inline-block;
             margin-bottom: 15px;
             border-radius: 8px;
             overflow: hidden;
@@ -174,9 +174,11 @@
         }
 
             .doc-document-preview img {
-                width: 100%;
-                height: auto;
-                display: block;
+                max-width: 200px;
+                max-height: 150px;
+                object-fit: contain;
+                border: 1px solid #ccc;
+                border-radius: 6px;
             }
 
         .doc-alert {
@@ -283,10 +285,20 @@
 
         <div class="doc-profile-section">
             <h2>Document Information</h2>
-            <form asp-action="YourDoucoment" enctype="multipart/form-data">
+            <form id="document-form" asp-action="YourDoucoment" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ID" />
                 <input type="hidden" asp-for="UserId" />
+
+                <!-- Store existing URLs in hidden fields to maintain their values -->
+                @if (!string.IsNullOrEmpty(Model?.NationalIDUrl))
+                {
+                    <input type="hidden" asp-for="NationalIDUrl" id="existingNationalIDUrl" />
+                }
+                @if (!string.IsNullOrEmpty(Model?.LicenseUrl))
+                {
+                    <input type="hidden" asp-for="LicenseUrl" id="existingLicenseUrl" />
+                }
 
                 <div class="doc-form-group">
                     <label asp-for="NationalIDNumber" class="control-label">National ID Number</label>
@@ -302,9 +314,10 @@
                             <img src="~/@Model.NationalIDUrl" class="img-fluid" alt="National ID" />
                         </div>
                     }
-                    <input type="file" name="nationalIdFile" class="doc-form-control" accept=".pdf,.jpg,.jpeg,.png" />
-                    <small class="text-muted">Maximum file size: 5MB. Accepted formats: PDF, JPG, JPEG, PNG</small>
+                    <input type="file" name="nationalIdFile" id="nationalIdFile" class="doc-form-control" accept="image/png, image/jpeg, image/jpg" />
+                    <small class="text-muted">Maximum file size: 5MB. Accepted formats: JPG, JPEG, PNG</small>
                     <span asp-validation-for="NationalIDUrl" class="doc-text-danger"></span>
+                    <span id="nationalIdFile-error" class="doc-text-danger"></span>
                 </div>
 
                 <div class="doc-form-group">
@@ -315,9 +328,10 @@
                             <img src="~/@Model.LicenseUrl" class="img-fluid" alt="License" />
                         </div>
                     }
-                    <input type="file" name="licenseFile" class="doc-form-control" accept=".pdf,.jpg,.jpeg,.png" />
-                    <small class="text-muted">Maximum file size: 5MB. Accepted formats: PDF, JPG, JPEG, PNG</small>
+                    <input type="file" name="licenseFile" id="licenseFile" class="doc-form-control" accept="image/png, image/jpeg, image/jpg" />
+                    <small class="text-muted">Maximum file size: 5MB. Accepted formats: JPG, JPEG, PNG</small>
                     <span asp-validation-for="LicenseUrl" class="doc-text-danger"></span>
+                    <span id="licenseFile-error" class="doc-text-danger"></span>
                 </div>
 
                 <div class="doc-form-group">
@@ -327,12 +341,15 @@
                 </div>
 
                 <div class="doc-form-group" style="display: flex; gap: 10px;">
-                    <button type="submit" class="doc-btn doc-btn-primary" @(Model != null && Model.Status != UserDocumentStatus.Accepted ? "disabled" : "")>
-                        @(Model == null ? "Upload Documents" : "Update Documents")
-                    </button>
+                    @if (Model == null || Model.Status != UserDocumentStatus.Pending)
+                    {
+                        <button type="submit" class="doc-btn doc-btn-primary" id="submitButton">
+                            @(Model == null ? "Upload Documents" : "Update Documents")
+                        </button>
+                    }
                     @if (Model?.ID > 0)
                     {
-                        <a asp-action="DeleteDocument" asp-route-id="@Model.ID" class="doc-btn doc-btn-danger" onclick="return confirm('Are you sure you want to delete your documents?')">Delete Documents</a>
+                        <a asp-action="DeleteDocument" asp-route-id="@Model.ID" class="doc-btn doc-btn-primary" onclick="return confirm('Are you sure you want to delete your documents?')">Delete Documents</a>
                     }
                 </div>
             </form>
@@ -344,4 +361,138 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $(document).ready(function () {
+            // Add custom validation for file inputs
+            $.validator.addMethod('fileSize', function (value, element, param) {
+                if (element.files.length === 0) return true;
+                return element.files[0].size <= param;
+            }, 'File size should be less than {0} bytes');
+
+            $.validator.addMethod('fileType', function (value, element, param) {
+                if (element.files.length === 0) return true;
+                var extension = element.files[0].name.split('.').pop().toLowerCase();
+                return param.split(',').indexOf(extension) !== -1;
+            }, 'Please upload a valid file type. Allowed types: {0}');
+
+            // Check if model exists and has existing files
+            var hasExistingNationalId = $('#existingNationalIDUrl').length > 0;
+            var hasExistingLicense = $('#existingLicenseUrl').length > 0;
+            var isEditMode = '@Model?.ID' > 0;
+            var isPending = '@(Model?.Status == UserDocumentStatus.Pending)' === 'True';
+
+            // Initialize form validation
+            var validator = $('#document-form').validate({
+                rules: {
+                    NationalIDNumber: {
+                        required: true,
+                        minlength: 14,
+                        maxlength: 14,
+                        pattern: /^\d{14}$/
+                    },
+                    nationalIdFile: {
+                        fileSize: 5 * 1024 * 1024, // 5MB
+                        fileType: 'jpg,jpeg,png',
+                        required: function() {
+                            // Only required if no existing image
+                            return !hasExistingNationalId && !isEditMode;
+                        }
+                    },
+                    licenseFile: {
+                        fileSize: 5 * 1024 * 1024, // 5MB
+                        fileType: 'jpg,jpeg,png',
+                        required: function() {
+                            // Only required if no existing image
+                            return !hasExistingLicense && !isEditMode;
+                        }
+                    }
+                },
+                messages: {
+                    NationalIDNumber: {
+                        required: "National ID Number is required",
+                        minlength: "National ID Number must be exactly 14 digits",
+                        maxlength: "National ID Number must be exactly 14 digits",
+                        pattern: "National ID Number must contain exactly 14 digits"
+                    },
+                    nationalIdFile: {
+                        required: "Please upload your National ID document",
+                        fileSize: "File size should be less than 5MB",
+                        fileType: "Please upload a valid image file (JPG, JPEG, PNG)"
+                    },
+                    licenseFile: {
+                        required: "Please upload your License document",
+                        fileSize: "File size should be less than 5MB",
+                        fileType: "Please upload a valid image file (JPG, JPEG, PNG)"
+                    }
+                },
+                errorElement: 'span',
+                errorClass: 'doc-text-danger',
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                }
+            });
+
+            // Validate files on change
+            $('#document-form input[type="file"]').on('change', function () {
+                $(this).valid();
+
+                // Clear custom error messages when a file is selected
+                var fileId = $(this).attr('id');
+                $('#' + fileId + '-error').text('');
+            });
+
+            // Form submission validation
+            $('#document-form').on('submit', function(e) {
+                // Only perform this validation if not in pending status
+                if (isPending) {
+                    return false;
+                }
+
+                var isValid = true;
+
+                // For new submissions, validate both files
+                if (!isEditMode) {
+                    // Check National ID document
+                    if ($('#nationalIdFile')[0].files.length === 0) {
+                        $('#nationalIdFile-error').text('National ID Document is required');
+                        isValid = false;
+                    }
+
+                    // Check License document
+                    if ($('#licenseFile')[0].files.length === 0) {
+                        $('#licenseFile-error').text('License Document is required');
+                        isValid = false;
+                    }
+                }
+
+                // For existing documents where status is Rejected, also validate
+                if (isEditMode && '@(Model?.Status == UserDocumentStatus.Rejected)' === 'True') {
+                    // Check National ID document only if no existing file
+                    if (!hasExistingNationalId && $('#nationalIdFile')[0].files.length === 0) {
+                        $('#nationalIdFile-error').text('National ID Document is required');
+                        isValid = false;
+                    }
+
+                    // Check License document only if no existing file
+                    if (!hasExistingLicense && $('#licenseFile')[0].files.length === 0) {
+                        $('#licenseFile-error').text('License Document is required');
+                        isValid = false;
+                    }
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                return true;
+            });
+
+            // Disable form if status is pending - SCOPE FIXED to only affect the document form
+            if (isPending) {
+                $('#document-form input, #document-form textarea, #document-form select, #document-form button[type="submit"]').prop('disabled', true);
+                $('#document-form input[type="file"]').prop('disabled', true);
+            }
+        });
+    </script>
 }

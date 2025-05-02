@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://www.paypal.com/sdk/js?client-id=AV5YIoSUVpHVfqMor2l2gu6A69Jxjzjt0reSOAGQ-rVNZExxXaEHeSgty5dCEv1oueBmrBn8Li-hMFj4&currency=USD"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -112,11 +113,11 @@
         }
 
             .nav-tab:hover {
-                color: #e91e63;
+                color: #ea001e;
             }
 
             .nav-tab.active {
-                background-color: #e91e63;
+                background-color: #ea001e;
                 color: #fff;
             }
 
@@ -384,6 +385,115 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* PayPal Button Styles */
+        .paypal-button-container {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .payment-modal-body {
+            text-align: center;
+        }
+
+        .payment-details {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .payment-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+            .payment-detail:last-child {
+                border-bottom: none;
+                font-weight: bold;
+            }
+
+        .payment-summary {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Payment method options */
+        .payment-options-header {
+            font-weight: 500;
+            margin: 15px 0 10px;
+            color: #555;
+        }
+
+        .payment-method {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+            .payment-method i {
+                margin-right: 10px;
+                font-size: 18px;
+            }
+
+            .payment-method.active {
+                border-color: #0070ba;
+                background-color: #f0f7ff;
+            }
+
+            .payment-method:hover {
+                border-color: #0070ba;
+            }
+
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #0070ba;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        
+
+        /* Success message */
+        #payment-success {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .success-icon {
+            color: #28a745;
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        #payment-success h3 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+
+        #transaction-id {
+            font-weight: 600;
+            color: #0070ba;
+        }
     </style>
 </head>
 <body>
@@ -411,10 +521,12 @@
                     <div class="request-card">
                         <div class="request-header">
                             <h3 class="request-title">@RM.Global.RequestDetails</h3>
-                            <span class="request-status status-@request.Status.ToString().ToLower()">@(request.Status == RequestStatus.Pending ? RM.Global.Pending : 
+                            <span class="request-status status-@request.Status.ToString().ToLower()">
+                                @(request.Status == RequestStatus.Pending ? RM.Global.Pending :
                                 request.Status == RequestStatus.Accepted ? RM.Global.Accepted : 
                                 request.Status == RequestStatus.Rejected ? RM.Global.Rejected : 
-                                RM.Global.Completed)</span>
+                                    RM.Global.Completed)
+                            </span>
                         </div>
                         <div class="request-details">
                             <div class="detail-item">
@@ -439,7 +551,15 @@
                             </div>
                         </div>
 
-                        @if (request.Status == RequestStatus.Completed)
+                        @if (request.Status == RequestStatus.Accepted)
+                        {
+                            <div class="request-actions">
+                                <button class="btn btn-primary" onclick="openPaymentModal(@request.ID, @request.TotalPrice)">
+                                    <i class="fab fa-paypal"></i> Pay with PayPal
+                                </button>
+                            </div>
+                        }
+                        else if (request.Status == RequestStatus.Completed)
                         {
                             // Check if a review already exists for this request
                             var reviewedRequestIds = ViewBag.ReviewedRequestIds as HashSet<int>;
@@ -507,17 +627,71 @@
         </div>
     </div>
 
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closePaymentModal()" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <h3 class="modal-title">Complete Your Payment</h3>
+            </div>
+            <div class="modal-body payment-modal-body">
+                <div class="payment-summary">Payment Summary</div>
+                <div class="payment-details">
+                    <div class="payment-detail">
+                        <span>Rental Fee</span>
+                        <span id="rental-fee">0 EGP</span>
+                    </div>
+                    <div class="payment-detail">
+                        <span>Service Fee</span>
+                        <span id="service-fee">0 EGP</span>
+                    </div>
+                    <div class="payment-detail">
+                        <span>Total</span>
+                        <span id="total-price">0 EGP</span>
+                    </div>
+                </div>
+                <div id="payment-options">
+                    <div class="payment-options-header">Select Payment Method</div>
+                    <div class="payment-method active" data-method="paypal">
+                        <i class="fab fa-paypal"></i> PayPal
+                    </div>
+                    <div class="payment-method" data-method="card">
+                        <i class="far fa-credit-card"></i> Credit Card via PayPal
+                    </div>
+                </div>
+                <div id="paypal-button-container" class="paypal-button-container"></div>
+                <div id="payment-loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Processing your payment...</p>
+                </div>
+                <div id="payment-success" style="display: none;">
+                    <i class="fas fa-check-circle success-icon"></i>
+                    <h3>Payment Successful!</h3>
+                    <p>Your rental request has been confirmed.</p>
+                    <p>Transaction ID: <span id="transaction-id"></span></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="closePaymentModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Get the modal
-        var modal = document.getElementById("reviewModal");
+        // Get the modals
+        var reviewModal = document.getElementById("reviewModal");
+        var paymentModal = document.getElementById("paymentModal");
+        var currentRequestId = null;
 
         // Function to open the review modal
         function openReviewModal(requestId) {
             document.getElementById("requestId").value = requestId;
-            modal.style.display = "flex";
+            reviewModal.style.display = "flex";
             // Add a small delay to allow the display change to take effect
             setTimeout(() => {
-                modal.classList.add("show");
+                reviewModal.classList.add("show");
             }, 10);
 
             // Reset the form
@@ -542,17 +716,227 @@
 
         // Function to close the review modal
         function closeReviewModal() {
-            modal.classList.remove("show");
+            reviewModal.classList.remove("show");
             // Wait for the transition to complete before hiding the modal
             setTimeout(() => {
-                modal.style.display = "none";
+                reviewModal.style.display = "none";
             }, 300);
         }
 
-        // Close the modal when clicking outside of it
+        // Function to convert EGP to USD
+        function convertEGPtoUSD(egpAmount) {
+            // You should get the current exchange rate from a reliable source
+            // For now, using a fixed rate (1 USD = 30 EGP)
+            const exchangeRate = 30;
+            return (egpAmount / exchangeRate).toFixed(2);
+        }
+
+        // Update the payment modal to show both EGP and USD
+        function openPaymentModal(requestId, totalPrice) {
+            currentRequestId = requestId;
+            const usdAmount = convertEGPtoUSD(totalPrice);
+
+            // Calculate fees (example: service fee is 10% of total)
+            const rentalFee = Math.round(totalPrice * 0.9);
+            const serviceFee = Math.round(totalPrice * 0.1);
+
+            // Update payment details
+            document.getElementById("rental-fee").textContent = rentalFee + " EGP";
+            document.getElementById("service-fee").textContent = serviceFee + " EGP";
+            document.getElementById("total-price").textContent = totalPrice + " EGP";
+            
+            // Add USD conversion display
+            const paymentDetails = document.querySelector('.payment-details');
+            const usdConversion = document.createElement('div');
+            usdConversion.className = 'payment-detail';
+            usdConversion.innerHTML = `<span>Total in USD</span><span>${usdAmount} USD</span>`;
+            paymentDetails.appendChild(usdConversion);
+
+            // Display modal
+            paymentModal.style.display = "flex";
+            setTimeout(() => {
+                paymentModal.classList.add("show");
+            }, 10);
+
+            // Initialize PayPal button
+            initPayPalButton(totalPrice);
+        }
+
+        // Function to close the payment modal
+        function closePaymentModal() {
+            paymentModal.classList.remove("show");
+            setTimeout(() => {
+                paymentModal.style.display = "none";
+            }, 300);
+        }
+
+        // Initialize PayPal button
+        function initPayPalButton(amount) {
+            // Clear existing buttons first
+            document.getElementById('paypal-button-container').innerHTML = '';
+
+            // Set up payment method selection
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', function() {
+                    paymentMethods.forEach(m => m.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Convert amount to USD
+            const usdAmount = convertEGPtoUSD(amount);
+
+            paypal.Buttons({
+                style: {
+                    shape: 'rect',
+                    color: 'blue',
+                    layout: 'vertical',
+                    label: 'pay'
+                },
+
+                createOrder: function(data, actions) {
+                    // Show loading spinner
+                    document.getElementById('payment-loading').style.display = 'block';
+                    document.getElementById('paypal-button-container').style.display = 'none';
+
+                    return actions.order.create({
+                        purchase_units: [{
+                            description: 'Rental Payment',
+                            amount: {
+                                currency_code: 'USD',
+                                value: usdAmount,
+                                breakdown: {
+                                    item_total: {
+                                        currency_code: 'USD',
+                                        value: (usdAmount * 0.9).toFixed(2)
+                                    },
+                                    shipping: {
+                                        currency_code: 'USD',
+                                        value: '0.00'
+                                    },
+                                    tax_total: {
+                                        currency_code: 'USD',
+                                        value: (usdAmount * 0.1).toFixed(2)
+                                    }
+                                }
+                            },
+                            items: [{
+                                name: 'Vehicle Rental',
+                                description: 'Vehicle rental payment',
+                                quantity: '1',
+                                unit_amount: {
+                                    currency_code: 'USD',
+                                    value: (usdAmount * 0.9).toFixed(2)
+                                },
+                                tax: {
+                                    currency_code: 'USD',
+                                    value: (usdAmount * 0.1).toFixed(2)
+                                }
+                            }]
+                        }]
+                    }).catch(function(error) {
+                        console.error('Error creating order:', error);
+                        document.getElementById('payment-loading').style.display = 'none';
+                        document.getElementById('paypal-button-container').style.display = 'block';
+                        alert('Error creating payment order. Please try again or contact support.');
+                    });
+                },
+
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        console.log('Transaction completed by ' + details.payer.name.given_name + '!');
+                        console.log('Transaction ID: ' + details.id);
+
+                        // Hide loading spinner
+                        document.getElementById('payment-loading').style.display = 'none';
+
+                        // Show success message
+                        document.getElementById('transaction-id').textContent = details.id;
+                        document.getElementById('payment-success').style.display = 'block';
+
+                        // Send the payment confirmation to the server
+                        completePayment(currentRequestId, details.id);
+
+                        // Set a timer to close the modal after success
+                        setTimeout(() => {
+                            closePaymentModal();
+                            // Refresh the page to show updated status
+                            window.location.reload();
+                        }, 3000);
+                    }).catch(function(error) {
+                        console.error('Error capturing payment:', error);
+                        document.getElementById('payment-loading').style.display = 'none';
+                        document.getElementById('paypal-button-container').style.display = 'block';
+                        alert('Error processing payment. Please try again or contact support.');
+                    });
+                },
+
+                onCancel: function(data) {
+                    // Hide loading spinner if payment is cancelled
+                    document.getElementById('payment-loading').style.display = 'none';
+                    document.getElementById('paypal-button-container').style.display = 'block';
+                    console.log('Payment cancelled');
+                },
+
+                onError: function(err) {
+                    // Hide loading spinner
+                    document.getElementById('payment-loading').style.display = 'none';
+                    document.getElementById('paypal-button-container').style.display = 'block';
+
+                    console.error('PayPal error:', err);
+                    alert('There was an error processing your payment. Please try again or contact support.');
+                }
+            }).render('#paypal-button-container').catch(function(err) {
+                console.error('Failed to render PayPal button:', err);
+                alert('Failed to initialize payment system. Please try again or contact support.');
+            });
+        }
+
+        // Function to send payment completion to server
+        function completePayment(requestId, transactionId) {
+            // Get the anti-forgery token
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+            fetch('/ClientDashboard/CompletePayment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    // Add the anti-forgery token if available
+                    ...(token && { 'RequestVerificationToken': token })
+                },
+                body: JSON.stringify({
+                    requestId: requestId,
+                    transactionId: transactionId
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server returned ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log('Payment status updated successfully');
+                } else {
+                    console.error('Failed to update payment status:', data.message);
+                    alert('There was an error updating your payment status. Please contact support.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error connecting to the server. Please try again later.');
+            });
+        }
+
+        // Close modal when clicking outside of it
         window.onclick = function(event) {
-            if (event.target == modal) {
+            if (event.target == reviewModal) {
                 closeReviewModal();
+            } else if (event.target == paymentModal) {
+                closePaymentModal();
             }
         }
 
@@ -598,5 +982,47 @@
 
             return isValid;
         }
+
+        // Debug code to check PayPal SDK
+        window.onload = function() {
+            if (typeof paypal === 'undefined') {
+                console.error('PayPal SDK failed to load');
+                alert('PayPal SDK failed to load. Please check your internet connection and try again.');
+            } else {
+                console.log('PayPal SDK loaded successfully');
+                // Test if we can create a button
+                paypal.Buttons({
+                    style: {
+                        shape: 'rect',
+                        color: 'blue',
+                        layout: 'vertical',
+                        label: 'pay'
+                    },
+                    createOrder: function(data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: '1.00',
+                                    currency_code: 'USD'
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            console.log('Test payment successful:', details);
+                            alert('PayPal client ID is working correctly!');
+                        });
+                    },
+                    onError: function(err) {
+                        console.error('PayPal error:', err);
+                        alert('PayPal client ID test failed: ' + err.message);
+                    }
+                }).render('#paypal-button-container').catch(function(err) {
+                    console.error('Failed to render PayPal button:', err);
+                    alert('Failed to render PayPal button. Please check your client ID.');
+                });
+            }
+        };
     </script>
 </body>

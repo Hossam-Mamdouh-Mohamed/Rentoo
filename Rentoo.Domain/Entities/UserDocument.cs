@@ -7,16 +7,15 @@ namespace Rentoo.Domain.Entities
     {
         [Key]
         public int ID { get; set; }
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "License Document is required")]
+        [Display(Name = "License Document")]
         public string LicenseUrl { get; set; }
-        [Required]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Only numeric characters are allowed.")]
-        [MaxLength(100)]
+        [Required(ErrorMessage = "National ID Number is required")]
+        [StringLength(14, MinimumLength = 14, ErrorMessage = "National ID Number must be exactly 14 digits")]
+        [RegularExpression(@"^\d{14}$", ErrorMessage = "National ID Number must contain exactly 14 digits")]
         public string NationalIDNumber { get; set; }
-        [Required]
-        [StringLength(200)]
-        public string NationalIDUrl { get; set; }
+        [Required(ErrorMessage = "National ID Document is required")]
+        [Display(Name = "National ID Document")]        public string NationalIDUrl { get; set; }
 
         [MaxLength(200)]
         public string? Notes { get; set; }
