@@ -121,18 +121,39 @@ namespace Rentoo.Web.Controllers
                         return RedirectToAction(nameof(YourDoucoment));
                     }
 
-                    // Preserve existing file paths if no new files are uploaded
-                    if (nationalIdFile == null || nationalIdFile.Length == 0)
-                    {
-                        userDocument.NationalIDUrl = existingDocument.NationalIDUrl;
-                    }
-                    if (licenseFile == null || licenseFile.Length == 0)
-                    {
-                        userDocument.LicenseUrl = existingDocument.LicenseUrl;
-                    }
-                }
+                    // Update the existing document instead of creating a new one
+                    existingDocument.NationalIDNumber = userDocument.NationalIDNumber;
+                    existingDocument.Notes = userDocument.Notes;
+                    existingDocument.Status = UserDocumentStatus.Pending;
 
-                // Set status to Pending for new documents or updates
+                    var uploadPath = Path.Combine("wwwroot", "uploads", "documents");
+                    if (!Directory.Exists(uploadPath))
+                    {
+                        Directory.CreateDirectory(uploadPath);
+                    }
+
+                    if (nationalIdFile != null && nationalIdFile.Length > 0)
+                    {
+                        var fileName = nationalIdFile.FileName;
+                        var filePath = Path.Combine(uploadPath, fileName);
+                        await nationalIdFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                        existingDocument.NationalIDUrl = "uploads/documents/" + fileName;
+                    }
+
+                    if (licenseFile != null && licenseFile.Length > 0)
+                    {
+                        var fileName = licenseFile.FileName;
+                        var filePath = Path.Combine(uploadPath, fileName);
+                        await licenseFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                        existingDocument.LicenseUrl = "uploads/documents/" + fileName;
+                    }
+
+                    await _userDoucoment.UpdateAsync(existingDocument);
+                    TempData["SuccessMessage"] = "Documents updated successfully! Status has been set to Pending for review.";
+                }
+                else
+                {
+                    // For new documents
                 userDocument.Status = UserDocumentStatus.Pending;
 
                 var uploadPath = Path.Combine("wwwroot", "uploads", "documents");
@@ -157,15 +178,8 @@ namespace Rentoo.Web.Controllers
                     userDocument.LicenseUrl = "uploads/documents/" + fileName;
                 }
 
-                if (userDocument.ID == 0)
-                {
                     await _userDoucoment.AddAsync(userDocument);
                     TempData["SuccessMessage"] = "Documents uploaded successfully!";
-                }
-                else
-                {
-                    await _userDoucoment.UpdateAsync(userDocument);
-                    TempData["SuccessMessage"] = "Documents updated successfully! Status has been set to Pending for review.";
                 }
 
                 return RedirectToAction(nameof(YourDoucoment));

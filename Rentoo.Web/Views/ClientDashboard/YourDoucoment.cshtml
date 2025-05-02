@@ -17,12 +17,11 @@
             background-color: #f2f3f5;
             color: #333;
         }
-        /* Document page specific styles - isolated from layout */
-        /* Note: We're not setting a background color at the document level anymore */
-
+        /* Document page specific styles - properly scoped to avoid conflicts with layout */
         .doc-dashboard-container {
             display: flex;
             min-height: 100vh;
+            background-color: #f2f3f5;
         }
 
         .doc-dashboard-content {
@@ -167,7 +166,7 @@
             }
 
         .doc-document-preview {
-            display: inline-block; /* This makes the container shrink-wrap to the image */
+            display: inline-block;
             margin-bottom: 15px;
             border-radius: 8px;
             overflow: hidden;
@@ -286,7 +285,7 @@
 
         <div class="doc-profile-section">
             <h2>Document Information</h2>
-            <form asp-action="YourDoucoment" enctype="multipart/form-data">
+            <form id="document-form" asp-action="YourDoucoment" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ID" />
                 <input type="hidden" asp-for="UserId" />
@@ -383,7 +382,7 @@
             var isPending = '@(Model?.Status == UserDocumentStatus.Pending)' === 'True';
 
             // Initialize form validation
-            var validator = $('form').validate({
+            var validator = $('#document-form').validate({
                 rules: {
                     NationalIDNumber: {
                         required: true,
@@ -434,7 +433,7 @@
             });
 
             // Validate files on change
-            $('input[type="file"]').on('change', function () {
+            $('#document-form input[type="file"]').on('change', function () {
                 $(this).valid();
 
                 // Clear custom error messages when a file is selected
@@ -443,7 +442,7 @@
             });
 
             // Form submission validation
-            $('form').on('submit', function(e) {
+            $('#document-form').on('submit', function(e) {
                 // Only perform this validation if not in pending status
                 if (isPending) {
                     return false;
@@ -489,10 +488,10 @@
                 return true;
             });
 
-            // Disable form if status is pending
+            // Disable form if status is pending - SCOPE FIXED to only affect the document form
             if (isPending) {
-                $('input, textarea, select, button[type="submit"]').prop('disabled', true);
-                $('input[type="file"]').prop('disabled', true);
+                $('#document-form input, #document-form textarea, #document-form select, #document-form button[type="submit"]').prop('disabled', true);
+                $('#document-form input[type="file"]').prop('disabled', true);
             }
         });
     </script>
