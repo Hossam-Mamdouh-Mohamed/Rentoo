@@ -1,4 +1,5 @@
 ﻿@model Rentoo.Domain.Entities.User
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 @{
     ViewData["Title"] = "Admin Profile";
     Layout = "_AdminLayout";
@@ -36,12 +37,12 @@
                                 <div class="row">
                                     @Html.HiddenFor(model => model.Id)
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">First Name</label>
+                                        <label class="form-label">@RM.Global.FirstName</label>
                                         @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Last Name</label>
+                                        <label class="form-label">@RM.Global.LastName</label>
                                         @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                                     </div>
@@ -49,12 +50,12 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Email</label>
+                                        <label class="form-label">@RM.Global.Email</label>
                                         @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "email" })
                                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Birth Date</label>
+                                        <label class="form-label">@RM.Global.BirthDate</label>
                                         @Html.TextBoxFor(model => model.BirthDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
                                         @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
                                     </div>
@@ -62,7 +63,7 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Phone Number</label>
+                                        <label class="form-label">@RM.Global.lbPhoneNumber</label>
                                         <div class="input-group">
                                             @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
                                             <button class="btn btn-outline-secondary" type="button" id="verifyPhone">
@@ -72,7 +73,7 @@
                                         @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Address</label>
+                                        <label class="form-label">@RM.Global.lbAddress</label>
                                         @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                                     </div>
@@ -82,22 +83,22 @@
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
                                         <button type="button" class="btn btn-warning btn-sm" id="togglePasswordFields">
-                                            <i class="fas fa-key"></i> Change Password?
+                                            <i class="fas fa-key"></i> @RM.Global.lbChangePassword ?
                                         </button>
                                         <small class="form-text text-muted d-block mt-1">
-                                            Leave blank if you don't want to change your password.
+                                            @RM.Global.lbPass
                                         </small>
                                     </div>
                                 </div>
 
                                 <div class="row" id="passwordFields" style="display: none;">
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">New Password</label>
+                                        <label class="form-label">@RM.Global.lbNewPassword</label>
                                         <input type="password" name="NewPassword" class="form-control" />
                                         <span class="text-danger">@Html.ValidationMessage("NewPassword")</span>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Confirm New Password</label>
+                                        <label class="form-label">@RM.Global.lbConfirmNewPassword</label>
                                         <input type="password" name="ConfirmPassword" class="form-control" />
                                         <span class="text-danger">@Html.ValidationMessage("ConfirmPassword")</span>
                                     </div>
@@ -106,7 +107,7 @@
                                 <div class="row mt-4">
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save"></i> Save Changes
+                                            <i class="fas fa-save"></i> @RM.Global.lbSaveChanges
                                         </button>
                                     </div>
                                 </div>

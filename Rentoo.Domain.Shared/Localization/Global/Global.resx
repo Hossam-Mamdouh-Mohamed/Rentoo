@@ -501,4 +501,31 @@
   <data name="lbNationalIDImage" xml:space="preserve">
     <value>National ID Image</value>
   </data>
+  <data name="lbUserName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="lbPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="lbConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="lbCreate" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="lbChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="lbSaveChanges" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="lbNewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="lbConfirmNewPassword" xml:space="preserve">
+    <value>Confirm New Password</value>
+  </data>
+  <data name="lbPass" xml:space="preserve">
+    <value>Leave blank if you don't want to change your password.</value>
+  </data>
 </root>

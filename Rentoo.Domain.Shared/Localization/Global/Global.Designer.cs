@@ -412,6 +412,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Password.
+        /// </summary>
+        public static string lbChangePassword {
+            get {
+                return ResourceManager.GetString("lbChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
         public static string lbColor {
@@ -426,6 +435,33 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string lbCompletedRent {
             get {
                 return ResourceManager.GetString("lbCompletedRent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm New Password.
+        /// </summary>
+        public static string lbConfirmNewPassword {
+            get {
+                return ResourceManager.GetString("lbConfirmNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Password.
+        /// </summary>
+        public static string lbConfirmPassword {
+            get {
+                return ResourceManager.GetString("lbConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string lbCreate {
+            get {
+                return ResourceManager.GetString("lbCreate", resourceCulture);
             }
         }
         
@@ -592,6 +628,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Password.
+        /// </summary>
+        public static string lbNewPassword {
+            get {
+                return ResourceManager.GetString("lbNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Owner Name.
         /// </summary>
         public static string lbOwnerName {
@@ -624,6 +669,24 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string lbOwnersList {
             get {
                 return ResourceManager.GetString("lbOwnersList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave blank if you don&apos;t want to change your password..
+        /// </summary>
+        public static string lbPass {
+            get {
+                return ResourceManager.GetString("lbPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string lbPassword {
+            get {
+                return ResourceManager.GetString("lbPassword", resourceCulture);
             }
         }
         
@@ -754,6 +817,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save Changes.
+        /// </summary>
+        public static string lbSaveChanges {
+            get {
+                return ResourceManager.GetString("lbSaveChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Seats.
         /// </summary>
         public static string lbSeats {
@@ -831,6 +903,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string lbUserDocuments {
             get {
                 return ResourceManager.GetString("lbUserDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Name.
+        /// </summary>
+        public static string lbUserName {
+            get {
+                return ResourceManager.GetString("lbUserName", resourceCulture);
             }
         }
         

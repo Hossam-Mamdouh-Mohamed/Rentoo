@@ -6,7 +6,6 @@ namespace Rentoo.Domain.Entities
     public class User : IdentityUser
     {
         [Required]
-   
         public string FirstName { get; set; }
 
         [Required]
