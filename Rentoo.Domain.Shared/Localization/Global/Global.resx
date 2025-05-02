@@ -405,4 +405,100 @@
   <data name="lbCreatenewAdmin" xml:space="preserve">
     <value>Create New Admin</value>
   </data>
+  <data name="lbRenter" xml:space="preserve">
+    <value>Renter</value>
+  </data>
+  <data name="lbCarID" xml:space="preserve">
+    <value>Car ID</value>
+  </data>
+  <data name="lbStartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="lbEndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="lbTotalPrice" xml:space="preserve">
+    <value>Total Price</value>
+  </data>
+  <data name="lbWithDriver" xml:space="preserve">
+    <value>With Driver</value>
+  </data>
+  <data name="lbDeliveryAddress" xml:space="preserve">
+    <value>Delivery Address</value>
+  </data>
+  <data name="lbPickupAddress" xml:space="preserve">
+    <value>Pickup Address</value>
+  </data>
+  <data name="lbStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="lbModel" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="lbSeats" xml:space="preserve">
+    <value>Seats</value>
+  </data>
+  <data name="lbColor" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="lbAirCondition" xml:space="preserve">
+    <value>Air Condition</value>
+  </data>
+  <data name="lbFactoryYear" xml:space="preserve">
+    <value>Factory Year</value>
+  </data>
+  <data name="lbFuel" xml:space="preserve">
+    <value>Fuel</value>
+  </data>
+  <data name="lbMileage" xml:space="preserve">
+    <value>Mileage</value>
+  </data>
+  <data name="lbOwnerName" xml:space="preserve">
+    <value>Owner Name</value>
+  </data>
+  <data name="lbShowCarDocuments" xml:space="preserve">
+    <value>Show Car Documents</value>
+  </data>
+  <data name="lbShowUserDocuments" xml:space="preserve">
+    <value>Show User Documents</value>
+  </data>
+  <data name="lbDetails" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="lbLicenseNumber" xml:space="preserve">
+    <value>License Number</value>
+  </data>
+  <data name="lbShow" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="lbUserDocuments" xml:space="preserve">
+    <value>User Documents</value>
+  </data>
+  <data name="lbCarsDocuments" xml:space="preserve">
+    <value>Cars Documents</value>
+  </data>
+  <data name="lbReviewCarDocument" xml:space="preserve">
+    <value>Review Car Document</value>
+  </data>
+  <data name="lbReviewedAt" xml:space="preserve">
+    <value>Reviewed At</value>
+  </data>
+  <data name="lbLicenseImage" xml:space="preserve">
+    <value>License Image</value>
+  </data>
+  <data name="lbAccept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="lbReject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="lbReviewRenterDocument" xml:space="preserve">
+    <value>Review Renter Document</value>
+  </data>
+  <data name="lbNationalID" xml:space="preserve">
+    <value>National ID</value>
+  </data>
+  <data name="lbNationalIDImage" xml:space="preserve">
+    <value>National ID Image</value>
+  </data>
 </root>

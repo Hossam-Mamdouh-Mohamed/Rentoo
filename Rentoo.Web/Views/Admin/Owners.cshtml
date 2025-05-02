@@ -42,14 +42,7 @@
                             <td>@owner.Address</td>
                             <td>@owner.PhoneNumber</td>
                             <td>
-                                @if (owner.Cars?.Count > 0)
-                                {
-                                    <a asp-action="OwnerCars" asp-route-id="@owner.Id" class="btn btn-sm btn-primary mb-1">Show Cars</a>
-                                }
-                                else
-                                {
-                                    @:0
-                                }
+                                @owner.Cars?.Count 
                             </td>
                             <td>
                                 <form asp-action="Delete" asp-route-id="@owner.Id" method="post" class="delete-form d-inline">
