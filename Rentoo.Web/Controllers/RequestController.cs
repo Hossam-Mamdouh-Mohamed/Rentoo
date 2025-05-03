@@ -13,14 +13,16 @@ namespace Rentoo.Web.Controllers
         private readonly IService<Car> _CarServes;
         private readonly IService<RateCode> _RateCodeServes;
         private readonly IService<RateCodeDay> _RateCodeDayServes;
+        private readonly IService<UserDocument> _userdocumentserves;
 
         public RequestController(IService<Request> ReqServes,IService<Car> CarServes
-                                ,IService<RateCode> RCServes, IService<RateCodeDay> RCDServes)
+                                ,IService<RateCode> RCServes, IService<RateCodeDay> RCDServes, IService<UserDocument> userdocumentserves)
         {
             _ReqServes = ReqServes;
             _CarServes = CarServes;
             _RateCodeServes = RCServes;
             _RateCodeDayServes = RCDServes;
+            _userdocumentserves = userdocumentserves;
 
         }
 
@@ -80,6 +82,14 @@ namespace Rentoo.Web.Controllers
                     CarId = requestViewModel.CarId,
                     UserID = User.FindFirstValue(ClaimTypes.NameIdentifier)
                 };
+                // Check if the WithDriver==true and user has user document with status == Accepted
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userdocument = await _userdocumentserves.GetAllAsync(ud => ud.UserId == userId && ud.Status == UserDocumentStatus.Accepted);
+                if (request.WithDriver==false && !userdocument.Any())
+                {
+                    TempData["ErrorMessage"] = "You must upload your documents to request a car with a driver.";
+                    return RedirectToAction("AddRequest", "Request", new { id = requestViewModel.CarId });
+                }
                 await _ReqServes.AddAsync(request);
             }
             ViewBag.CarId = requestViewModel.CarId;
