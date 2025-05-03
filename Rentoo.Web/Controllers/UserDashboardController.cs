@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rentoo.Application.Interfaces;
 using Rentoo.Domain.Entities;
@@ -7,6 +8,7 @@ using Rentoo.Web.ViewModels;
 
 namespace Rentoo.Web.Controllers
 {
+    [Authorize]
     public class UserDashboardController : Controller
     {
         private readonly IService<User> _userService;

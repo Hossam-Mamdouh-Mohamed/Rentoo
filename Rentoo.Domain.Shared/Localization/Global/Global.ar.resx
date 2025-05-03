@@ -151,7 +151,7 @@
     <value>الموقع</value>
   </data>
   <data name="LogIn" xml:space="preserve">
-    <value>تسجيل دخزل</value>
+    <value>تسجيل دخول</value>
   </data>
   <data name="pickupAddress" xml:space="preserve">
     <value>عنوان الاستلام</value>
