@@ -339,8 +339,14 @@ namespace Rentoo.Web.Controllers
                 if (Enum.TryParse<DocumentStatus>(status, out var newStatus))
                 {
                     document.status = newStatus;
+                    var car=await carService.GetByIdAsync(document.CarId);
+                    if (car != null)
+                    {
+                        car.IsAvailable = true;
+                        await carService.UpdateAsync(car);
+                       
+                    }
                     document.ReviewdAt = DateTime.UtcNow;
-
                     await DocumentService.UpdateAsync(document);
 
                     TempData["SuccessMessage"] = $"Document has been {status.ToLower()} successfully.";
