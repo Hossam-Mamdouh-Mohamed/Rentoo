@@ -555,4 +555,25 @@
   <data name="lbRegister" xml:space="preserve">
     <value>Register</value>
   </data>
+  <data name="AdditionalNotes" xml:space="preserve">
+    <value>Additional Notes</value>
+  </data>
+  <data name="DeleteDocuments" xml:space="preserve">
+    <value>Delete Documents</value>
+  </data>
+  <data name="DocumentInformation" xml:space="preserve">
+    <value>Document Information</value>
+  </data>
+  <data name="MYCARS" xml:space="preserve">
+    <value>MY CARS</value>
+  </data>
+  <data name="PRICEPLANS" xml:space="preserve">
+    <value>PRICE PLANS</value>
+  </data>
+  <data name="REVIEWS" xml:space="preserve">
+    <value>REVIEWS</value>
+  </data>
+  <data name="UserDashboard" xml:space="preserve">
+    <value>Owner Dashboard</value>
+  </data>
 </root>

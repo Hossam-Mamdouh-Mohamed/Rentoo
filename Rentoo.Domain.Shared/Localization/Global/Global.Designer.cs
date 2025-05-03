@@ -79,6 +79,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional Notes.
+        /// </summary>
+        public static string AdditionalNotes {
+            get {
+                return ResourceManager.GetString("AdditionalNotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address.
         /// </summary>
         public static string Address {
@@ -214,6 +223,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Documents.
+        /// </summary>
+        public static string DeleteDocuments {
+            get {
+                return ResourceManager.GetString("DeleteDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delivery Address.
         /// </summary>
         public static string DeliveryAddress {
@@ -228,6 +246,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document Information.
+        /// </summary>
+        public static string DocumentInformation {
+            get {
+                return ResourceManager.GetString("DocumentInformation", resourceCulture);
             }
         }
         
@@ -1033,6 +1060,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MY CARS.
+        /// </summary>
+        public static string MYCARS {
+            get {
+                return ResourceManager.GetString("MYCARS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to My Requests.
         /// </summary>
         public static string MyRequests {
@@ -1123,6 +1159,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PRICE PLANS.
+        /// </summary>
+        public static string PRICEPLANS {
+            get {
+                return ResourceManager.GetString("PRICEPLANS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rating.
         /// </summary>
         public static string Rating {
@@ -1155,6 +1200,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string RequestToRent {
             get {
                 return ResourceManager.GetString("RequestToRent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REVIEWS.
+        /// </summary>
+        public static string REVIEWS {
+            get {
+                return ResourceManager.GetString("REVIEWS", resourceCulture);
             }
         }
         
@@ -1290,6 +1344,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string UploadDocuments {
             get {
                 return ResourceManager.GetString("UploadDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owner Dashboard.
+        /// </summary>
+        public static string UserDashboard {
+            get {
+                return ResourceManager.GetString("UserDashboard", resourceCulture);
             }
         }
         

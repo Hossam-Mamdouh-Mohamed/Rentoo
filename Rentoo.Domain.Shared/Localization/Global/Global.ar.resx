@@ -555,4 +555,25 @@
   <data name="lbRegister" xml:space="preserve">
     <value>التسجيل</value>
   </data>
+  <data name="AdditionalNotes" xml:space="preserve">
+    <value>ملاحظات اضافية</value>
+  </data>
+  <data name="DeleteDocuments" xml:space="preserve">
+    <value>حذف المستند</value>
+  </data>
+  <data name="DocumentInformation" xml:space="preserve">
+    <value>معلومات المستند</value>
+  </data>
+  <data name="MYCARS" xml:space="preserve">
+    <value>سياراتي</value>
+  </data>
+  <data name="PRICEPLANS" xml:space="preserve">
+    <value>خطط الاسعار</value>
+  </data>
+  <data name="REVIEWS" xml:space="preserve">
+    <value>التقيمات</value>
+  </data>
+  <data name="UserDashboard" xml:space="preserve">
+    <value>لوحة تحكم امالك</value>
+  </data>
 </root>

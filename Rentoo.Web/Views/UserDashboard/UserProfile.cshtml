@@ -1,5 +1,5 @@
 ﻿@model Rentoo.Domain.Entities.User
-
+@using RM = Rentoo.Domain.Shared.Localization.Global;
 @{
     //layput
     Layout = "~/Views/Shared/_EndUserLayout.cshtml";
@@ -341,21 +341,21 @@
     <div class="dashboard-container">
         <div class="dashboard-content">
             <div class="page-header">
-                <h1>User Dashboard</h1>
+                <h1>@RM.Global.UserDashboard</h1>
             </div>
 
             <div class="nav-tabs">
-                <a href="@Url.Action("UserProfile", "UserDashboard")" class="nav-tab active"><i class="fas fa-user"></i> MY ACCOUNT</a>
-                <a href="@Url.Action("MyCar", "UserDashboard")" class="nav-tab"><i class="fas fa-car"></i> MY CARS</a>
-                <a href="@Url.Action("MyRequests", "UserDashboard")" class="nav-tab "><i class="fas fa-file-alt"></i> MY REQUESTS</a>
-                <a href="@Url.Action("Reviews", "UserDashboard")" class="nav-tab "><i class="fas fa-star"></i> REVIEWS</a>
-                <a href="@Url.Action("PricePlans", "UserDashboard")" class="nav-tab"><i class="fas fa-tags"></i> PRICE PLANS</a>
+                <a href="@Url.Action("UserProfile", "UserDashboard")" class="nav-tab active"><i class="fas fa-user"></i>@RM.Global.MyAccount</a>
+                <a href="@Url.Action("MyCar", "UserDashboard")" class="nav-tab"><i class="fas fa-car"></i> @RM.Global.MYCARS</a>
+                <a href="@Url.Action("MyRequests", "UserDashboard")" class="nav-tab "><i class="fas fa-file-alt"></i>@RM.Global.MyRequests</a>
+                <a href="@Url.Action("Reviews", "UserDashboard")" class="nav-tab "><i class="fas fa-star"></i> @RM.Global.REVIEWS</a>
+                <a href="@Url.Action("PricePlans", "UserDashboard")" class="nav-tab"><i class="fas fa-tags"></i> @RM.Global.PRICEPLANS</a>
             </div>
             @using (Html.BeginForm("UserProfile", "UserDashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
                 <div class="profile-section">
-                    <h2>Your Profile Picture</h2>
+                    <h2>@RM.Global.YourProfilePicture</h2>
                     <div class="profile-picture-container">
                         <div class="profile-picture">
                             @if (string.IsNullOrEmpty(Model.UserImage))
@@ -372,46 +372,46 @@
                     </div>
                 </div>
                 <div class="profile-section">
-                    <h2></h2>
+                 <h2>@RM.Global.PersonalInformation:</h2>
                     @Html.HiddenFor(model => model.Id)  
                     <div class="form-row">
                         <div class="form-group">
-                            @Html.LabelFor(m => m.FirstName)
+                            <label for="FirstName">@RM.Global.FirstName</label>
                             @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name" } })
                             @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(m => m.LastName)
+                            <label for="FirstName">@RM.Global.LastName</label>
                             @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
                             @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            @Html.LabelFor(m => m.Email)
+                            <label for="FirstName">@RM.Global.Email</label>
                             @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", type = "email", placeholder = "Email Address" } })
                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.BirthDate, new { @class = "form-label fw-bold" })
+                            <label for="FirstName">@RM.Global.BirthDate</label>
                             @Html.TextBoxFor(model => model.BirthDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
                             @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            @Html.LabelFor(m => m.PhoneNumber)
+                            <label for="FirstName">@RM.Global.PhoneNumber</label>
                             @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone Number" } })
                             @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(m => m.Address)
+                            <label for="FirstName">@RM.Global.Address</label>
                             @Html.EditorFor(m => m.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Full Address" } })
                             @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="btn-actions">
-                        <button type="submit" class="save-changes-btn">Save Changes</button>
+                        <button type="submit" class="save-changes-btn">@RM.Global.SaveChanges</button>
                     </div>
                 </div>
             }
