@@ -35,7 +35,9 @@ public class HomeController : Controller
     {
         ViewBag.CarsModel = new SelectList(await _context.Cars.Select(c => c.Model).Distinct().ToListAsync());
         ViewBag.CarsLocation = new SelectList(await _context.Cars.Select(c => c.Address).Distinct().ToListAsync());
-        ViewBag.Cars = _context.Cars.Include(c => c.Images).OrderBy(c => c.FactoryYear).ToList();
+        //get all cars with images that car document status is Accepted
+        ViewBag.Cars = _context.Cars.Include(c => c.Images).Where(c => c.IsAvailable == true).OrderByDescending(c => c.FactoryYear).ToList();
+       // ViewBag.Cars = _context.Cars.Include(c => c.Images).OrderBy(c => c.FactoryYear).ToList();
         return View();
     }
     public async Task<IActionResult> Search(CarSearchViewModel search)
