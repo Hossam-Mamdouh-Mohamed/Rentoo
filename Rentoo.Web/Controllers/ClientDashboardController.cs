@@ -64,7 +64,7 @@ namespace Rentoo.Web.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError("", "An error occurred while updating your profile. Please try again.");
-                return View("Profile", user);
+                return View("ClientProfile", user);
             }
         }
         [HttpGet]

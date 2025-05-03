@@ -81,7 +81,7 @@ namespace Rentoo.Web.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "An error occurred while updating your profile. Please try again.";
-                return View("Profile", user);
+                return View("UserProfile", user);
             }
         }
         [HttpGet]

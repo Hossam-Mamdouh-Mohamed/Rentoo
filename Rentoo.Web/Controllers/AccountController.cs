@@ -24,14 +24,14 @@ namespace Rentoo.Web.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            ViewBag.RoleList = new SelectList(new[] { "Admin", "Client", "Owner" });
+            ViewBag.RoleList = new SelectList(new[] {"Client", "Owner" });
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            ViewBag.RoleList = new SelectList(new[] { "Admin", "Client", "Owner" });
+            ViewBag.RoleList = new SelectList(new[] {  "Client", "Owner"});
 
             if (!ModelState.IsValid)
             {

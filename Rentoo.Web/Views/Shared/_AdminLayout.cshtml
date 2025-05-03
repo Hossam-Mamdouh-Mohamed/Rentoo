@@ -239,13 +239,14 @@
                     <i class="fas fa-clock"></i>
                     <span class="nav-link-text">@RM.Global.lbPendingverify</span>
                 </a>
-
+@if(User.IsInRole("SuperAdmin")){
             <li class="nav-item">
                 <a class="nav-link @(ViewContext.RouteData.Values["Action"].ToString() == "System Admins" ? "active" : "")" asp-controller="Admin" asp-action="SystemAdmins">
                     <i class="fas fa-users"></i>
                     <span class="nav-link-text">@RM.Global.lbSystemAdmin</span>
                 </a>
             </li>
+}
             <li class="nav-item mt-4">
                 <a class="nav-link" asp-controller="Account" asp-action="Logout">
                     <i class="fas fa-sign-out-alt"></i>
