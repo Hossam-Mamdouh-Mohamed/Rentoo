@@ -592,6 +592,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string lbLogin {
+            get {
+                return ResourceManager.GetString("lbLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logout.
         /// </summary>
         public static string lbLogout {
@@ -772,11 +781,29 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string lbRegister {
+            get {
+                return ResourceManager.GetString("lbRegister", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reject.
         /// </summary>
         public static string lbReject {
             get {
                 return ResourceManager.GetString("lbReject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember Me.
+        /// </summary>
+        public static string lbremember {
+            get {
+                return ResourceManager.GetString("lbremember", resourceCulture);
             }
         }
         
@@ -853,6 +880,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role.
+        /// </summary>
+        public static string lbRole {
+            get {
+                return ResourceManager.GetString("lbRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save Changes.
         /// </summary>
         public static string lbSaveChanges {
@@ -894,6 +930,15 @@ namespace Rentoo.Domain.Shared.Localization.Global {
         public static string lbShowUserDocuments {
             get {
                 return ResourceManager.GetString("lbShowUserDocuments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Don&apos;t have an account?.
+        /// </summary>
+        public static string lbsignup {
+            get {
+                return ResourceManager.GetString("lbsignup", resourceCulture);
             }
         }
         

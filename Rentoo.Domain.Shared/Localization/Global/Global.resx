@@ -540,4 +540,19 @@
   <data name="lbPrev" xml:space="preserve">
     <value>Prev</value>
   </data>
+  <data name="lbRole" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="lbLogin" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="lbsignup" xml:space="preserve">
+    <value> Don't have an account?</value>
+  </data>
+  <data name="lbremember" xml:space="preserve">
+    <value>Remember Me</value>
+  </data>
+  <data name="lbRegister" xml:space="preserve">
+    <value>Register</value>
+  </data>
 </root>
