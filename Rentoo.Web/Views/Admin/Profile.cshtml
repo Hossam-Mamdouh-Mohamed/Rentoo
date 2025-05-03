@@ -66,9 +66,6 @@
                                         <label class="form-label">@RM.Global.lbPhoneNumber</label>
                                         <div class="input-group">
                                             @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
-                                            <button class="btn btn-outline-secondary" type="button" id="verifyPhone">
-                                                <i class="fas fa-check"></i> Verify
-                                            </button>
                                         </div>
                                         @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                                     </div>
